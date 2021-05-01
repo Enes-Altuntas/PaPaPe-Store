@@ -38,6 +38,27 @@ class _LoginState extends State<Login> {
     }
   }
 
+  void rememberPass() {
+    setState(() {
+      isLoading = true;
+    });
+    if (emailController.text.isEmpty != true) {
+      context
+          .read<AuthService>()
+          .rememberPass(email: emailController.text.trim())
+          .then((value) => ToastService().showSuccess(value, context))
+          .onError(
+              (error, stackTrace) => ToastService().showError(error, context))
+          .whenComplete(() => setState(() {
+                isLoading = false;
+              }));
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   void signUp() {
     if (formkey.currentState.validate()) {
       setState(() {
@@ -145,8 +166,21 @@ class _LoginState extends State<Login> {
                                         validator: validatePass,
                                       ),
                                     ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                            onPressed: rememberPass,
+                                            child: Text(
+                                              'Şifremi Unuttum !',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .hintColor),
+                                            )),
+                                      ],
+                                    ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 50.0),
+                                      padding: const EdgeInsets.only(top: 10.0),
                                       child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -157,6 +191,14 @@ class _LoginState extends State<Login> {
                                             style: ElevatedButton.styleFrom(
                                                 primary:
                                                     Colors.green.shade800)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 30.0),
+                                      child: Text(
+                                        'Henüz hesabın yok mu ?',
+                                        style: TextStyle(
+                                            color: Theme.of(context).hintColor),
                                       ),
                                     ),
                                     Padding(

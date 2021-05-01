@@ -44,6 +44,15 @@ class AuthService {
     }
   }
 
+  Future<String> rememberPass({String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return 'Şifrenizi yenilemeniz için link mail adresinize gönderilmiştir !';
+    } catch (e) {
+      throw 'Şifrenizi yenilemeniz için link mail adresinize gönderilmiştir !';
+    }
+  }
+
   // Çıkış
   Future<void> signOut() async {
     try {
