@@ -1,8 +1,10 @@
 import 'package:bulovva_store/Models/product_category_model.dart';
 import 'package:bulovva_store/Models/product_model.dart';
+import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/firestore_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class Menu extends StatefulWidget {
@@ -13,6 +15,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  StoreProvider _storeProvider;
   List<ProductCategory> category;
   List<Product> products;
   String _selectedCur;
@@ -30,7 +33,75 @@ class _MenuState extends State<Menu> {
   final TextEditingController _productDesc = TextEditingController();
   final TextEditingController _productPrice = TextEditingController();
 
+  GlobalKey<FormState> formKeyCat = GlobalKey<FormState>();
+  GlobalKey<FormState> formKeyProd = GlobalKey<FormState>();
+
+  String _validateCatRow(String value) {
+    if (value.isEmpty) {
+      return '* Kategori sırası boş olmamalıdır !';
+    }
+    if (value.contains(RegExp(r'[^\d]')) == true) {
+      return '* Yalnızca rakam içerebilir !';
+    }
+
+    return null;
+  }
+
+  String _validateCatName(String value) {
+    if (value.isEmpty) {
+      return '* Kategori adı boş olmamalıdır !';
+    }
+
+    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+      return '* Harf veya rakam içermelidir !';
+    }
+
+    return null;
+  }
+
+  String _validateProdName(String value) {
+    if (value.isEmpty) {
+      return '* Ürün adı boş olmamalıdır !';
+    }
+    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+      return '* Harf veya rakam içermelidir !';
+    }
+
+    return null;
+  }
+
+  String _validateProdDesc(String value) {
+    if (value.isEmpty) {
+      return '* Ürün tanımı boş olmamalıdır !';
+    }
+
+    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+      return '* Harf veya rakam içermelidir !';
+    }
+
+    return null;
+  }
+
+  String _validateProdPrice(String value) {
+    if (value.isEmpty) {
+      return '* Ürün fiyatı boş olmamalıdır !';
+    }
+
+    if (value.contains(RegExp(r'[^\d.]')) == true) {
+      return '* Yalnızca rakam içermelidir !';
+    }
+
+    return null;
+  }
+
   openCategoryDialog() {
+    _storeProvider = Provider.of<StoreProvider>(context, listen: false);
+    if (_storeProvider.storeId == null) {
+      ToastService().showInfo(
+          'Kategori eklemeden önce işletme bilgilerinizi kaydetmelisiniz !',
+          context);
+      return;
+    }
     if (_selectedCategory != null) {
       setState(() {
         _categoryRow.text = _selectedCategory.categoryRow.toString();
@@ -50,7 +121,7 @@ class _MenuState extends State<Menu> {
                 GestureDetector(
                   child: Icon(
                     Icons.cancel_outlined,
-                    color: Colors.red[400],
+                    color: Theme.of(context).primaryColor,
                   ),
                   onTap: () {
                     setState(() {
@@ -64,41 +135,59 @@ class _MenuState extends State<Menu> {
               ],
             ),
             content: SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: TextFormField(
-                        controller: _categoryRow,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            labelText: 'Kategori Sırası',
-                            border: OutlineInputBorder()),
+              child: Form(
+                key: formKeyCat,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: TextFormField(
+                          controller: _categoryRow,
+                          validator: _validateCatRow,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              labelText: 'Kategori Sırası',
+                              border: OutlineInputBorder()),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
-                      child: TextFormField(
-                        controller: _categoryName,
-                        decoration: InputDecoration(
-                            labelText: 'Kategori Adı',
-                            border: OutlineInputBorder()),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5.0),
+                        child: TextFormField(
+                          validator: _validateCatName,
+                          controller: _categoryName,
+                          decoration: InputDecoration(
+                              labelText: 'Kategori Adı',
+                              border: OutlineInputBorder()),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(_context).size.width,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            saveCategory();
-                          },
-                          child: Text('Kategori Ekle'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red[400],
-                          )),
-                    ),
-                  ],
+                      (_selectedCategory == null)
+                          ? SizedBox(
+                              width: MediaQuery.of(_context).size.width,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    saveCategory();
+                                  },
+                                  child: Text('Kategori Ekle'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.green[800],
+                                  )),
+                            )
+                          : SizedBox(
+                              width: MediaQuery.of(_context).size.width,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    updateCategory();
+                                  },
+                                  child: Text('Kategori Düzenle'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.green[800],
+                                  )),
+                            ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -107,6 +196,13 @@ class _MenuState extends State<Menu> {
   }
 
   openProductDialog() {
+    _storeProvider = Provider.of<StoreProvider>(context, listen: false);
+    if (_storeProvider.storeId == null) {
+      ToastService().showInfo(
+          'Ürün eklemeden önce işletme bilgilerinizi kaydetmelisiniz !',
+          context);
+      return;
+    }
     if (category.length > 0) {
       if (_selectedProduct != null) {
         int index = category.indexWhere(
@@ -135,7 +231,7 @@ class _MenuState extends State<Menu> {
                       GestureDetector(
                         child: Icon(
                           Icons.cancel_outlined,
-                          color: Colors.red[400],
+                          color: Theme.of(context).primaryColor,
                         ),
                         onTap: () {
                           _selectedCur = null;
@@ -150,106 +246,136 @@ class _MenuState extends State<Menu> {
                     ],
                   ),
                   content: SingleChildScrollView(
-                    child: Container(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: SizedBox(
-                                width: MediaQuery.of(_context).size.width,
-                                child: DropdownButton(
-                                    value: _selectedCat,
-                                    hint: Text("Ürün için kategori seçiniz !"),
-                                    items: category
-                                        .map((ProductCategory category) {
-                                      return new DropdownMenuItem<String>(
-                                        value: category.categoryName,
-                                        onTap: () {
-                                          _selectedCatId = category.categoryId;
-                                        },
-                                        child: new Text(category.categoryName),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedCat = value;
-                                      });
-                                    }),
-                              )),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: _productName,
-                              decoration: InputDecoration(
-                                  labelText: 'Ürün Adı',
-                                  border: OutlineInputBorder()),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: _productDesc,
-                              decoration: InputDecoration(
-                                  labelText: 'Ürün Tanımı',
-                                  border: OutlineInputBorder()),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
-                            child: TextFormField(
-                              controller: _productPrice,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  labelText: 'Ürün Fiyatı',
-                                  border: OutlineInputBorder()),
-                            ),
-                          ),
-                          Padding(
+                    child: Form(
+                      key: formKeyProd,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Container(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: SizedBox(
+                                  width: MediaQuery.of(_context).size.width,
+                                  child: DropdownButton(
+                                      isExpanded: true,
+                                      value: _selectedCat,
+                                      hint:
+                                          Text("Ürün için kategori seçiniz !"),
+                                      items: category
+                                          .map((ProductCategory category) {
+                                        return new DropdownMenuItem<String>(
+                                          value: category.categoryName,
+                                          onTap: () {
+                                            _selectedCatId =
+                                                category.categoryId;
+                                          },
+                                          child:
+                                              new Text(category.categoryName),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedCat = value;
+                                        });
+                                      }),
+                                )),
+                            Padding(
                               padding: const EdgeInsets.only(top: 5.0),
-                              child: SizedBox(
-                                width: MediaQuery.of(_context).size.width,
-                                child: DropdownButton(
-                                    value: _selectedCur,
-                                    hint: Text("Para Birimi Seçiniz !"),
-                                    items: <String>['TRY', 'USD', 'EUR']
-                                        .map((String value) {
-                                      return new DropdownMenuItem<String>(
-                                        value: value,
-                                        child: new Text(value),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedCur = value;
-                                      });
-                                    }),
-                              )),
-                          SizedBox(
-                            width: MediaQuery.of(_context).size.width,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  saveProduct();
-                                },
-                                child: (_selectedProduct == null)
-                                    ? Text('Ürün Ekle')
-                                    : Text('Ürün Düzenle'),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
+                              child: TextFormField(
+                                controller: _productName,
+                                validator: _validateProdName,
+                                decoration: InputDecoration(
+                                    labelText: 'Ürün Adı',
+                                    border: OutlineInputBorder()),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: _productDesc,
+                                maxLines: 3,
+                                validator: _validateProdDesc,
+                                decoration: InputDecoration(
+                                    labelText: 'Ürün Tanımı',
+                                    border: OutlineInputBorder()),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5.0),
+                              child: TextFormField(
+                                controller: _productPrice,
+                                validator: _validateProdPrice,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    labelText: 'Ürün Fiyatı',
+                                    border: OutlineInputBorder()),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(top: 5.0),
+                                child: SizedBox(
+                                  width: MediaQuery.of(_context).size.width,
+                                  child: DropdownButton(
+                                      isExpanded: true,
+                                      value: _selectedCur,
+                                      hint: Text("Para Birimi Seçiniz !"),
+                                      items: <String>['TRY', 'USD', 'EUR']
+                                          .map((String value) {
+                                        return new DropdownMenuItem<String>(
+                                          value: value,
+                                          child: new Text(value),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedCur = value;
+                                        });
+                                      }),
                                 )),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(_context).size.width,
-                            child: ElevatedButton(
-                                onPressed: () {
-                                  removeProduct();
-                                },
-                                child: Text('Ürün Sil'),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
-                                )),
-                          ),
-                        ],
+                            (_selectedProduct == null)
+                                ? SizedBox(
+                                    width: MediaQuery.of(_context).size.width,
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          saveProduct();
+                                        },
+                                        child: Text('Ürün Ekle'),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.green[800],
+                                        )),
+                                  )
+                                : Column(
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(_context).size.width,
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              updateProduct();
+                                            },
+                                            child: Text('Ürün Düzenle'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green[800],
+                                            )),
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(_context).size.width,
+                                        child: ElevatedButton(
+                                            onPressed: () {
+                                              removeProduct();
+                                            },
+                                            child: Text('Ürün Sil'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Theme.of(context)
+                                                  .primaryColor,
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -264,10 +390,10 @@ class _MenuState extends State<Menu> {
   }
 
   saveCategory() {
-    setState(() {
-      _isLoading = true;
-    });
-    if (_selectedCategory == null) {
+    if (formKeyCat.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       ProductCategory category = ProductCategory(
         categoryId: Uuid().v4(),
         categoryRow: int.parse(_categoryRow.text),
@@ -285,25 +411,31 @@ class _MenuState extends State<Menu> {
                 _categoryRow.text = '';
                 _selectedCategory = null;
               }));
-    } else {
-      ProductCategory updCategory = ProductCategory(
-        categoryId: _selectedCategory.categoryId,
-        categoryRow: int.parse(_categoryRow.text),
-        categoryName: _categoryName.text,
-      );
-
-      FirestoreService()
-          .updateCategory(updCategory)
-          .then((value) => ToastService().showSuccess(value, context))
-          .onError(
-              (error, stackTrace) => ToastService().showError(error, context))
-          .whenComplete(() => setState(() {
-                _isLoading = false;
-                _categoryName.text = '';
-                _categoryRow.text = '';
-                _selectedCategory = null;
-              }));
+      Navigator.of(context).pop();
     }
+  }
+
+  updateCategory() {
+    setState(() {
+      _isLoading = true;
+    });
+    ProductCategory updCategory = ProductCategory(
+      categoryId: _selectedCategory.categoryId,
+      categoryRow: int.parse(_categoryRow.text),
+      categoryName: _categoryName.text,
+    );
+
+    FirestoreService()
+        .updateCategory(updCategory)
+        .then((value) => ToastService().showSuccess(value, context))
+        .onError(
+            (error, stackTrace) => ToastService().showError(error, context))
+        .whenComplete(() => setState(() {
+              _isLoading = false;
+              _categoryName.text = '';
+              _categoryRow.text = '';
+              _selectedCategory = null;
+            }));
     Navigator.of(context).pop();
   }
 
@@ -322,10 +454,20 @@ class _MenuState extends State<Menu> {
   }
 
   saveProduct() {
-    setState(() {
-      _isLoading = true;
-    });
-    if (_selectedProduct == null) {
+    if (_selectedCur == null) {
+      ToastService()
+          .showInfo('Ürün eklerken para birimi seçilmesi zorunludur', context);
+      return;
+    }
+    if (_selectedCat == null) {
+      ToastService()
+          .showInfo('Ürün eklerken kategori seçilmesi zorunludur', context);
+      return;
+    }
+    if (formKeyProd.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       Product product = Product(
           productId: Uuid().v4(),
           currency: _selectedCur,
@@ -340,8 +482,32 @@ class _MenuState extends State<Menu> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 _isLoading = false;
+                _productDesc.text = '';
+                _productName.text = '';
+                _productPrice.text = '';
+                _selectedCur = null;
+                _selectedCat = null;
+                _selectedCatId = null;
               }));
-    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
+  updateProduct() {
+    if (_selectedCur == null) {
+      ToastService()
+          .showInfo('Ürün eklerken para birimi seçilmesi zorunludur', context);
+      return;
+    }
+    if (_selectedCat == null) {
+      ToastService()
+          .showInfo('Ürün eklerken kategori seçilmesi zorunludur', context);
+      return;
+    }
+    if (formKeyProd.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
       Product product = Product(
           productId: _selectedProduct.productId,
           currency: _selectedCur,
@@ -358,17 +524,15 @@ class _MenuState extends State<Menu> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 _isLoading = false;
+                _productDesc.text = '';
+                _productName.text = '';
+                _productPrice.text = '';
+                _selectedCur = null;
+                _selectedCat = null;
+                _selectedCatId = null;
               }));
+      Navigator.of(context).pop();
     }
-    Navigator.of(context).pop();
-    setState(() {
-      _productDesc.text = '';
-      _productName.text = '';
-      _productPrice.text = '';
-      _selectedCur = null;
-      _selectedCat = null;
-      _selectedCatId = null;
-    });
   }
 
   removeProduct() {
@@ -402,30 +566,30 @@ class _MenuState extends State<Menu> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton.extended(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).primaryColor,
             label: Text(
-              'Ürün',
-              style: TextStyle(color: Colors.red[800]),
+              'Kategori',
+              style: TextStyle(color: Colors.white),
             ),
             icon: Icon(
               Icons.add,
-              color: Colors.red[800],
+              color: Colors.white,
             ),
             onPressed: () {
-              openProductDialog();
+              openCategoryDialog();
             },
           ),
           Padding(
             padding: const EdgeInsets.only(top: 5.0),
             child: FloatingActionButton.extended(
-              backgroundColor: Colors.white,
-              label: Text('Kategori', style: TextStyle(color: Colors.red[800])),
+              backgroundColor: Theme.of(context).primaryColor,
+              label: Text('Ürün', style: TextStyle(color: Colors.white)),
               icon: Icon(
                 Icons.add,
-                color: Colors.red[800],
+                color: Colors.white,
               ),
               onPressed: () {
-                openCategoryDialog();
+                openProductDialog();
               },
             ),
           ),
@@ -447,7 +611,7 @@ class _MenuState extends State<Menu> {
                                     width:
                                         MediaQuery.of(context).size.width / 8,
                                     color: (index % 2 == 0)
-                                        ? Colors.red
+                                        ? Theme.of(context).primaryColor
                                         : Colors.white,
                                     child: Padding(
                                       padding: const EdgeInsets.all(12.0),
@@ -470,7 +634,8 @@ class _MenuState extends State<Menu> {
                                                       fontSize: 18.0,
                                                       fontFamily: 'Bebas',
                                                       color: (index % 2 != 0)
-                                                          ? Colors.red
+                                                          ? Theme.of(context)
+                                                              .primaryColor
                                                           : Colors.white),
                                                 ),
                                                 Row(
@@ -479,7 +644,9 @@ class _MenuState extends State<Menu> {
                                                       child: Icon(Icons.edit,
                                                           color: (index % 2 !=
                                                                   0)
-                                                              ? Colors.red
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .primaryColor
                                                               : Colors.white),
                                                       onTap: () {
                                                         setState(() {
@@ -499,7 +666,9 @@ class _MenuState extends State<Menu> {
                                                           Icons.delete,
                                                           color: (index % 2 !=
                                                                   0)
-                                                              ? Colors.red
+                                                              ? Theme.of(
+                                                                      context)
+                                                                  .primaryColor
                                                               : Colors.white,
                                                         ),
                                                         onTap: () {
@@ -544,8 +713,8 @@ class _MenuState extends State<Menu> {
                                                                     color: (index %
                                                                                 2 !=
                                                                             0)
-                                                                        ? Colors
-                                                                            .red
+                                                                        ? Theme.of(context)
+                                                                            .primaryColor
                                                                         : Colors
                                                                             .white,
                                                                     child:
@@ -565,7 +734,7 @@ class _MenuState extends State<Menu> {
                                                                           Text(
                                                                             snapshotProduct.data[indexDishes].productName,
                                                                             style:
-                                                                                TextStyle(color: (index % 2 != 0) ? Colors.white : Colors.grey[850]),
+                                                                                TextStyle(color: (index % 2 != 0) ? Colors.white : Theme.of(context).hintColor),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -574,7 +743,7 @@ class _MenuState extends State<Menu> {
                                                                         children: [
                                                                           Text(
                                                                               'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} ${snapshotProduct.data[indexDishes].currency}',
-                                                                              style: TextStyle(color: (index % 2 != 0) ? Colors.white : Colors.grey[850])),
+                                                                              style: TextStyle(color: (index % 2 != 0) ? Colors.white : Theme.of(context).hintColor)),
                                                                         ],
                                                                       ),
                                                                       subtitle:
@@ -583,7 +752,7 @@ class _MenuState extends State<Menu> {
                                                                             const EdgeInsets.only(top: 8.0),
                                                                         child: Text(
                                                                             snapshotProduct.data[indexDishes].productDesc,
-                                                                            style: TextStyle(color: (index % 2 != 0) ? Colors.white : Colors.grey[850])),
+                                                                            style: TextStyle(color: (index % 2 != 0) ? Colors.white : Theme.of(context).hintColor)),
                                                                       ),
                                                                     ),
                                                                   );
@@ -601,8 +770,8 @@ class _MenuState extends State<Menu> {
                                                                           30.0,
                                                                       color: (index % 2 !=
                                                                               0)
-                                                                          ? Colors
-                                                                              .red
+                                                                          ? Theme.of(context)
+                                                                              .primaryColor
                                                                           : Colors
                                                                               .white,
                                                                     ),
@@ -618,7 +787,7 @@ class _MenuState extends State<Menu> {
                                                                             TextAlign.center,
                                                                         style: TextStyle(
                                                                             color: (index % 2 != 0)
-                                                                                ? Colors.red
+                                                                                ? Theme.of(context).primaryColor
                                                                                 : Colors.white,
                                                                             fontSize: 20.0),
                                                                       ),
@@ -672,7 +841,7 @@ class _MenuState extends State<Menu> {
                                     Icon(
                                       Icons.assignment_late_outlined,
                                       size: 100.0,
-                                      color: Colors.red,
+                                      color: Theme.of(context).primaryColor,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 20.0),
@@ -680,7 +849,9 @@ class _MenuState extends State<Menu> {
                                         'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            fontSize: 25.0, color: Colors.red),
+                                            fontSize: 25.0,
+                                            color:
+                                                Theme.of(context).primaryColor),
                                       ),
                                     ),
                                   ],
@@ -693,7 +864,7 @@ class _MenuState extends State<Menu> {
                                 Icon(
                                   Icons.assignment_late_outlined,
                                   size: 100.0,
-                                  color: Colors.red,
+                                  color: Theme.of(context).primaryColor,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
@@ -701,7 +872,8 @@ class _MenuState extends State<Menu> {
                                     'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.red, fontSize: 25.0),
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 25.0),
                                   ),
                                 ),
                               ],
@@ -709,14 +881,14 @@ class _MenuState extends State<Menu> {
                           )
                     : Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).accentColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                         ),
                       );
               },
             )
           : Center(
               child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).accentColor,
+                backgroundColor: Theme.of(context).primaryColor,
               ),
             ),
     );

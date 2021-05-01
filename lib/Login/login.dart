@@ -31,6 +31,10 @@ class _LoginState extends State<Login> {
           .whenComplete(() => setState(() {
                 isLoading = false;
               }));
+    } else {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -50,6 +54,10 @@ class _LoginState extends State<Login> {
           .whenComplete(() => setState(() {
                 isLoading = false;
               }));
+    } else {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -117,8 +125,12 @@ class _LoginState extends State<Login> {
                                   children: [
                                     TextFormField(
                                         controller: emailController,
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                         decoration: InputDecoration(
                                             border: OutlineInputBorder(),
+                                            icon: Icon(
+                                                Icons.account_circle_outlined),
                                             labelText: 'E-Mail'),
                                         validator: validateMail),
                                     Padding(
@@ -128,6 +140,7 @@ class _LoginState extends State<Login> {
                                         controller: passwordController,
                                         decoration: InputDecoration(
                                             border: OutlineInputBorder(),
+                                            icon: Icon(Icons.vpn_key_outlined),
                                             labelText: 'Şifre'),
                                         validator: validatePass,
                                       ),
@@ -156,11 +169,9 @@ class _LoginState extends State<Login> {
                                             onPressed: signUp,
                                             child: Text('Kayıt Ol',
                                                 style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .primaryColorDark)),
+                                                    color: Colors.white)),
                                             style: ElevatedButton.styleFrom(
-                                                primary: Theme.of(context)
-                                                    .accentColor)),
+                                                primary: Colors.amber[900])),
                                       ),
                                     )
                                   ],

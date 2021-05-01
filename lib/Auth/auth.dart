@@ -43,7 +43,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
                   style: TextStyle(
                       fontSize: 25.0,
                       fontFamily: 'Bebas',
-                      color: Theme.of(context).accentColor)),
+                      color: Theme.of(context).primaryColor)),
               actions: [
                 Padding(
                   padding: EdgeInsets.only(right: 20.0),
@@ -56,14 +56,14 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
                       children: [
                         Icon(
                           Icons.exit_to_app,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: Text(
                             'Çıkış Yap',
-                            style:
-                                TextStyle(color: Theme.of(context).accentColor),
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
                           ),
                         )
                       ],
@@ -79,9 +79,9 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
               currentIndex: _currentIndex,
               type: BottomNavigationBarType.fixed,
               backgroundColor: Colors.white,
-              unselectedIconTheme: IconThemeData(color: Colors.red, size: 20),
-              selectedIconTheme:
-                  IconThemeData(color: Colors.red[900], size: 30),
+              unselectedIconTheme: IconThemeData(
+                  color: Theme.of(context).primaryColor, size: 20),
+              selectedIconTheme: IconThemeData(color: Colors.red, size: 35),
               items: [
                 BottomNavigationBarItem(
                     icon: Icon(Icons.home), label: 'Profil'),

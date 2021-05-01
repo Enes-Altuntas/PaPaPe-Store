@@ -27,10 +27,11 @@ class MyApp extends StatelessWidget {
           title: 'Bulovva',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-              accentColor: Colors.red,
-              hintColor: Colors.red,
-              primaryColor: Colors.grey.shade800,
-              primaryColorDark: Colors.black),
+            primaryColor: Colors.red[700],
+            primaryColorDark: Colors.black,
+            accentColor: Colors.red,
+            hintColor: Colors.grey.shade800,
+          ),
           home: AuthenticationWrapper()),
     );
   }

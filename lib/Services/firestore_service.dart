@@ -49,6 +49,12 @@ class FirestoreService {
           storeLocLat: store.storeLocLat,
           storeLocLong: store.storeLocLong,
           storeCategory: store.storeCategory,
+          pers1: store.pers1,
+          pers2: store.pers2,
+          pers3: store.pers3,
+          pers1Phone: store.pers1Phone,
+          pers2Phone: store.pers2Phone,
+          pers3Phone: store.pers3Phone,
           storePicRef: downloadUrl);
 
       Markers newMarker = Markers(
@@ -78,6 +84,12 @@ class FirestoreService {
           storeCategory: store.storeCategory,
           storeLocLat: store.storeLocLat,
           storeLocLong: store.storeLocLong,
+          pers1: store.pers1,
+          pers2: store.pers2,
+          pers3: store.pers3,
+          pers1Phone: store.pers1Phone,
+          pers2Phone: store.pers2Phone,
+          pers3Phone: store.pers3Phone,
           storePicRef: (downloadUrl != null) ? downloadUrl : store.storePicRef);
 
       Markers newMarker = Markers(
@@ -175,6 +187,37 @@ class FirestoreService {
     }
   }
 
+  Future<String> renewCampaign(Campaign campaign) async {
+    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
+    try {
+      await _db
+          .collection('stores')
+          .doc(_userId)
+          .collection('campaigns')
+          .get()
+          .then((value) => value.docs.forEach((element) {
+                element.reference.update({'campaignActive': false});
+              }));
+
+      await _db
+          .collection('stores')
+          .doc(_userId)
+          .collection('campaigns')
+          .doc(campaign.campaignId)
+          .set(campaign.toMap());
+
+      await _db
+          .collection('markers')
+          .doc(_userId)
+          .update({'hasCampaign': true});
+
+      return 'Kampanyanız başarıyla tekrar yayınlandı !';
+    } catch (e) {
+      throw 'Kampanyanız yayınlanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
+    }
+  }
+
   Future<String> removeCampaign(String campaignId) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
@@ -184,7 +227,7 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .doc(campaignId)
-          .delete();
+          .update({'campaignActive': false});
 
       await _db
           .collection('markers')

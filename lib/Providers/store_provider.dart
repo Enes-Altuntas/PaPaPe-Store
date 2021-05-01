@@ -20,6 +20,8 @@ class StoreProvider with ChangeNotifier {
   double _storeLocLat;
   double _storeLocLong;
   File _storeLocalImagePath;
+  double _curLocLat;
+  double _curLocLong;
 
   String get storeName => _storeName;
   String get storePicRef => _storePicRef;
@@ -31,6 +33,8 @@ class StoreProvider with ChangeNotifier {
   String get storeId => _storeId;
   double get storeLocLat => _storeLocLat;
   double get storeLocLong => _storeLocLong;
+  double get curLocLat => _curLocLat;
+  double get curLocLong => _curLocLong;
   String get pers1 => _pers1;
   String get pers1Phone => _pers1Phone;
   String get pers2 => _pers2;
@@ -116,6 +120,16 @@ class StoreProvider with ChangeNotifier {
 
   changePers3Phone(String value) {
     _pers3Phone = value;
+    notifyListeners();
+  }
+
+  changeCurLocLat(double value) {
+    _curLocLat = value;
+    notifyListeners();
+  }
+
+  changeCurLocLong(double value) {
+    _curLocLong = value;
     notifyListeners();
   }
 

@@ -26,6 +26,7 @@ class _CampaignsState extends State<Campaigns> {
   Timestamp _startDate;
   Timestamp _finishDate;
   String _campaignId;
+  Campaign _selectedCampaign;
   StoreProvider _storeProvider;
   bool isLoading = false;
 
@@ -38,17 +39,23 @@ class _CampaignsState extends State<Campaigns> {
   String validateCampaignDesc(value) {
     if (value.isEmpty) {
       return "* Kampanya açıklaması zorunludur !";
-    } else {
-      return null;
     }
+    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+      return "* Harf ve rakam içermelidir !";
+    }
+
+    return null;
   }
 
-  String validateCampaignKey(value) {
+  String validateCampaignKey(String value) {
     if (value.isEmpty) {
       return "* Kampanya anahtarı zorunludur !";
-    } else {
-      return null;
     }
+    if (value.contains(RegExp(r'[^a-zA-Z\d]')) == true) {
+      return "* Sadece harf ve rakam içermelidir !";
+    }
+
+    return null;
   }
 
   String validateCampaignStart(value) {
@@ -77,7 +84,7 @@ class _CampaignsState extends State<Campaigns> {
           campaignId: Uuid().v4(),
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
-          campaignKey: '#${_key.text.toUpperCase()}',
+          campaignKey: _key.text.toUpperCase(),
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -90,6 +97,39 @@ class _CampaignsState extends State<Campaigns> {
               }));
       Navigator.of(context).pop();
       setState(() {
+        _desc.text = '';
+        _key.text = '';
+        _start.text = '';
+        _finish.text = '';
+        _campaignId = null;
+      });
+    }
+  }
+
+  renewCampaign() {
+    if (formKey.currentState.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+      Campaign _campaign = Campaign(
+          campaignActive: true,
+          campaignId: _selectedCampaign.campaignId,
+          campaignDesc: _selectedCampaign.campaignDesc,
+          campaignFinish: _finishDate,
+          campaignKey: _selectedCampaign.campaignKey,
+          campaignStart: _startDate,
+          createdAt: Timestamp.fromDate(DateTime.now()));
+      FirestoreService()
+          .renewCampaign(_campaign)
+          .then((value) => ToastService().showSuccess(value, context))
+          .onError(
+              (error, stackTrace) => ToastService().showError(error, context))
+          .whenComplete(() => setState(() {
+                isLoading = false;
+              }));
+      Navigator.of(context).pop();
+      setState(() {
+        _selectedCampaign = null;
         _desc.text = '';
         _key.text = '';
         _start.text = '';
@@ -122,6 +162,7 @@ class _CampaignsState extends State<Campaigns> {
               }));
       Navigator.of(context).pop();
       setState(() {
+        _selectedCampaign = null;
         _desc.text = '';
         _key.text = '';
         _start.text = '';
@@ -161,6 +202,17 @@ class _CampaignsState extends State<Campaigns> {
           context);
       return;
     }
+    if (_selectedCampaign != null) {
+      setState(() {
+        _desc.text = _selectedCampaign.campaignDesc;
+        _key.text = _selectedCampaign.campaignKey;
+        _start.text = formatDate(_selectedCampaign.campaignStart).toString();
+        _startDate = _selectedCampaign.campaignStart;
+        _finish.text = formatDate(_selectedCampaign.campaignFinish).toString();
+        _finishDate = _selectedCampaign.campaignFinish;
+        _campaignId = _selectedCampaign.campaignId;
+      });
+    }
     return showDialog(
         barrierDismissible: false,
         context: context,
@@ -170,25 +222,26 @@ class _CampaignsState extends State<Campaigns> {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    (_campaignId == null)
+                    (_selectedCampaign == null)
                         ? Text('Kampanya Yarat',
                             style: TextStyle(
                                 fontSize: 25.0,
                                 fontFamily: 'Bebas',
-                                color: Theme.of(context).accentColor))
+                                color: Theme.of(context).primaryColor))
                         : Text('Kampanya Düzenle',
                             style: TextStyle(
                                 fontSize: 25.0,
                                 fontFamily: 'Bebas',
-                                color: Theme.of(context).accentColor)),
+                                color: Theme.of(context).primaryColor)),
                     GestureDetector(
                       child: Icon(
                         Icons.cancel_outlined,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).primaryColor,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
                         setState(() {
+                          _selectedCampaign = null;
                           _desc.text = '';
                           _key.text = '';
                           _start.text = '';
@@ -202,12 +255,17 @@ class _CampaignsState extends State<Campaigns> {
             content: SingleChildScrollView(
               child: Form(
                 key: formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextFormField(
                       maxLength: 255,
                       validator: validateCampaignDesc,
+                      enabled: (_selectedCampaign != null &&
+                              _selectedCampaign.campaignActive == false)
+                          ? false
+                          : true,
                       maxLines: 3,
                       controller: _desc,
                       decoration: InputDecoration(
@@ -218,10 +276,15 @@ class _CampaignsState extends State<Campaigns> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: TextFormField(
                         validator: validateCampaignKey,
+                        enabled: (_selectedCampaign != null &&
+                                _selectedCampaign.campaignActive == false)
+                            ? false
+                            : true,
                         controller: _key,
                         maxLength: 15,
                         decoration: InputDecoration(
                             labelText: 'Kampanya Anahtarı',
+                            prefix: Text('#'),
                             border: OutlineInputBorder()),
                       ),
                     ),
@@ -234,32 +297,20 @@ class _CampaignsState extends State<Campaigns> {
                         decoration: InputDecoration(
                             labelText: 'Kampanya Başlangıç',
                             border: OutlineInputBorder()),
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextButton(
-                          onPressed: () {
-                            DatePicker.showDateTimePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime.now(),
-                                maxTime: DateTime(2050, 1, 1),
-                                onConfirm: (date) {
-                              setState(() {
-                                _start.text = date.toString();
-                                _startDate = Timestamp.fromDate(date);
-                              });
-                            },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.tr);
+                        onTap: () {
+                          DatePicker.showDateTimePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(2050, 1, 1), onConfirm: (date) {
+                            setState(() {
+                              _startDate = Timestamp.fromDate(date);
+                              _start.text = formatDate(_startDate);
+                            });
                           },
-                          child: Text(
-                            'Kampanya Başlangıcı Seç',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).accentColor,
-                          )),
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.tr);
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
@@ -270,36 +321,24 @@ class _CampaignsState extends State<Campaigns> {
                         decoration: InputDecoration(
                             labelText: 'Kampanya Bitiş',
                             border: OutlineInputBorder()),
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: TextButton(
-                          onPressed: () {
-                            DatePicker.showDateTimePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime.now(),
-                                maxTime: DateTime(2050, 1, 1),
-                                onConfirm: (date) {
-                              setState(() {
-                                _finish.text = date.toString();
-                                _finishDate = Timestamp.fromDate(date);
-                              });
-                            },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.tr);
+                        onTap: () {
+                          DatePicker.showDateTimePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(2050, 1, 1), onConfirm: (date) {
+                            setState(() {
+                              _finishDate = Timestamp.fromDate(date);
+                              _finish.text = formatDate(_finishDate);
+                            });
                           },
-                          child: Text(
-                            'Kampanya Bitişi Seç',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).accentColor,
-                          )),
+                              currentTime: DateTime.now(),
+                              locale: LocaleType.tr);
+                        },
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
-                      child: (_campaignId == null)
+                      child: (_selectedCampaign == null)
                           ? SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: TextButton(
@@ -313,36 +352,55 @@ class _CampaignsState extends State<Campaigns> {
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.green[800],
                                   )))
-                          : Column(
-                              children: [
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: TextButton(
-                                        onPressed: () {
-                                          updateCampaign();
-                                        },
-                                        child: Text(
-                                          'Kampanyayı Güncelle',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors.green[800],
-                                        ))),
-                                SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: TextButton(
-                                        onPressed: () {
-                                          removeCampaign();
-                                        },
-                                        child: Text(
-                                          'Kampanyayı Sil',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors.red[800],
-                                        )))
-                              ],
-                            ),
+                          : (_selectedCampaign.campaignActive == true)
+                              ? Column(
+                                  children: [
+                                    SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                            onPressed: () {
+                                              updateCampaign();
+                                            },
+                                            child: Text(
+                                              'Kampanyayı Güncelle',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green[800],
+                                            ))),
+                                    SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                            onPressed: () {
+                                              removeCampaign();
+                                            },
+                                            child: Text(
+                                              'Kampanyayı Sil',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Theme.of(context)
+                                                  .primaryColor,
+                                            )))
+                                  ],
+                                )
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: TextButton(
+                                      onPressed: () {
+                                        renewCampaign();
+                                      },
+                                      child: Text(
+                                        'Yeniden Kampanya Ver',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.green[800],
+                                      ))),
                     ),
                   ],
                 ),
@@ -357,14 +415,14 @@ class _CampaignsState extends State<Campaigns> {
     return (isLoading == false)
         ? Scaffold(
             floatingActionButton: FloatingActionButton.extended(
-              backgroundColor: Colors.white,
+              backgroundColor: Theme.of(context).primaryColor,
               label: Text(
-                'Kampanya Ekle',
-                style: TextStyle(color: Colors.red[800]),
+                'Kampanya Yayınla',
+                style: TextStyle(color: Colors.white),
               ),
               icon: Icon(
-                Icons.add,
-                color: Colors.red[800],
+                Icons.save,
+                color: Colors.white,
               ),
               onPressed: () {
                 openDialog();
@@ -382,37 +440,17 @@ class _CampaignsState extends State<Campaigns> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Card(
                                   color: (snapshot.data[index].campaignActive)
-                                      ? Colors.green
-                                      : Colors.red,
-                                  shadowColor: Theme.of(context).accentColor,
+                                      ? Colors.green[800]
+                                      : Theme.of(context).primaryColor,
+                                  shadowColor: Theme.of(context).primaryColor,
                                   elevation: 10.0,
                                   child: ListTile(
                                     onTap: () {
-                                      if (snapshot.data[index].campaignActive) {
-                                        setState(() {
-                                          _desc.text =
-                                              snapshot.data[index].campaignDesc;
-                                          _key.text =
-                                              snapshot.data[index].campaignKey;
-                                          _start.text = formatDate(snapshot
-                                                  .data[index].campaignStart)
-                                              .toString();
-                                          _startDate = snapshot
-                                              .data[index].campaignStart;
-                                          _finish.text = formatDate(snapshot
-                                                  .data[index].campaignFinish)
-                                              .toString();
-                                          _finishDate = snapshot
-                                              .data[index].campaignFinish;
-                                          _campaignId =
-                                              snapshot.data[index].campaignId;
-                                        });
-                                        openDialog();
-                                      } else {
-                                        ToastService().showInfo(
-                                            'Sadece aktif kampanyanız düzenlenebilir !',
-                                            context);
-                                      }
+                                      setState(() {
+                                        _selectedCampaign =
+                                            snapshot.data[index];
+                                      });
+                                      openDialog();
                                     },
                                     title: Padding(
                                       padding: const EdgeInsets.only(top: 8.0),
@@ -442,7 +480,7 @@ class _CampaignsState extends State<Campaigns> {
                                             padding:
                                                 const EdgeInsets.only(top: 8.0),
                                             child: Text(
-                                              'Kampanya Anahtarı: ${snapshot.data[index].campaignKey}',
+                                              'Kampanya Anahtarı: #${snapshot.data[index].campaignKey}',
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -462,14 +500,17 @@ class _CampaignsState extends State<Campaigns> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.assignment_late_outlined,
-                                      size: 100.0, color: Colors.red),
+                                      size: 100.0,
+                                      color: Theme.of(context).primaryColor),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 20.0),
                                     child: Text(
                                       'Henüz yayınlamış olduğunuz herhangi bir kampanya bulunmamaktadır !',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 25.0, color: Colors.red),
+                                          fontSize: 25.0,
+                                          color:
+                                              Theme.of(context).primaryColor),
                                     ),
                                   ),
                                 ],
@@ -478,7 +519,7 @@ class _CampaignsState extends State<Campaigns> {
                           )
                     : Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).accentColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                         ),
                       );
               },
@@ -486,7 +527,7 @@ class _CampaignsState extends State<Campaigns> {
           )
         : Center(
             child: CircularProgressIndicator(
-              backgroundColor: Theme.of(context).accentColor,
+              backgroundColor: Theme.of(context).primaryColor,
             ),
           );
   }

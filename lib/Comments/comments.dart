@@ -25,34 +25,33 @@ class _ReportsState extends State<Reports> {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Card(
-                                color: Colors.amber[100],
-                                shadowColor: Theme.of(context).accentColor,
+                                color: Theme.of(context).primaryColor,
+                                shadowColor: Theme.of(context).primaryColor,
                                 elevation: 10.0,
                                 child: ListTile(
                                   title: Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
                                     child: Text(
                                       snapshot.data[index].reportTitle,
+                                      style: TextStyle(color: Colors.white),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   subtitle: Padding(
                                     padding: const EdgeInsets.only(
                                         top: 8.0, bottom: 8.0),
-                                    child:
-                                        Text(snapshot.data[index].reportDesc),
+                                    child: Text(
+                                      snapshot.data[index].reportDesc,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                   trailing: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
                                           'Puan: ${snapshot.data[index].reportScore.toString()}',
-                                          style: TextStyle(
-                                              color: (snapshot.data[index]
-                                                          .reportScore >
-                                                      2.5)
-                                                  ? Colors.green
-                                                  : Colors.red)),
+                                          style:
+                                              TextStyle(color: Colors.white)),
                                     ],
                                   ),
                                 ),
@@ -67,7 +66,7 @@ class _ReportsState extends State<Reports> {
                               Icon(
                                 Icons.assignment_late_outlined,
                                 size: 100.0,
-                                color: Colors.red,
+                                color: Theme.of(context).primaryColor,
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 20.0),
@@ -78,7 +77,8 @@ class _ReportsState extends State<Reports> {
                                     'Henüz işletmeniz adına yapılmış bir yorum bulunmamaktadır !',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontSize: 25.0, color: Colors.red),
+                                        fontSize: 25.0,
+                                        color: Theme.of(context).primaryColor),
                                   ),
                                 ),
                               ),
@@ -92,7 +92,7 @@ class _ReportsState extends State<Reports> {
                           Icon(
                             Icons.assignment_late_outlined,
                             size: 100.0,
-                            color: Colors.red,
+                            color: Theme.of(context).primaryColor,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 20.0),
@@ -102,14 +102,18 @@ class _ReportsState extends State<Reports> {
                                 'Henüz işletmeniz adına yapılmış bir yorum bulunmamaktadır !',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 25.0, color: Colors.red),
+                                    fontSize: 25.0,
+                                    color: Theme.of(context).primaryColor),
                               ),
                             ),
                           ),
                         ],
                       ),
                     )
-              : Center(child: CircularProgressIndicator());
+              : Center(
+                  child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                ));
         },
       ),
     );
