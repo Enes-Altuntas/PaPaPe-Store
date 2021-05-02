@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
-  final firestoreService = FirestoreService();
+  final FirestoreService firestoreService = FirestoreService();
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthService(this._firebaseAuth);

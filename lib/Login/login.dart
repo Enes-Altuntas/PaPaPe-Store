@@ -16,6 +16,7 @@ class _LoginState extends State<Login> {
   final TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool isLoading = false;
+  bool isVisible = false;
 
   void signIn() {
     setState(() {
@@ -54,6 +55,7 @@ class _LoginState extends State<Login> {
                 isLoading = false;
               }));
     } else {
+      ToastService().showWarning('Lütfen e-mail hesabınızı giriniz !', context);
       setState(() {
         isLoading = false;
       });
@@ -172,12 +174,29 @@ class _LoginState extends State<Login> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
                                       child: TextFormField(
-                                        obscureText: true,
+                                        obscureText:
+                                            (isVisible == false) ? true : false,
                                         controller: passwordController,
                                         decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                             icon: Icon(Icons.vpn_key_outlined),
-                                            labelText: 'Şifre'),
+                                            labelText: 'Şifre',
+                                            suffixIcon: IconButton(
+                                              icon: (isVisible == false)
+                                                  ? Icon(Icons.visibility_off)
+                                                  : Icon(Icons.visibility),
+                                              onPressed: () {
+                                                if (isVisible == true) {
+                                                  setState(() {
+                                                    isVisible = false;
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    isVisible = true;
+                                                  });
+                                                }
+                                              },
+                                            )),
                                         validator: validatePass,
                                       ),
                                     ),
