@@ -115,6 +115,11 @@ class _ProfileState extends State<Profile> {
           .saveStore(_storeProvider.getStoreFromProvider())
           .then((value) {
             ToastService().showSuccess(value, context);
+            FirestoreService().getStore().then((value) {
+              if (value != null && value.data() != null) {
+                _storeProvider.loadStoreInfo(Store.fromFirestore(value.data()));
+              }
+            });
           })
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))

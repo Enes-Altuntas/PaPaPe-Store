@@ -252,7 +252,8 @@ class _LoginState extends State<Login> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                FaIcon(FontAwesomeIcons.google),
+                                                FaIcon(FontAwesomeIcons
+                                                    .googlePlusG),
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
