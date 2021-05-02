@@ -1,9 +1,11 @@
 import 'package:bulovva_store/Services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
   final firestoreService = FirestoreService();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthService(this._firebaseAuth);
 
@@ -24,6 +26,24 @@ class AuthService {
       } else {
         throw 'Sistemde bir hata meydana geldi !';
       }
+    }
+  }
+
+  Future googleLogin() async {
+    try {
+      GoogleSignInAccount user = await _googleSignIn.signIn();
+      if (user == null) {
+        return;
+      } else {
+        final googleAuth = await user.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+
+        await _firebaseAuth.signInWithCredential(credential);
+      }
+    } catch (e) {
+      throw 'Sistemde bir hata meydana geldi !';
     }
   }
 
@@ -57,6 +77,7 @@ class AuthService {
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
+      await _googleSignIn.disconnect();
     } catch (e) {
       return e.message;
     }

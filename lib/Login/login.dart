@@ -1,5 +1,6 @@
 import 'package:bulovva_store/Services/authentication_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -80,6 +81,20 @@ class _LoginState extends State<Login> {
         isLoading = false;
       });
     }
+  }
+
+  void googleSignIn() {
+    setState(() {
+      isLoading = true;
+    });
+    context
+        .read<AuthService>()
+        .googleLogin()
+        .onError(
+            (error, stackTrace) => ToastService().showError(error, context))
+        .whenComplete(() => setState(() {
+              isLoading = false;
+            }));
   }
 
   String validateMail(value) {
@@ -187,7 +202,47 @@ class _LoginState extends State<Login> {
                                                 0.9,
                                         child: ElevatedButton(
                                             onPressed: signIn,
-                                            child: Text('Giriş Yap'),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                FaIcon(
+                                                    FontAwesomeIcons.signInAlt),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text('Giriş Yap'),
+                                                ),
+                                              ],
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                                primary:
+                                                    Colors.green.shade800)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10.0),
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        child: ElevatedButton(
+                                            onPressed: googleSignIn,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                FaIcon(FontAwesomeIcons.google),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text(
+                                                      'Google İle Giriş Yap'),
+                                                ),
+                                              ],
+                                            ),
                                             style: ElevatedButton.styleFrom(
                                                 primary:
                                                     Colors.green.shade800)),
@@ -198,7 +253,8 @@ class _LoginState extends State<Login> {
                                       child: Text(
                                         'Henüz hesabın yok mu ?',
                                         style: TextStyle(
-                                            color: Theme.of(context).hintColor),
+                                            color: Theme.of(context).hintColor,
+                                            fontWeight: FontWeight.w500),
                                       ),
                                     ),
                                     Padding(
@@ -209,9 +265,22 @@ class _LoginState extends State<Login> {
                                                 0.9,
                                         child: ElevatedButton(
                                             onPressed: signUp,
-                                            child: Text('Kayıt Ol',
-                                                style: TextStyle(
-                                                    color: Colors.white)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                FaIcon(
+                                                    FontAwesomeIcons.userPlus),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text('Kayıt Ol',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
+                                                ),
+                                              ],
+                                            ),
                                             style: ElevatedButton.styleFrom(
                                                 primary: Colors.amber[900])),
                                       ),
