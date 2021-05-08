@@ -8,8 +8,6 @@ import 'package:bulovva_store/Services/authentication_service.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:showcaseview/showcase.dart';
-// import 'package:showcaseview/showcaseview.dart';
 
 class AuthenticationWrapper extends StatefulWidget {
   AuthenticationWrapper({Key key}) : super(key: key);
@@ -19,17 +17,9 @@ class AuthenticationWrapper extends StatefulWidget {
 }
 
 class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
-  // GlobalKey _one = GlobalKey();
   int _currentIndex = 0;
   StoreProvider _storeProvider;
   List<Widget> _widgets = <Widget>[Profile(), Campaigns(), Menu(), Reports()];
-
-  @override
-  void initState() {
-    super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //     (_) => ShowCaseWidget.of(context).startShowCase([_one]));
-  }
 
   @override
   Widget build(BuildContext context) {

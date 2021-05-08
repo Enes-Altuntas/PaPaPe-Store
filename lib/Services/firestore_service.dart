@@ -59,10 +59,11 @@ class FirestoreService {
 
       Markers newMarker = Markers(
           hasCampaign: false,
-          markerLatitude: store.storeLocLat.toString(),
-          markerLongtitude: store.storeLocLong.toString(),
+          markerLatitude: store.storeLocLat,
+          markerLongtitude: store.storeLocLong,
           storeCategory: store.storeCategory,
           storeId: newStore.storeId,
+          markerId: _uuid,
           markerTitle: store.storeName);
 
       try {
@@ -94,10 +95,11 @@ class FirestoreService {
 
       Markers newMarker = Markers(
           hasCampaign: false,
-          markerLatitude: store.storeLocLat.toString(),
-          markerLongtitude: store.storeLocLong.toString(),
+          markerLatitude: store.storeLocLat,
+          markerLongtitude: store.storeLocLong,
           storeCategory: store.storeCategory,
           storeId: store.storeId,
+          markerId: _uuid,
           markerTitle: store.storeName);
 
       try {
