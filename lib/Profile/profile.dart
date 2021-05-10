@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:bulovva_store/Map/map.dart';
+import 'package:bulovva_store/Models/store_alt_category_model.dart';
 import 'package:bulovva_store/Models/store_category.dart';
 import 'package:bulovva_store/Models/store_model.dart';
 import 'package:bulovva_store/Providers/store_provider.dart';
@@ -23,7 +24,9 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   StoreProvider _storeProvider;
   List<StoreCategory> storeCats = [];
+  List<StoreAltCategory> storeAltCats = [];
   String _selectedCat;
+  String _selectedAltCat;
   Future getUserInfo;
   bool isInit = true;
   bool isLoading = false;
@@ -75,6 +78,7 @@ class _ProfileState extends State<Profile> {
             }));
     if (_store != null) {
       _selectedCat = _store.storeCategory;
+      _selectedAltCat = _store.storeAltCategory;
       taxNo.text = _store.storeTaxNo;
       taxLoc.text = _store.storeTaxLoc;
       name.text = _store.storeName;
@@ -152,6 +156,34 @@ class _ProfileState extends State<Profile> {
             isLoading = false;
           });
         });
+  }
+
+  selectCategory(String value) async {
+    setState(() {
+      isLoading = true;
+      _selectedAltCat = null;
+      storeAltCats = [];
+    });
+
+    _storeProvider.changeStoreCategory(value);
+
+    int index =
+        storeCats.indexWhere((element) => element.storeCatName == value);
+
+    QuerySnapshot snapshots =
+        await FirestoreService().getStoreAltCat(storeCats[index].storeCatId);
+
+    if (snapshots.docs.isNotEmpty) {
+      snapshots.docs.forEach((element) {
+        StoreAltCategory altCatElement =
+            StoreAltCategory.fromFirestore(element.data());
+        storeAltCats.add(altCatElement);
+      });
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   getImageAndUpload() async {
@@ -459,8 +491,48 @@ class _ProfileState extends State<Profile> {
                                                     );
                                                   }).toList(),
                                                   onChanged: (value) {
+                                                    selectCategory(value);
+                                                  }),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 10, right: 10),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                              child: DropdownButton(
+                                                  value: _selectedAltCat,
+                                                  isExpanded: true,
+                                                  underline: SizedBox(),
+                                                  hint: Text(
+                                                      "İşletme için alt kategori seçiniz !"),
+                                                  items: storeAltCats.map(
+                                                      (StoreAltCategory
+                                                          storeAltCat) {
+                                                    return new DropdownMenuItem<
+                                                        String>(
+                                                      value: storeAltCat
+                                                          .storeAltCatName,
+                                                      onTap: () {
+                                                        _selectedAltCat =
+                                                            storeAltCat
+                                                                .storeAltCatName;
+                                                      },
+                                                      child: new Text(
+                                                        storeAltCat
+                                                            .storeAltCatName,
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged: (value) {
                                                     _storeProvider
-                                                        .changeStoreCategory(
+                                                        .changeStoreAltCategory(
                                                             value);
                                                   }),
                                             ),

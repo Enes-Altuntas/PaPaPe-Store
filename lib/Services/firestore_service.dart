@@ -122,6 +122,14 @@ class FirestoreService {
     return await _db.collection('categories').get();
   }
 
+  Future getStoreAltCat(String catId) async {
+    return await _db
+        .collection('categories')
+        .doc(catId)
+        .collection('alt_categories')
+        .get();
+  }
+
 // *******************************************************************************
 // Profil ile ilgili backend işlemleri
 

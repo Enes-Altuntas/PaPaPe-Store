@@ -7,6 +7,7 @@ class StoreProvider with ChangeNotifier {
   String _storePicRef;
   String _storeAddress;
   String _storeCategory;
+  String _storeAltCategory;
   String _storePhone;
   String _storeTaxNo;
   String _storeTaxLoc;
@@ -27,6 +28,7 @@ class StoreProvider with ChangeNotifier {
   String get storePicRef => _storePicRef;
   String get storeAdresss => _storeAddress;
   String get storeCategory => _storeCategory;
+  String get storeAltCategory => _storeAltCategory;
   String get storePhone => _storePhone;
   String get storeTaxNo => _storeTaxNo;
   String get storeTaxLoc => _storeTaxLoc;
@@ -60,6 +62,11 @@ class StoreProvider with ChangeNotifier {
 
   changeStoreCategory(String value) {
     _storeCategory = value;
+    notifyListeners();
+  }
+
+  changeStoreAltCategory(String value) {
+    _storeAltCategory = value;
     notifyListeners();
   }
 
@@ -136,6 +143,7 @@ class StoreProvider with ChangeNotifier {
   free() {
     _storeAddress = null;
     _storeCategory = null;
+    _storeAltCategory = null;
     _storeId = null;
     _storeLocLat = null;
     _storeLocLong = null;
@@ -161,6 +169,7 @@ class StoreProvider with ChangeNotifier {
         storeName: _storeName,
         storePicRef: _storePicRef,
         storeCategory: _storeCategory,
+        storeAltCategory: _storeAltCategory,
         storeAddress: _storeAddress,
         storePhone: _storePhone,
         storeLocLat: _storeLocLat,
