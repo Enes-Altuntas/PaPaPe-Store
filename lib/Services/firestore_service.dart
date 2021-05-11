@@ -49,6 +49,7 @@ class FirestoreService {
           storeLocLat: store.storeLocLat,
           storeLocLong: store.storeLocLong,
           storeCategory: store.storeCategory,
+          storeAltCategory: store.storeAltCategory,
           pers1: store.pers1,
           pers2: store.pers2,
           pers3: store.pers3,
@@ -62,6 +63,7 @@ class FirestoreService {
           markerLatitude: store.storeLocLat,
           markerLongtitude: store.storeLocLong,
           storeCategory: store.storeCategory,
+          storeAltCategory: store.storeAltCategory,
           storeId: newStore.storeId,
           markerId: _uuid,
           markerTitle: store.storeName);
@@ -83,6 +85,7 @@ class FirestoreService {
           storeAddress: store.storeAddress,
           storePhone: store.storePhone,
           storeCategory: store.storeCategory,
+          storeAltCategory: store.storeAltCategory,
           storeLocLat: store.storeLocLat,
           storeLocLong: store.storeLocLong,
           pers1: store.pers1,
@@ -98,6 +101,7 @@ class FirestoreService {
           markerLatitude: store.storeLocLat,
           markerLongtitude: store.storeLocLong,
           storeCategory: store.storeCategory,
+          storeAltCategory: store.storeAltCategory,
           storeId: store.storeId,
           markerId: _uuid,
           markerTitle: store.storeName);

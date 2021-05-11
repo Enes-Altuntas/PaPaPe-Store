@@ -1,6 +1,7 @@
 class Markers {
   final bool hasCampaign;
   final String storeCategory;
+  final String storeAltCategory;
   final double markerLatitude;
   final double markerLongtitude;
   final String markerTitle;
@@ -10,6 +11,7 @@ class Markers {
   Markers({
     this.hasCampaign,
     this.storeCategory,
+    this.storeAltCategory,
     this.markerLatitude,
     this.markerId,
     this.markerLongtitude,
@@ -20,6 +22,7 @@ class Markers {
   Markers.fromFirestore(Map<String, dynamic> data)
       : hasCampaign = data['hasCampaign'],
         storeCategory = data['storeCategory'],
+        storeAltCategory = data['storeAltCategory'],
         markerLatitude = data['markerLatitude'],
         markerLongtitude = data['markerLongtitude'],
         markerId = data['markerId'],
@@ -30,6 +33,7 @@ class Markers {
     return {
       'hasCampaign': hasCampaign,
       'storeCategory': storeCategory,
+      'storeAltCategory': storeAltCategory,
       'markerLatitude': markerLatitude,
       'markerLongtitude': markerLongtitude,
       'markerId': markerId,

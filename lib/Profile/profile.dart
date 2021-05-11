@@ -76,9 +76,13 @@ class _ProfileState extends State<Profile> {
         .whenComplete(() => setState(() {
               isLoading = false;
             }));
+
     if (_store != null) {
       _selectedCat = _store.storeCategory;
-      _selectedAltCat = _store.storeAltCategory;
+      selectCategory(_selectedCat);
+      if (_store.storeAltCategory.isNotEmpty) {
+        _selectedAltCat = _store.storeAltCategory;
+      }
       taxNo.text = _store.storeTaxNo;
       taxLoc.text = _store.storeTaxLoc;
       name.text = _store.storeName;
@@ -109,6 +113,11 @@ class _ProfileState extends State<Profile> {
       }
       if (_storeProvider.storeCategory == null) {
         ToastService().showInfo('Lütfen işletme kategorisi seçiniz !', context);
+        return;
+      }
+      if (_selectedAltCat == null && storeAltCats.length > 0) {
+        ToastService()
+            .showInfo('Lütfen işletme alt kategorisi seçiniz !', context);
         return;
       }
       setState(() {
@@ -164,8 +173,6 @@ class _ProfileState extends State<Profile> {
       _selectedAltCat = null;
       storeAltCats = [];
     });
-
-    _storeProvider.changeStoreCategory(value);
 
     int index =
         storeCats.indexWhere((element) => element.storeCatName == value);
@@ -492,6 +499,9 @@ class _ProfileState extends State<Profile> {
                                                   }).toList(),
                                                   onChanged: (value) {
                                                     selectCategory(value);
+                                                    _storeProvider
+                                                        .changeStoreCategory(
+                                                            value);
                                                   }),
                                             ),
                                           ),
