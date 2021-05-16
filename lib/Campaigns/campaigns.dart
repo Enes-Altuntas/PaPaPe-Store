@@ -108,6 +108,15 @@ class _CampaignsState extends State<Campaigns> {
   }
 
   renewCampaign() {
+    if (_startDate.millisecondsSinceEpoch <
+            Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch ||
+        _finishDate.millisecondsSinceEpoch <
+            Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch) {
+      ToastService().showWarning(
+          "Kampanya başlangıç ve bitiş tarihleri geçmişte yer alamaz !",
+          context);
+      return;
+    }
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
@@ -142,6 +151,15 @@ class _CampaignsState extends State<Campaigns> {
   }
 
   updateCampaign() {
+    if (_startDate.millisecondsSinceEpoch <
+            Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch ||
+        _finishDate.millisecondsSinceEpoch <
+            Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch) {
+      ToastService().showInfo(
+          "Kampanya başlangıç ve bitiş tarihleri geçmişte yer alamaz !",
+          context);
+      return;
+    }
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
@@ -244,6 +262,8 @@ class _CampaignsState extends State<Campaigns> {
                       onTap: () {
                         Navigator.of(context).pop();
                         setState(() {
+                          _startDate = null;
+                          _finishDate = null;
                           _selectedCampaign = null;
                           _desc.text = '';
                           _key.text = '';
@@ -325,17 +345,24 @@ class _CampaignsState extends State<Campaigns> {
                             labelText: 'Kampanya Bitiş',
                             border: OutlineInputBorder()),
                         onTap: () {
-                          DatePicker.showDateTimePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime.now(),
-                              maxTime: DateTime(2050, 1, 1), onConfirm: (date) {
-                            setState(() {
-                              _finishDate = Timestamp.fromDate(date);
-                              _finish.text = formatDate(_finishDate);
-                            });
-                          },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.tr);
+                          if (_startDate != null) {
+                            DatePicker.showDateTimePicker(context,
+                                showTitleActions: true,
+                                minTime: _startDate.toDate(),
+                                maxTime: DateTime(2050, 1, 1),
+                                onConfirm: (date) {
+                              setState(() {
+                                _finishDate = Timestamp.fromDate(date);
+                                _finish.text = formatDate(_finishDate);
+                              });
+                            },
+                                currentTime: _startDate.toDate(),
+                                locale: LocaleType.tr);
+                          } else {
+                            ToastService().showWarning(
+                                "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
+                                context);
+                          }
                         },
                       ),
                     ),

@@ -80,7 +80,8 @@ class _ProfileState extends State<Profile> {
     if (_store != null) {
       _selectedCat = _store.storeCategory;
       selectCategory(_selectedCat);
-      if (_store.storeAltCategory.isNotEmpty) {
+      if (_store.storeAltCategory != null &&
+          _store.storeAltCategory.isNotEmpty) {
         _selectedAltCat = _store.storeAltCategory;
       }
       taxNo.text = _store.storeTaxNo;
