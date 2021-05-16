@@ -82,6 +82,7 @@ class _CampaignsState extends State<Campaigns> {
       Campaign _campaign = Campaign(
           campaignActive: true,
           campaignId: Uuid().v4(),
+          campaignCounter: 0,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
           campaignKey: _key.text.toUpperCase(),
@@ -118,6 +119,7 @@ class _CampaignsState extends State<Campaigns> {
           campaignFinish: _finishDate,
           campaignKey: _selectedCampaign.campaignKey,
           campaignStart: _startDate,
+          campaignCounter: _selectedCampaign.campaignCounter,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
           .renewCampaign(_campaign)
@@ -150,6 +152,7 @@ class _CampaignsState extends State<Campaigns> {
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
           campaignKey: _key.text.toUpperCase(),
+          campaignCounter: _selectedCampaign.campaignCounter,
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -481,6 +484,15 @@ class _CampaignsState extends State<Campaigns> {
                                                 const EdgeInsets.only(top: 8.0),
                                             child: Text(
                                               'Kampanya Anahtarı: #${snapshot.data[index].campaignKey}',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: Text(
+                                              'Alınmış kampanya kodu sayısı: ${snapshot.data[index].campaignCounter}',
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),

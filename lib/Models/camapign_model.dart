@@ -5,6 +5,7 @@ class Campaign {
   final String campaignDesc;
   final String campaignId;
   final String campaignKey;
+  final int campaignCounter;
   final Timestamp campaignStart;
   final Timestamp campaignFinish;
   final Timestamp createdAt;
@@ -14,6 +15,7 @@ class Campaign {
     this.campaignDesc,
     this.campaignId,
     this.campaignKey,
+    this.campaignCounter,
     this.campaignStart,
     this.campaignFinish,
     this.createdAt,
@@ -23,6 +25,7 @@ class Campaign {
       : campaignActive = data['campaignActive'],
         campaignDesc = data['campaignDesc'],
         campaignKey = data['campaignKey'],
+        campaignCounter = data['campaignCounter'],
         campaignId = data['campaignId'],
         campaignStart = data['campaignStart'],
         campaignFinish = data['campaignFinish'],
@@ -34,6 +37,7 @@ class Campaign {
       'campaignDesc': campaignDesc,
       'campaignKey': campaignKey,
       'campaignStart': campaignStart,
+      'campaignCounter': campaignCounter,
       'campaignFinish': campaignFinish,
       'createdAt': createdAt,
       'campaignId': campaignId,

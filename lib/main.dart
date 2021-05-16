@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
-          title: 'Bulovva',
+          title: 'Bulovva İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: Colors.red[700],
