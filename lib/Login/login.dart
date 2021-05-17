@@ -123,24 +123,21 @@ class _LoginState extends State<Login> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/istanbul.jpg'),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                              Colors.white.withOpacity(0.8),
-                              BlendMode.hardLight))),
+                  color: Theme.of(context).primaryColor,
                   child: Form(
                     key: formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
-                            child: Image.asset(
-                              'assets/images/logos.png',
-                              fit: BoxFit.cover,
-                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 40.0),
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.height / 6,
+                              child: Image.asset(
+                                'assets/images/icon.png',
+                                fit: BoxFit.scaleDown,
+                              )),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

@@ -20,6 +20,10 @@ class AuthService {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
+
+      if (_firebaseAuth.currentUser.emailVerified == false) {
+        await _firebaseAuth.signOut();
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password' || e.code == 'user-not-found') {
         throw 'Geçersiz kullanıcı adı veya şifre !';
@@ -57,7 +61,7 @@ class AuthService {
 
       await _firebaseAuth.signOut();
 
-      return 'Kullancı kaydınız oluşturulmuştur. Şimdi şirket bilgilerinizi doldurmaya başlayabilirsiniz !';
+      return "Kullancı kaydınız oluşturulmuştur. E-mail'inize girip hesabınızı aktifleştirebilirsiniz !";
     } on FirebaseAuthException catch (e) {
       if (e.code == 'ınvalıd-emaıl') {
         throw 'Kayıt olmak için geçersiz bir e-mail adresi girdiniz !';
