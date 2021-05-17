@@ -40,7 +40,7 @@ class _CampaignsState extends State<Campaigns> {
     if (value.isEmpty) {
       return "* Kampanya açıklaması zorunludur !";
     }
-    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
       return "* Harf ve rakam içermelidir !";
     }
 
@@ -51,7 +51,7 @@ class _CampaignsState extends State<Campaigns> {
     if (value.isEmpty) {
       return "* Kampanya anahtarı zorunludur !";
     }
-    if (value.contains(RegExp(r'[^a-zA-Z\d]')) == true) {
+    if (value.contains(RegExp(r'[^a-zA-ZğüşöçİĞÜŞÖÇ\d]')) == true) {
       return "* Sadece harf ve rakam içermelidir !";
     }
 

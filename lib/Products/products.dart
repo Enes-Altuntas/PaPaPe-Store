@@ -52,7 +52,7 @@ class _MenuState extends State<Menu> {
       return '* Kategori adı boş olmamalıdır !';
     }
 
-    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
       return '* Harf veya rakam içermelidir !';
     }
 
@@ -63,7 +63,7 @@ class _MenuState extends State<Menu> {
     if (value.isEmpty) {
       return '* Ürün adı boş olmamalıdır !';
     }
-    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
       return '* Harf veya rakam içermelidir !';
     }
 
@@ -75,7 +75,7 @@ class _MenuState extends State<Menu> {
       return '* Ürün tanımı boş olmamalıdır !';
     }
 
-    if (value.contains(RegExp(r'[a-zA-Z\d]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
       return '* Harf veya rakam içermelidir !';
     }
 

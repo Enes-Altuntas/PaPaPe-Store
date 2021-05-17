@@ -264,7 +264,7 @@ class _ProfileState extends State<Profile> {
     if (value.contains(RegExp(r'\d')) == true) {
       return "* Rakam içeremez !";
     }
-    if (value.contains(RegExp(r'[a-zA-Z]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ]')) != true) {
       return "* Harf içermelidir !";
     }
 
@@ -275,7 +275,7 @@ class _ProfileState extends State<Profile> {
     if (value.isEmpty) {
       return "* İşletme ismi zorunludur !";
     }
-    if (value.contains(RegExp(r'[a-zA-Z]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ]')) != true) {
       return "* Harf içermelidir !";
     }
 
@@ -300,7 +300,7 @@ class _ProfileState extends State<Profile> {
     if (value.isEmpty) {
       return "* İşletme adresi zorunludur !";
     }
-    if (value.contains(RegExp(r'[a-zA-Z]')) != true) {
+    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ]')) != true) {
       return "* Harf içermelidir !";
     }
 
@@ -311,7 +311,7 @@ class _ProfileState extends State<Profile> {
     if (value.isEmpty) {
       return "* En az bir ilgili kişi ismi ve soyismi zorunludur !";
     }
-    if (value.contains(RegExp(r'[^a-zA-Z\s]')) == true) {
+    if (value.contains(RegExp(r'[^a-zA-ZğüşöçİĞÜŞÖÇ\s]')) == true) {
       return "* Yalnızca harf içermelidir !";
     }
 
