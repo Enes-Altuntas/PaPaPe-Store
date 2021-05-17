@@ -52,6 +52,11 @@ class AuthService {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+
+      await _firebaseAuth.currentUser.sendEmailVerification();
+
+      await _firebaseAuth.signOut();
+
       return 'Kullancı kaydınız oluşturulmuştur. Şimdi şirket bilgilerinizi doldurmaya başlayabilirsiniz !';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'ınvalıd-emaıl') {
@@ -77,7 +82,9 @@ class AuthService {
   Future<void> signOut() async {
     try {
       await _firebaseAuth.signOut();
-      await _googleSignIn.disconnect();
+      if (_googleSignIn.currentUser != null) {
+        await _googleSignIn.disconnect();
+      }
     } catch (e) {
       return e.message;
     }

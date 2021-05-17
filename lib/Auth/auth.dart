@@ -25,7 +25,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
   Widget build(BuildContext context) {
     final _firebaseUser = context.watch<User>();
     _storeProvider = Provider.of<StoreProvider>(context);
-    return (_firebaseUser != null)
+    return (_firebaseUser != null && _firebaseUser.emailVerified)
         ? Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.white,
