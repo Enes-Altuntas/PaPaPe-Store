@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "496017256585",
-    "project_id": "bulovva-app",
-    "storage_bucket": "bulovva-app.appspot.com"
+    "project_number": "641494071867",
+    "project_id": "bulovva-7fdb8",
+    "storage_bucket": "bulovva-7fdb8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:496017256585:android:f00ed816a03cc358b55658",
+        "mobilesdk_app_id": "1:641494071867:android:15bca8ee233cd577097a1e",
         "android_client_info": {
           "package_name": "com.example.bulovva"
         }
       },
       "oauth_client": [
         {
-          "client_id": "496017256585-p4usgjftja55mftfnh4fmn38hdr7mukn.apps.googleusercontent.com",
+          "client_id": "641494071867-0oua5053bhsel277bm7509q83gi2201l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.bulovva",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "496017256585-sga4njo8t83dbt9at8fq6fdif3du684h.apps.googleusercontent.com",
+          "client_id": "641494071867-qt6fqsui6mv6nds200e97o37rdibfms8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD8Zi6_tZ79T5EA8iZ5TYu7g-gvyQQ19Ck"
+          "current_key": "AIzaSyCWv1uS_kpugphbxP433yJiBrr88wshnwk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "496017256585-sga4njo8t83dbt9at8fq6fdif3du684h.apps.googleusercontent.com",
+              "client_id": "641494071867-qt6fqsui6mv6nds200e97o37rdibfms8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -44,14 +44,14 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:496017256585:android:e7b78d0cf9d47a97b55658",
+        "mobilesdk_app_id": "1:641494071867:android:e2480670b9d2deb6097a1e",
         "android_client_info": {
           "package_name": "com.example.bulovva_store"
         }
       },
       "oauth_client": [
         {
-          "client_id": "496017256585-rk5b0t5dv5noh76utnq7h9tuhsq2sidu.apps.googleusercontent.com",
+          "client_id": "641494071867-k5975poiuh40tqtegsenv3gbjo92uf19.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.bulovva_store",
@@ -59,20 +59,20 @@
           }
         },
         {
-          "client_id": "496017256585-sga4njo8t83dbt9at8fq6fdif3du684h.apps.googleusercontent.com",
+          "client_id": "641494071867-qt6fqsui6mv6nds200e97o37rdibfms8.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD8Zi6_tZ79T5EA8iZ5TYu7g-gvyQQ19Ck"
+          "current_key": "AIzaSyCWv1uS_kpugphbxP433yJiBrr88wshnwk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "496017256585-sga4njo8t83dbt9at8fq6fdif3du684h.apps.googleusercontent.com",
+              "client_id": "641494071867-qt6fqsui6mv6nds200e97o37rdibfms8.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

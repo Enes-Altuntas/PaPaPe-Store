@@ -207,6 +207,7 @@ class _CampaignsState extends State<Campaigns> {
             }));
     Navigator.of(context).pop();
     setState(() {
+      _selectedCampaign = null;
       _desc.text = '';
       _key.text = '';
       _start.text = '';

@@ -110,6 +110,7 @@ class _MenuState extends State<Menu> {
     }
     return showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (_context) {
           return AlertDialog(
             title: Row(
@@ -218,6 +219,7 @@ class _MenuState extends State<Menu> {
       }
       return showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (_context) {
             return StatefulBuilder(
               builder: (context, setState) {
