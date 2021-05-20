@@ -712,6 +712,8 @@ class _MenuState extends State<Menu> {
                                                             ? ListView.builder(
                                                                 shrinkWrap:
                                                                     true,
+                                                                physics:
+                                                                    ClampingScrollPhysics(),
                                                                 itemCount:
                                                                     snapshotProduct
                                                                         .data

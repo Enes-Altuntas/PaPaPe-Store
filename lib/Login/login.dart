@@ -127,17 +127,14 @@ class _LoginState extends State<Login> {
                   child: Form(
                     key: formkey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 40.0),
-                          child: SizedBox(
-                              height: MediaQuery.of(context).size.height / 6,
-                              child: Image.asset(
-                                'assets/images/icon.png',
-                                fit: BoxFit.scaleDown,
-                              )),
-                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height / 6,
+                            child: Image.asset(
+                              'assets/images/icon.png',
+                              fit: BoxFit.scaleDown,
+                            )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
