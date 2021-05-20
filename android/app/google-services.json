@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:641494071867:android:15bca8ee233cd577097a1e",
+        "mobilesdk_app_id": "1:641494071867:android:b8411a6ffb5a5e4a097a1e",
         "android_client_info": {
-          "package_name": "com.example.bulovva"
+          "package_name": "com.blv.bulovva"
         }
       },
       "oauth_client": [
         {
-          "client_id": "641494071867-0oua5053bhsel277bm7509q83gi2201l.apps.googleusercontent.com",
+          "client_id": "641494071867-s1vmet6illl0raqj0p6ikfcq8uh51v0m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bulovva",
+            "package_name": "com.blv.bulovva",
             "certificate_hash": "cffe4583c2b24eb9db422494aa113680dd6c512c"
           }
         },
@@ -44,17 +44,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:641494071867:android:e2480670b9d2deb6097a1e",
+        "mobilesdk_app_id": "1:641494071867:android:f034ae53bcd04f0c097a1e",
         "android_client_info": {
-          "package_name": "com.example.bulovva_store"
+          "package_name": "com.blv.bulovva_store"
         }
       },
       "oauth_client": [
         {
-          "client_id": "641494071867-k5975poiuh40tqtegsenv3gbjo92uf19.apps.googleusercontent.com",
+          "client_id": "641494071867-sdltdkl6hr19vd8js32rbl6jaktqt14f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.bulovva_store",
+            "package_name": "com.blv.bulovva_store",
             "certificate_hash": "cffe4583c2b24eb9db422494aa113680dd6c512c"
           }
         },

@@ -409,10 +409,12 @@ class _MenuState extends State<Menu> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 _isLoading = false;
-                _categoryName.text = '';
-                _categoryRow.text = '';
-                _selectedCategory = null;
               }));
+      setState(() {
+        _categoryName.text = '';
+        _categoryRow.text = '';
+        _selectedCategory = null;
+      });
       Navigator.of(context).pop();
     }
   }
@@ -434,10 +436,12 @@ class _MenuState extends State<Menu> {
             (error, stackTrace) => ToastService().showError(error, context))
         .whenComplete(() => setState(() {
               _isLoading = false;
-              _categoryName.text = '';
-              _categoryRow.text = '';
-              _selectedCategory = null;
             }));
+    setState(() {
+      _categoryName.text = '';
+      _categoryRow.text = '';
+      _selectedCategory = null;
+    });
     Navigator.of(context).pop();
   }
 
@@ -484,13 +488,15 @@ class _MenuState extends State<Menu> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 _isLoading = false;
-                _productDesc.text = '';
-                _productName.text = '';
-                _productPrice.text = '';
-                _selectedCur = null;
-                _selectedCat = null;
-                _selectedCatId = null;
               }));
+      setState(() {
+        _productDesc.text = '';
+        _productName.text = '';
+        _productPrice.text = '';
+        _selectedCur = null;
+        _selectedCat = null;
+        _selectedCatId = null;
+      });
       Navigator.of(context).pop();
     }
   }
@@ -526,13 +532,15 @@ class _MenuState extends State<Menu> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 _isLoading = false;
-                _productDesc.text = '';
-                _productName.text = '';
-                _productPrice.text = '';
-                _selectedCur = null;
-                _selectedCat = null;
-                _selectedCatId = null;
               }));
+      setState(() {
+        _productDesc.text = '';
+        _productName.text = '';
+        _productPrice.text = '';
+        _selectedCur = null;
+        _selectedCat = null;
+        _selectedCatId = null;
+      });
       Navigator.of(context).pop();
     }
   }
@@ -550,7 +558,6 @@ class _MenuState extends State<Menu> {
         .whenComplete(() => setState(() {
               _isLoading = false;
             }));
-    Navigator.of(context).pop();
     setState(() {
       _productDesc.text = '';
       _productName.text = '';
@@ -559,6 +566,7 @@ class _MenuState extends State<Menu> {
       _selectedCat = null;
       _selectedCatId = null;
     });
+    Navigator.of(context).pop();
   }
 
   @override
