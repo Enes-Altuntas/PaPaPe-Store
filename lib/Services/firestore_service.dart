@@ -195,7 +195,7 @@ class FirestoreService {
           .doc(campaign.campaignId)
           .set(campaign.toMap());
 
-      return 'Kampanyanız başarıyla güncellenirken !';
+      return 'Kampanyanız başarıyla güncellenmiştir !';
     } catch (e) {
       throw 'Kampanyanız güncellenirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
     }

@@ -5,6 +5,7 @@ import 'package:bulovva_store/Products/products.dart';
 import 'package:bulovva_store/Profile/profile.dart';
 import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/authentication_service.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,28 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
   int _currentIndex = 0;
   StoreProvider _storeProvider;
   List<Widget> _widgets = <Widget>[Profile(), Campaigns(), Menu(), Reports()];
+
+  exitYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text: 'Çıkmak istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          _storeProvider.free();
+          context.read<AuthService>().signOut();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +60,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
               actions: [
                 TextButton(
                     onPressed: () {
-                      _storeProvider.free();
-                      context.read<AuthService>().signOut();
+                      exitYesNo();
                     },
                     child: Row(
                       children: [
