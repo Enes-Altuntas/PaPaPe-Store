@@ -143,15 +143,19 @@ class _LoginState extends State<Login> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height / 3,
-                            child: Padding(
-                              padding: const EdgeInsets.all(50.0),
-                              child: Image(
-                                image: myImage,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 30.0),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 5,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/icon.png"),
                                 fit: BoxFit.scaleDown,
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

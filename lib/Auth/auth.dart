@@ -35,10 +35,8 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
                       fontFamily: 'Bebas',
                       color: Theme.of(context).primaryColor)),
               actions: [
-                Padding(
-                  padding: EdgeInsets.only(right: 20.0),
-                  child: GestureDetector(
-                    onTap: () {
+                TextButton(
+                    onPressed: () {
                       _storeProvider.free();
                       context.read<AuthService>().signOut();
                     },
@@ -57,9 +55,7 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
                           ),
                         )
                       ],
-                    ),
-                  ),
-                ),
+                    )),
               ],
             ),
             body: SafeArea(
