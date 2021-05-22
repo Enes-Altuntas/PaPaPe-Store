@@ -2,6 +2,7 @@ import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class _MapsState extends State<Maps> {
   List<Marker> picker = [];
   StoreProvider _storeProvider;
   LatLng position;
+  GoogleMapController _controller;
 
   pick(LatLng point) {
     setState(() {
@@ -65,6 +67,18 @@ class _MapsState extends State<Maps> {
         confirmBtnText: 'Evet');
   }
 
+  changeMapMode() {
+    getJsonFile("assets/standart.json").then((value) => setMapStyle(value));
+  }
+
+  Future<String> getJsonFile(String path) async {
+    return await rootBundle.loadString(path);
+  }
+
+  void setMapStyle(String mapStyle) {
+    _controller.setMapStyle(mapStyle);
+  }
+
   @override
   Widget build(BuildContext context) {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
@@ -101,6 +115,10 @@ class _MapsState extends State<Maps> {
           Expanded(
             flex: 10,
             child: GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                changeMapMode();
+                _controller = controller;
+              },
               initialCameraPosition: CameraPosition(
                   target: LatLng(
                       _storeProvider.curLocLat, _storeProvider.curLocLong),
