@@ -3,6 +3,7 @@ import 'package:bulovva_store/Models/product_model.dart';
 import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/firestore_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -120,10 +121,7 @@ class _MenuState extends State<Menu> {
                     ? Text('Kategori Ekle')
                     : Text('Kategori Düzenle'),
                 GestureDetector(
-                  child: Icon(
-                    Icons.cancel_outlined,
-                    color: Theme.of(context).primaryColor,
-                  ),
+                  child: Icon(Icons.cancel_outlined, color: Colors.grey),
                   onTap: () {
                     setState(() {
                       _selectedCategory = null;
@@ -233,7 +231,7 @@ class _MenuState extends State<Menu> {
                       GestureDetector(
                         child: Icon(
                           Icons.cancel_outlined,
-                          color: Theme.of(context).primaryColor,
+                          color: Colors.grey,
                         ),
                         onTap: () {
                           _selectedCur = null;
@@ -366,7 +364,7 @@ class _MenuState extends State<Menu> {
                                             MediaQuery.of(_context).size.width,
                                         child: ElevatedButton(
                                             onPressed: () {
-                                              removeProduct();
+                                              deleteProdYesNo(_context);
                                             },
                                             child: Text('Ürün Sil'),
                                             style: ElevatedButton.styleFrom(
@@ -445,6 +443,27 @@ class _MenuState extends State<Menu> {
     Navigator.of(context).pop();
   }
 
+  deleteCatYesNo(BuildContext _context, ProductCategory category) {
+    CoolAlert.show(
+        context: _context,
+        type: CoolAlertType.warning,
+        title: '',
+        text: 'Kategoriyi silmek istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          deleteCategory(category);
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
+
   deleteCategory(ProductCategory category) {
     setState(() {
       _isLoading = true;
@@ -496,6 +515,7 @@ class _MenuState extends State<Menu> {
         _selectedCur = null;
         _selectedCat = null;
         _selectedCatId = null;
+        _selectedProduct = null;
       });
       Navigator.of(context).pop();
     }
@@ -540,6 +560,7 @@ class _MenuState extends State<Menu> {
         _selectedCur = null;
         _selectedCat = null;
         _selectedCatId = null;
+        _selectedProduct = null;
       });
       Navigator.of(context).pop();
     }
@@ -565,8 +586,28 @@ class _MenuState extends State<Menu> {
       _selectedCur = null;
       _selectedCat = null;
       _selectedCatId = null;
+      _selectedProduct = null;
     });
     Navigator.of(context).pop();
+  }
+
+  deleteProdYesNo(BuildContext _context) {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text: 'Ürünü silmek istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        cancelBtnText: 'Hayır',
+        barrierDismissible: false,
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          removeProduct();
+        },
+        confirmBtnText: 'Evet');
   }
 
   @override
@@ -682,7 +723,8 @@ class _MenuState extends State<Menu> {
                                                               : Colors.white,
                                                         ),
                                                         onTap: () {
-                                                          deleteCategory(
+                                                          deleteCatYesNo(
+                                                              context,
                                                               snapshot
                                                                   .data[index]);
                                                         },

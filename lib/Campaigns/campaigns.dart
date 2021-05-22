@@ -3,6 +3,7 @@ import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/firestore_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -191,6 +192,27 @@ class _CampaignsState extends State<Campaigns> {
         _campaignId = null;
       });
     }
+  }
+
+  removeYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text: 'Kampanyayı silmek istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          removeCampaign();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
   }
 
   removeCampaign() {
@@ -406,7 +428,7 @@ class _CampaignsState extends State<Campaigns> {
                                             MediaQuery.of(context).size.width,
                                         child: TextButton(
                                             onPressed: () {
-                                              removeCampaign();
+                                              removeYesNo();
                                             },
                                             child: Text(
                                               'Kampanyayı Sil',
