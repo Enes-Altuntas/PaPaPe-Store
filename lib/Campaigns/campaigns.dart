@@ -280,7 +280,7 @@ class _CampaignsState extends State<Campaigns> {
                     GestureDetector(
                       child: Icon(
                         Icons.cancel_outlined,
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.grey,
                       ),
                       onTap: () {
                         Navigator.of(context).pop();
@@ -581,7 +581,7 @@ class _CampaignsState extends State<Campaigns> {
                           )
                     : Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: Colors.white,
                         ),
                       );
               },
@@ -589,7 +589,7 @@ class _CampaignsState extends State<Campaigns> {
           )
         : Center(
             child: CircularProgressIndicator(
-              backgroundColor: Theme.of(context).primaryColor,
+              backgroundColor: Colors.white,
             ),
           );
   }

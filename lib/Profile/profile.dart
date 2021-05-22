@@ -805,12 +805,12 @@ class _ProfileState extends State<Profile> {
                       )
                     : Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: Colors.white,
                         ),
                       )
                 : Center(
                     child: CircularProgressIndicator(
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: Colors.white,
                     ),
                   );
           },

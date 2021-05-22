@@ -597,6 +597,8 @@ class _MenuState extends State<Menu> {
         type: CoolAlertType.warning,
         title: '',
         text: 'Ürünü silmek istediğinize emin misiniz ?',
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
         showCancelBtn: true,
         cancelBtnText: 'Hayır',
         barrierDismissible: false,
@@ -880,7 +882,10 @@ class _MenuState extends State<Menu> {
                                                           )
                                                     : Center(
                                                         child:
-                                                            CircularProgressIndicator());
+                                                            CircularProgressIndicator(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                      ));
                                               }),
                                         ],
                                       ),
@@ -935,14 +940,14 @@ class _MenuState extends State<Menu> {
                           )
                     : Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: Colors.white,
                         ),
                       );
               },
             )
           : Center(
               child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Colors.white,
               ),
             ),
     );

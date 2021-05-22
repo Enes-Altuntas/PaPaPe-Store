@@ -1,5 +1,6 @@
 import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -22,18 +23,46 @@ class _MapsState extends State<Maps> {
     });
   }
 
-  savePick() {
+  decidePick() {
     if (position != null) {
-      _storeProvider.changeStoreLocLat(position.latitude);
-      _storeProvider.changeStoreLocLong(position.longitude);
-      ToastService()
-          .showSuccess('Konumunuz başarıyla kaydedilmiştir !', context);
+      savePick();
     } else {
-      _storeProvider.changeStoreLocLat(_storeProvider.curLocLat);
-      _storeProvider.changeStoreLocLong(_storeProvider.curLocLong);
-      ToastService()
-          .showSuccess('Konumunuz başarıyla kaydedilmiştir !', context);
+      savePickYesNo();
     }
+  }
+
+  savePick() {
+    _storeProvider.changeStoreLocLat(position.latitude);
+    _storeProvider.changeStoreLocLong(position.longitude);
+    ToastService().showSuccess('Konumunuz başarıyla kaydedilmiştir !', context);
+  }
+
+  saveCurrent() {
+    _storeProvider.changeStoreLocLat(_storeProvider.curLocLat);
+    _storeProvider.changeStoreLocLong(_storeProvider.curLocLong);
+    ToastService().showSuccess('Konumunuz başarıyla kaydedilmiştir !', context);
+  }
+
+  savePickYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text:
+            'Hiçbir konum seçmezseniz mevcut konumunuz, seçilen konum olarak alınacaktır. Onaylıyor musunuz ?',
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        showCancelBtn: true,
+        cancelBtnText: 'Hayır',
+        barrierDismissible: false,
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          saveCurrent();
+        },
+        confirmBtnText: 'Evet');
   }
 
   @override
@@ -63,7 +92,7 @@ class _MapsState extends State<Maps> {
           color: Colors.white,
         ),
         onPressed: () {
-          savePick();
+          decidePick();
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,

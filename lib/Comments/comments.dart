@@ -112,7 +112,7 @@ class _ReportsState extends State<Reports> {
                     )
               : Center(
                   child: CircularProgressIndicator(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Colors.white,
                 ));
         },
       ),

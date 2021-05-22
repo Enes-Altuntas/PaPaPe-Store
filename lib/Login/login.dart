@@ -115,6 +115,20 @@ class _LoginState extends State<Login> {
     }
   }
 
+  AssetImage myImage;
+
+  @override
+  void initState() {
+    super.initState();
+    myImage = AssetImage('assets/images/icon.png');
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(myImage, context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,13 +141,16 @@ class _LoginState extends State<Login> {
                   child: Form(
                     key: formkey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(
-                            height: MediaQuery.of(context).size.height / 6,
-                            child: Image.asset(
-                              'assets/images/icon.png',
-                              fit: BoxFit.scaleDown,
+                            height: MediaQuery.of(context).size.height / 3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(50.0),
+                              child: Image(
+                                image: myImage,
+                                fit: BoxFit.scaleDown,
+                              ),
                             )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -311,9 +328,7 @@ class _LoginState extends State<Login> {
                 ),
               )
             : Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: Theme.of(context).accentColor,
-                ),
+                child: CircularProgressIndicator(backgroundColor: Colors.white),
               ));
   }
 }
