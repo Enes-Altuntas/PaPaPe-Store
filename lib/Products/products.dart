@@ -71,17 +71,17 @@ class _MenuState extends State<Menu> {
     return null;
   }
 
-  String _validateProdDesc(String value) {
-    if (value.isEmpty) {
-      return '* Ürün tanımı boş olmamalıdır !';
-    }
+  // String _validateProdDesc(String value) {
+  //   if (value.isEmpty) {
+  //     return '* Ürün tanımı boş olmamalıdır !';
+  //   }
 
-    if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
-      return '* Harf veya rakam içermelidir !';
-    }
+  //   if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
+  //     return '* Harf veya rakam içermelidir !';
+  //   }
 
-    return null;
-  }
+  //   return null;
+  // }
 
   String _validateProdPrice(String value) {
     if (value.isEmpty) {
@@ -295,7 +295,7 @@ class _MenuState extends State<Menu> {
                               child: TextFormField(
                                 controller: _productDesc,
                                 maxLines: 3,
-                                validator: _validateProdDesc,
+                                // validator: _validateProdDesc,
                                 decoration: InputDecoration(
                                     labelText: 'Ürün Tanımı',
                                     border: OutlineInputBorder()),

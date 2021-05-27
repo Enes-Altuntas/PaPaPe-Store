@@ -470,11 +470,11 @@ class _CampaignsState extends State<Campaigns> {
             floatingActionButton: FloatingActionButton.extended(
               backgroundColor: Theme.of(context).primaryColor,
               label: Text(
-                'Kampanya Yayınla',
+                'Kampanya',
                 style: TextStyle(color: Colors.white),
               ),
               icon: Icon(
-                Icons.save,
+                Icons.add,
                 color: Colors.white,
               ),
               onPressed: () {

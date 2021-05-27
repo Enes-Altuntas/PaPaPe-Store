@@ -30,6 +30,19 @@ class FirestoreService {
     }
   }
 
+  Future<String> deleteUser() async {
+    try {
+      String _uuid = AuthService(FirebaseAuth.instance).getUserId();
+      await FirebaseAuth.instance.currentUser.delete();
+      await _db.collection('stores').doc(_uuid).delete();
+      await _db.collection('markers').doc(_uuid).delete();
+
+      return 'Kullanıcı bilgileriniz tamamıyla sistemden silinmiştir !';
+    } catch (e) {
+      throw 'Sistemde bir hata meydana geldi !';
+    }
+  }
+
   Future<String> saveStore(Store store) async {
     String _uuid = AuthService(FirebaseAuth.instance).getUserId();
 

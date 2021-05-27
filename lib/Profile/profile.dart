@@ -55,8 +55,7 @@ class _ProfileState extends State<Profile> {
     super.didChangeDependencies();
   }
 
-  Future<Store> _getStoreInfo() async {
-    Store _store;
+  Future _getStoreInfo() async {
     setState(() {
       isLoading = true;
     });
@@ -67,37 +66,25 @@ class _ProfileState extends State<Profile> {
       storeCats.add(catElement);
     });
 
-    await FirestoreService()
-        .getStore()
-        .then((value) => {
-              if (value != null && value.data() != null)
-                {_store = Store.fromFirestore(value.data())}
-            })
-        .whenComplete(() => setState(() {
-              isLoading = false;
-            }));
-
-    if (_store != null) {
-      _selectedCat = _store.storeCategory;
+    if (_storeProvider != null) {
+      _selectedCat = _storeProvider.storeCategory;
       selectCategory(_selectedCat);
-      if (_store.storeAltCategory != null &&
-          _store.storeAltCategory.isNotEmpty) {
-        _selectedAltCat = _store.storeAltCategory;
+      if (_storeProvider.storeAltCategory != null &&
+          _storeProvider.storeAltCategory.isNotEmpty) {
+        _selectedAltCat = _storeProvider.storeAltCategory;
       }
-      taxNo.text = _store.storeTaxNo;
-      taxLoc.text = _store.storeTaxLoc;
-      name.text = _store.storeName;
-      address.text = _store.storeAddress;
-      phone.text = _store.storePhone;
-      pers1.text = _store.pers1;
-      pers2.text = _store.pers2;
-      pers3.text = _store.pers3;
-      pers1Phone.text = _store.pers1Phone;
-      pers2Phone.text = _store.pers2Phone;
-      pers3Phone.text = _store.pers3Phone;
-      _storeProvider.loadStoreInfo(_store);
+      taxNo.text = _storeProvider.storeTaxNo;
+      taxLoc.text = _storeProvider.storeTaxLoc;
+      name.text = _storeProvider.storeName;
+      address.text = _storeProvider.storeAdresss;
+      phone.text = _storeProvider.storePhone;
+      pers1.text = _storeProvider.pers1;
+      pers2.text = _storeProvider.pers2;
+      pers3.text = _storeProvider.pers3;
+      pers1Phone.text = _storeProvider.pers1Phone;
+      pers2Phone.text = _storeProvider.pers2Phone;
+      pers3Phone.text = _storeProvider.pers3Phone;
     }
-    return _store;
   }
 
   saveStore() {
@@ -337,10 +324,15 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
-          label: Text(
-            'Kaydet',
-            style: TextStyle(color: Colors.white),
-          ),
+          label: (_storeProvider.storeId == null)
+              ? Text(
+                  'Kaydet',
+                  style: TextStyle(color: Colors.white),
+                )
+              : Text(
+                  'Güncelle',
+                  style: TextStyle(color: Colors.white),
+                ),
           icon: Icon(
             Icons.save,
             color: Colors.white,
@@ -349,471 +341,394 @@ class _ProfileState extends State<Profile> {
             saveStore();
           },
         ),
-        body: FutureBuilder(
-          future: getUserInfo,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return (snapshot.connectionState == ConnectionState.done)
-                ? (isLoading == false)
-                    ? SingleChildScrollView(
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Form(
-                                autovalidateMode: AutovalidateMode.always,
-                                child: Column(
-                                  children: [
-                                    (_storeProvider.storeLocalImagePath != null)
-                                        ? SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height /
+        body: (isLoading == false)
+            ? SingleChildScrollView(
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Form(
+                        autovalidateMode: AutovalidateMode.always,
+                        child: Column(
+                          children: [
+                            (_storeProvider.storeLocalImagePath != null)
+                                ? SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 4,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Image.file(
+                                      _storeProvider.storeLocalImagePath,
+                                      fit: BoxFit.scaleDown,
+                                    ),
+                                  )
+                                : (_storeProvider.storePicRef != null)
+                                    ? SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height /
                                                 4,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: Image.file(
-                                              _storeProvider
-                                                  .storeLocalImagePath,
-                                              fit: BoxFit.scaleDown,
-                                            ),
-                                          )
-                                        : (_storeProvider.storePicRef != null)
-                                            ? SizedBox(
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    4,
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                child: Image.network(
-                                                  _storeProvider.storePicRef,
-                                                  fit: BoxFit.scaleDown,
-                                                ),
-                                              )
-                                            : Placeholder(
-                                                fallbackHeight:
-                                                    MediaQuery.of(context)
-                                                            .size
-                                                            .height /
-                                                        4,
-                                              ),
-                                    SizedBox(
-                                      child: ElevatedButton(
-                                          onPressed: () {
-                                            getImageAndUpload();
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8.0),
-                                                child: Icon(
-                                                  Icons.add_a_photo_outlined,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Resim Seç',
-                                                style: TextStyle(
-                                                  fontFamily: 'Bebas',
-                                                  fontSize: 17,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary:
-                                                Theme.of(context).primaryColor,
-                                          )),
-                                    ),
-                                    SizedBox(
-                                      child: ElevatedButton(
-                                          onPressed: () {
-                                            getLocation();
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8.0),
-                                                child: Icon(
-                                                  Icons
-                                                      .add_location_alt_outlined,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Konum Al',
-                                                style: TextStyle(
-                                                  fontFamily: 'Bebas',
-                                                  fontSize: 17,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary:
-                                                Theme.of(context).primaryColor,
-                                          )),
-                                    ),
-                                    Form(
-                                      key: formkey,
-                                      autovalidateMode:
-                                          AutovalidateMode.onUserInteraction,
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0),
-                                            child: Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: DropdownButton(
-                                                  value: _selectedCat,
-                                                  isExpanded: true,
-                                                  underline: SizedBox(),
-                                                  hint: Text(
-                                                      "İşletme için kategori seçiniz !"),
-                                                  items: storeCats.map(
-                                                      (StoreCategory storeCat) {
-                                                    return new DropdownMenuItem<
-                                                        String>(
-                                                      value:
-                                                          storeCat.storeCatName,
-                                                      onTap: () {
-                                                        _selectedCat = storeCat
-                                                            .storeCatName;
-                                                      },
-                                                      child: new Text(
-                                                        storeCat.storeCatName,
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged: (value) {
-                                                    selectCategory(value);
-                                                    _storeProvider
-                                                        .changeStoreCategory(
-                                                            value);
-                                                  }),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0),
-                                            child: Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.grey),
-                                                  borderRadius:
-                                                      BorderRadius.circular(5)),
-                                              child: DropdownButton(
-                                                  value: _selectedAltCat,
-                                                  isExpanded: true,
-                                                  underline: SizedBox(),
-                                                  hint: Text(
-                                                      "İşletme için alt kategori seçiniz !"),
-                                                  items: storeAltCats.map(
-                                                      (StoreAltCategory
-                                                          storeAltCat) {
-                                                    return new DropdownMenuItem<
-                                                        String>(
-                                                      value: storeAltCat
-                                                          .storeAltCatName,
-                                                      onTap: () {
-                                                        _selectedAltCat =
-                                                            storeAltCat
-                                                                .storeAltCatName;
-                                                      },
-                                                      child: new Text(
-                                                        storeAltCat
-                                                            .storeAltCatName,
-                                                      ),
-                                                    );
-                                                  }).toList(),
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changeStoreAltCategory(
-                                                            value);
-                                                  }),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0),
-                                            child: TextFormField(
-                                              controller: taxNo,
-                                              validator: validateTaxNo,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changeStoreTaxNo(value);
-                                                validateTaxNo(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              maxLength: 10,
-                                              decoration: InputDecoration(
-                                                  icon:
-                                                      Icon(Icons.attach_money),
-                                                  labelText:
-                                                      'İşletme Vergi Numarası',
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              controller: taxLoc,
-                                              validator: validateTaxLoc,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changeStoreTaxLoc(value);
-                                              },
-                                              maxLength: 25,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              decoration: InputDecoration(
-                                                  icon: Icon(
-                                                      Icons.account_balance),
-                                                  border: OutlineInputBorder(),
-                                                  labelText:
-                                                      'İşletme Vergi Dairesi'),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              controller: name,
-                                              validator: validateName,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changeStoreName(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              decoration: InputDecoration(
-                                                  labelText: 'İşletme İsmi',
-                                                  icon: Icon(
-                                                      Icons.announcement_sharp),
-                                                  border: OutlineInputBorder()),
-                                              maxLength: 35,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              validator: validateAddress,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changeStoreAddress(value);
-                                              },
-                                              controller: address,
-                                              maxLength: 255,
-                                              maxLines: 3,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              decoration: InputDecoration(
-                                                  labelText: 'İşletme Adresi',
-                                                  icon: Icon(Icons
-                                                      .add_location_rounded),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              validator: validatePhone,
-                                              controller: phone,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changeStorePhone(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.phone,
-                                              maxLength: 10,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İşletme Telefon Numarası',
-                                                  prefix: Text('+90'),
-                                                  icon: Icon(Icons.phone),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              validator: validatePersName,
-                                              controller: pers1,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changePers1(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.text,
-                                              maxLength: 50,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İlgili kişi isim-soyisim (1)',
-                                                  icon: Icon(Icons
-                                                      .account_circle_outlined),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              validator: validatePersPhone,
-                                              controller: pers1Phone,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changePers1Phone(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.phone,
-                                              maxLength: 10,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İlgili kişi telefon (1)',
-                                                  prefix: Text('+90'),
-                                                  icon: Icon(Icons.phone),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              controller: pers2,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changePers2(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.text,
-                                              maxLength: 50,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İlgili kişi isim-soyisim (2)',
-                                                  icon: Icon(Icons
-                                                      .account_circle_outlined),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              controller: pers2Phone,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changePers2Phone(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.phone,
-                                              maxLength: 10,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İlgili kişi telefon (2)',
-                                                  prefix: Text('+90'),
-                                                  icon: Icon(Icons.phone),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              controller: pers3,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changePers3(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.text,
-                                              maxLength: 50,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İlgili kişi isim-soyisim (3)',
-                                                  icon: Icon(Icons
-                                                      .account_circle_outlined),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 15.0),
-                                            child: TextFormField(
-                                              controller: pers3Phone,
-                                              onChanged: (value) {
-                                                _storeProvider
-                                                    .changePers3Phone(value);
-                                              },
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor),
-                                              keyboardType: TextInputType.phone,
-                                              maxLength: 10,
-                                              decoration: InputDecoration(
-                                                  labelText:
-                                                      'İlgili kişi telefon (3)',
-                                                  prefix: Text('+90'),
-                                                  icon: Icon(Icons.phone),
-                                                  border: OutlineInputBorder()),
-                                            ),
-                                          ),
-                                        ],
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Image.network(
+                                          _storeProvider.storePicRef,
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      )
+                                    : Placeholder(
+                                        fallbackHeight:
+                                            MediaQuery.of(context).size.height /
+                                                4,
                                       ),
+                            SizedBox(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    getImageAndUpload();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Icon(
+                                          Icons.add_a_photo_outlined,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Resim Seç',
+                                        style: TextStyle(
+                                          fontFamily: 'Bebas',
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).primaryColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    getLocation();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Icon(
+                                          Icons.add_location_alt_outlined,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Konum Al',
+                                        style: TextStyle(
+                                          fontFamily: 'Bebas',
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Theme.of(context).primaryColor,
+                                  )),
+                            ),
+                            Form(
+                              key: formkey,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: DropdownButton(
+                                          value: _selectedCat,
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          hint: Text(
+                                              "İşletme için kategori seçiniz !"),
+                                          items: storeCats
+                                              .map((StoreCategory storeCat) {
+                                            return new DropdownMenuItem<String>(
+                                              value: storeCat.storeCatName,
+                                              onTap: () {
+                                                _selectedCat =
+                                                    storeCat.storeCatName;
+                                              },
+                                              child: new Text(
+                                                storeCat.storeCatName,
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                            selectCategory(value);
+                                            _storeProvider
+                                                .changeStoreCategory(value);
+                                          }),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: DropdownButton(
+                                          value: _selectedAltCat,
+                                          isExpanded: true,
+                                          underline: SizedBox(),
+                                          hint: Text(
+                                              "İşletme için alt kategori seçiniz !"),
+                                          items: storeAltCats.map(
+                                              (StoreAltCategory storeAltCat) {
+                                            return new DropdownMenuItem<String>(
+                                              value:
+                                                  storeAltCat.storeAltCatName,
+                                              onTap: () {
+                                                _selectedAltCat =
+                                                    storeAltCat.storeAltCatName;
+                                              },
+                                              child: new Text(
+                                                storeAltCat.storeAltCatName,
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                            _storeProvider
+                                                .changeStoreAltCategory(value);
+                                          }),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: TextFormField(
+                                      controller: taxNo,
+                                      validator: validateTaxNo,
+                                      onChanged: (value) {
+                                        _storeProvider.changeStoreTaxNo(value);
+                                        validateTaxNo(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.number,
+                                      maxLength: 10,
+                                      decoration: InputDecoration(
+                                          icon: Icon(Icons.attach_money),
+                                          labelText: 'İşletme Vergi Numarası',
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      controller: taxLoc,
+                                      validator: validateTaxLoc,
+                                      onChanged: (value) {
+                                        _storeProvider.changeStoreTaxLoc(value);
+                                      },
+                                      maxLength: 25,
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      decoration: InputDecoration(
+                                          icon: Icon(Icons.account_balance),
+                                          border: OutlineInputBorder(),
+                                          labelText: 'İşletme Vergi Dairesi'),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      controller: name,
+                                      validator: validateName,
+                                      onChanged: (value) {
+                                        _storeProvider.changeStoreName(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      decoration: InputDecoration(
+                                          labelText: 'İşletme İsmi',
+                                          icon: Icon(Icons.announcement_sharp),
+                                          border: OutlineInputBorder()),
+                                      maxLength: 35,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      validator: validateAddress,
+                                      onChanged: (value) {
+                                        _storeProvider
+                                            .changeStoreAddress(value);
+                                      },
+                                      controller: address,
+                                      maxLength: 255,
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      decoration: InputDecoration(
+                                          labelText: 'İşletme Adresi',
+                                          icon:
+                                              Icon(Icons.add_location_rounded),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      validator: validatePhone,
+                                      controller: phone,
+                                      onChanged: (value) {
+                                        _storeProvider.changeStorePhone(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.phone,
+                                      maxLength: 10,
+                                      decoration: InputDecoration(
+                                          labelText: 'İşletme Telefon Numarası',
+                                          prefix: Text('+90'),
+                                          icon: Icon(Icons.phone),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      validator: validatePersName,
+                                      controller: pers1,
+                                      onChanged: (value) {
+                                        _storeProvider.changePers1(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.text,
+                                      maxLength: 50,
+                                      decoration: InputDecoration(
+                                          labelText:
+                                              'İlgili kişi isim-soyisim (1)',
+                                          icon: Icon(
+                                              Icons.account_circle_outlined),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      validator: validatePersPhone,
+                                      controller: pers1Phone,
+                                      onChanged: (value) {
+                                        _storeProvider.changePers1Phone(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.phone,
+                                      maxLength: 10,
+                                      decoration: InputDecoration(
+                                          labelText: 'İlgili kişi telefon (1)',
+                                          prefix: Text('+90'),
+                                          icon: Icon(Icons.phone),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      controller: pers2,
+                                      onChanged: (value) {
+                                        _storeProvider.changePers2(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.text,
+                                      maxLength: 50,
+                                      decoration: InputDecoration(
+                                          labelText:
+                                              'İlgili kişi isim-soyisim (2)',
+                                          icon: Icon(
+                                              Icons.account_circle_outlined),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      controller: pers2Phone,
+                                      onChanged: (value) {
+                                        _storeProvider.changePers2Phone(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.phone,
+                                      maxLength: 10,
+                                      decoration: InputDecoration(
+                                          labelText: 'İlgili kişi telefon (2)',
+                                          prefix: Text('+90'),
+                                          icon: Icon(Icons.phone),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      controller: pers3,
+                                      onChanged: (value) {
+                                        _storeProvider.changePers3(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.text,
+                                      maxLength: 50,
+                                      decoration: InputDecoration(
+                                          labelText:
+                                              'İlgili kişi isim-soyisim (3)',
+                                          icon: Icon(
+                                              Icons.account_circle_outlined),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: TextFormField(
+                                      controller: pers3Phone,
+                                      onChanged: (value) {
+                                        _storeProvider.changePers3Phone(value);
+                                      },
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor),
+                                      keyboardType: TextInputType.phone,
+                                      maxLength: 10,
+                                      decoration: InputDecoration(
+                                          labelText: 'İlgili kişi telefon (3)',
+                                          prefix: Text('+90'),
+                                          icon: Icon(Icons.phone),
+                                          border: OutlineInputBorder()),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
+                            ),
+                          ],
                         ),
-                      )
-                : Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                    ),
-                  );
-          },
-        ));
+                      ),
+                    )),
+              )
+            : Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ),
+              ));
   }
 }

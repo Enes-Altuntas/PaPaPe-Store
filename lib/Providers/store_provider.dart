@@ -189,6 +189,7 @@ class StoreProvider with ChangeNotifier {
     _storeName = store.storeName;
     _storePicRef = store.storePicRef;
     _storeCategory = store.storeCategory;
+    _storeAltCategory = store.storeAltCategory;
     _storeAddress = store.storeAddress;
     _storePhone = store.storePhone;
     _storeTaxNo = store.storeTaxNo;
