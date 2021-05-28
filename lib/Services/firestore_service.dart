@@ -6,9 +6,11 @@ import 'package:bulovva_store/Models/product_category_model.dart';
 import 'package:bulovva_store/Models/product_model.dart';
 import 'package:bulovva_store/Models/comment_model.dart';
 import 'package:bulovva_store/Models/store_model.dart';
+import 'package:bulovva_store/Models/token_model.dart';
 import 'package:bulovva_store/Services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
@@ -36,10 +38,15 @@ class FirestoreService {
       await FirebaseAuth.instance.currentUser.delete();
       await _db.collection('stores').doc(_uuid).delete();
       await _db.collection('markers').doc(_uuid).delete();
+      await _db.collection('tokens').doc(_uuid).delete();
 
       return 'Kullanıcı bilgileriniz tamamıyla sistemden silinmiştir !';
     } catch (e) {
-      throw 'Sistemde bir hata meydana geldi !';
+      if (e.code == 'requires-recent-login') {
+        throw 'login';
+      } else {
+        throw 'Sistemde bir hata meydana geldi !';
+      }
     }
   }
 
@@ -81,9 +88,14 @@ class FirestoreService {
           markerId: _uuid,
           markerTitle: store.storeName);
 
+      Tokens newToken = Tokens(
+          tokenId: await FirebaseMessaging.instance.getToken(),
+          tokenUser: _uuid);
+
       try {
         await _db.collection('stores').doc(_uuid).set(newStore.toMap());
         await _db.collection('markers').doc(_uuid).set(newMarker.toMap());
+        await _db.collection('tokens').doc(_uuid).set(newToken.toMap());
 
         return 'Bilgileriniz kaydedilmiştir !';
       } catch (e) {
@@ -136,7 +148,10 @@ class FirestoreService {
   }
 
   Future getStoreCat() async {
-    return await _db.collection('categories').get();
+    return await _db
+        .collection('categories')
+        .orderBy('storeCatRow', descending: false)
+        .get();
   }
 
   Future getStoreAltCat(String catId) async {
@@ -144,6 +159,7 @@ class FirestoreService {
         .collection('categories')
         .doc(catId)
         .collection('alt_categories')
+        .orderBy('storeAltCatRow', descending: false)
         .get();
   }
 
@@ -260,6 +276,23 @@ class FirestoreService {
           .collection('markers')
           .doc(_userId)
           .update({'hasCampaign': false});
+
+      return 'Kampanyanız başarıyla sonlandırılmıştır !';
+    } catch (e) {
+      throw 'Kampanyanız sonlandırılırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
+    }
+  }
+
+  Future<String> deleteCampaign(String campaignId) async {
+    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
+    try {
+      await _db
+          .collection('stores')
+          .doc(_userId)
+          .collection('campaigns')
+          .doc(campaignId)
+          .delete();
 
       return 'Kampanyanız başarıyla silinmiştir !';
     } catch (e) {

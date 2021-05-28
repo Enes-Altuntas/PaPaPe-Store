@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'package:bulovva_store/Login/login.dart';
 import 'package:bulovva_store/Map/map.dart';
 import 'package:bulovva_store/Models/store_alt_category_model.dart';
 import 'package:bulovva_store/Models/store_category.dart';
 import 'package:bulovva_store/Models/store_model.dart';
 import 'package:bulovva_store/Providers/store_provider.dart';
+import 'package:bulovva_store/Services/authentication_service.dart';
 import 'package:bulovva_store/Services/firestore_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -165,19 +168,103 @@ class _ProfileState extends State<Profile> {
     int index =
         storeCats.indexWhere((element) => element.storeCatName == value);
 
-    QuerySnapshot snapshots =
-        await FirestoreService().getStoreAltCat(storeCats[index].storeCatId);
+    if (index != -1) {
+      QuerySnapshot snapshots =
+          await FirestoreService().getStoreAltCat(storeCats[index].storeCatId);
 
-    if (snapshots.docs.isNotEmpty) {
-      snapshots.docs.forEach((element) {
-        StoreAltCategory altCatElement =
-            StoreAltCategory.fromFirestore(element.data());
-        storeAltCats.add(altCatElement);
-      });
+      if (snapshots.docs.isNotEmpty) {
+        snapshots.docs.forEach((element) {
+          StoreAltCategory altCatElement =
+              StoreAltCategory.fromFirestore(element.data());
+          storeAltCats.add(altCatElement);
+        });
+      }
     }
 
     setState(() {
       isLoading = false;
+    });
+  }
+
+  deleteYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text:
+            'Hesabınızı tamamen kalıcı olarak silmek istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          deleteUser();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
+
+  Future deleteUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    await FirestoreService().deleteUser().then((value) {
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.warning,
+          title: '',
+          text: value,
+          showCancelBtn: false,
+          backgroundColor: Theme.of(context).primaryColor,
+          confirmBtnColor: Theme.of(context).primaryColor,
+          cancelBtnText: 'Vazgeç',
+          onCancelBtnTap: () {
+            Navigator.of(context).pop();
+          },
+          onConfirmBtnTap: () {
+            Navigator.of(context).pop();
+            context.read<AuthService>().signOut().then((value) {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Login()));
+            });
+          },
+          barrierDismissible: false,
+          confirmBtnText: 'Tamam');
+    }).onError((error, stackTrace) {
+      if (error == 'login') {
+        CoolAlert.show(
+            context: context,
+            type: CoolAlertType.warning,
+            title: '',
+            text:
+                'Hesabınızı silebilmek için güvenlik amaçlı uygulamaya tekrar giriş yapmalısınız !',
+            showCancelBtn: true,
+            backgroundColor: Theme.of(context).primaryColor,
+            confirmBtnColor: Theme.of(context).primaryColor,
+            cancelBtnText: 'Vazgeç',
+            onCancelBtnTap: () {
+              Navigator.of(context).pop();
+            },
+            onConfirmBtnTap: () {
+              Navigator.of(context).pop();
+              context.read<AuthService>().signOut().then((value) {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Login()));
+              });
+            },
+            barrierDismissible: false,
+            confirmBtnText: 'Çıkış Yap');
+      } else {
+        ToastService().showError(error, context);
+      }
+    }).whenComplete(() {
+      setState(() {
+        isLoading = false;
+      });
     });
   }
 
@@ -432,6 +519,36 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   style: ElevatedButton.styleFrom(
                                     primary: Theme.of(context).primaryColor,
+                                  )),
+                            ),
+                            SizedBox(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    deleteUser();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Icon(
+                                          Icons.delete_forever,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Hesabı Sil',
+                                        style: TextStyle(
+                                          fontFamily: 'Bebas',
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.white70,
                                   )),
                             ),
                             Form(

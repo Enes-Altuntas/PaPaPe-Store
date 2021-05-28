@@ -19,8 +19,6 @@ Future<void> init() async {
   await Firebase.initializeApp();
   await firebaseMessaging.requestPermission();
   await firebaseMessaging.subscribeToTopic("isletmeler");
-  final token = await firebaseMessaging.getToken();
-  print(token);
 }
 
 class MyApp extends StatelessWidget {

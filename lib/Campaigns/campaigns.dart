@@ -194,12 +194,35 @@ class _CampaignsState extends State<Campaigns> {
     }
   }
 
+  removeCampaign() {
+    setState(() {
+      isLoading = true;
+    });
+    FirestoreService()
+        .removeCampaign(_campaignId)
+        .then((value) => ToastService().showSuccess(value, context))
+        .onError(
+            (error, stackTrace) => ToastService().showError(error, context))
+        .whenComplete(() => setState(() {
+              isLoading = false;
+            }));
+    Navigator.of(context).pop();
+    setState(() {
+      _selectedCampaign = null;
+      _desc.text = '';
+      _key.text = '';
+      _start.text = '';
+      _finish.text = '';
+      _campaignId = null;
+    });
+  }
+
   removeYesNo() {
     CoolAlert.show(
         context: context,
         type: CoolAlertType.warning,
         title: '',
-        text: 'Kampanyayı silmek istediğinize emin misiniz ?',
+        text: 'Kampanyayı sonlandırmak istediğinize emin misiniz ?',
         showCancelBtn: true,
         backgroundColor: Theme.of(context).primaryColor,
         confirmBtnColor: Theme.of(context).primaryColor,
@@ -215,12 +238,99 @@ class _CampaignsState extends State<Campaigns> {
         confirmBtnText: 'Evet');
   }
 
-  removeCampaign() {
+  renewYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text:
+            'Seçili kampanyayı tekrar yayınlamak, bu kampanyayı aktif kampanyanız yapar. Kampanyayı tekrar yayınlamak istediğinize emin misiniz?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          renewCampaign();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
+
+  updateYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text: 'Kampanyayı güncellemek istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          updateCampaign();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
+
+  saveYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text:
+            'Kampanyayı kaydetmek, bu kampanyayı aktif kampanyanız haline getirir. Kampanyayı kaydetmek istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          saveCampaign();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
+
+  deleteYesNo() {
+    CoolAlert.show(
+        context: context,
+        type: CoolAlertType.warning,
+        title: '',
+        text:
+            'Kampanyayı listeden kaldırmak, kullanıcıların verdiğiniz kampanyayı listede görememesine ve sizin bu kampanyayı yeniden yayınlayamamanıza yol açacaktır ! Kampanyayı listeden kaldırmak istediğinize emin misiniz ?',
+        showCancelBtn: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        confirmBtnColor: Theme.of(context).primaryColor,
+        cancelBtnText: 'Hayır',
+        onCancelBtnTap: () {
+          Navigator.of(context).pop();
+        },
+        onConfirmBtnTap: () {
+          Navigator.of(context).pop();
+          deleteCampaign();
+        },
+        barrierDismissible: false,
+        confirmBtnText: 'Evet');
+  }
+
+  deleteCampaign() {
     setState(() {
       isLoading = true;
     });
     FirestoreService()
-        .removeCampaign(_campaignId)
+        .deleteCampaign(_campaignId)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -351,6 +461,7 @@ class _CampaignsState extends State<Campaigns> {
                             setState(() {
                               _startDate = Timestamp.fromDate(date);
                               _start.text = formatDate(_startDate);
+                              _finish.text = '';
                             });
                           },
                               currentTime: DateTime.now(),
@@ -396,7 +507,7 @@ class _CampaignsState extends State<Campaigns> {
                               width: MediaQuery.of(context).size.width,
                               child: TextButton(
                                   onPressed: () {
-                                    saveCampaign();
+                                    saveYesNo();
                                   },
                                   child: Text(
                                     'Kampanyayı Kaydet',
@@ -413,7 +524,7 @@ class _CampaignsState extends State<Campaigns> {
                                             MediaQuery.of(context).size.width,
                                         child: TextButton(
                                             onPressed: () {
-                                              updateCampaign();
+                                              updateYesNo();
                                             },
                                             child: Text(
                                               'Kampanyayı Güncelle',
@@ -431,7 +542,7 @@ class _CampaignsState extends State<Campaigns> {
                                               removeYesNo();
                                             },
                                             child: Text(
-                                              'Kampanyayı Sil',
+                                              'Kampanyayı Sonlandır',
                                               style: TextStyle(
                                                   color: Colors.white),
                                             ),
@@ -441,19 +552,41 @@ class _CampaignsState extends State<Campaigns> {
                                             )))
                                   ],
                                 )
-                              : SizedBox(
-                                  width: MediaQuery.of(context).size.width,
-                                  child: TextButton(
-                                      onPressed: () {
-                                        renewCampaign();
-                                      },
-                                      child: Text(
-                                        'Yeniden Kampanya Ver',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.green[800],
-                                      ))),
+                              : Column(
+                                  children: [
+                                    SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                            onPressed: () {
+                                              renewYesNo();
+                                            },
+                                            child: Text(
+                                              'Yeniden Kampanya Ver',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.green[800],
+                                            ))),
+                                    SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: TextButton(
+                                            onPressed: () {
+                                              deleteYesNo();
+                                            },
+                                            child: Text(
+                                              'Kampanyayı Listeden Kaldır',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Theme.of(context)
+                                                  .primaryColor,
+                                            )))
+                                  ],
+                                ),
                     ),
                   ],
                 ),
