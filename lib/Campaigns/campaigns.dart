@@ -81,7 +81,10 @@ class _CampaignsState extends State<Campaigns> {
         isLoading = true;
       });
       Campaign _campaign = Campaign(
-          campaignActive: true,
+          campaignActive: (_startDate.millisecondsSinceEpoch >
+                  Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch)
+              ? false
+              : true,
           campaignId: Uuid().v4(),
           campaignCounter: 0,
           campaignDesc: _desc.text,
@@ -123,7 +126,10 @@ class _CampaignsState extends State<Campaigns> {
         isLoading = true;
       });
       Campaign _campaign = Campaign(
-          campaignActive: true,
+          campaignActive: (_startDate.millisecondsSinceEpoch >
+                  Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch)
+              ? false
+              : true,
           campaignId: _selectedCampaign.campaignId,
           campaignDesc: _selectedCampaign.campaignDesc,
           campaignFinish: _finishDate,
@@ -166,7 +172,10 @@ class _CampaignsState extends State<Campaigns> {
         isLoading = true;
       });
       Campaign _campaign = Campaign(
-          campaignActive: true,
+          campaignActive: (_startDate.millisecondsSinceEpoch >
+                  Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch)
+              ? false
+              : true,
           campaignId: _campaignId,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
@@ -200,6 +209,29 @@ class _CampaignsState extends State<Campaigns> {
     });
     FirestoreService()
         .removeCampaign(_campaignId)
+        .then((value) => ToastService().showSuccess(value, context))
+        .onError(
+            (error, stackTrace) => ToastService().showError(error, context))
+        .whenComplete(() => setState(() {
+              isLoading = false;
+            }));
+    Navigator.of(context).pop();
+    setState(() {
+      _selectedCampaign = null;
+      _desc.text = '';
+      _key.text = '';
+      _start.text = '';
+      _finish.text = '';
+      _campaignId = null;
+    });
+  }
+
+  deleteCampaign() {
+    setState(() {
+      isLoading = true;
+    });
+    FirestoreService()
+        .deleteCampaign(_campaignId)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -323,29 +355,6 @@ class _CampaignsState extends State<Campaigns> {
         },
         barrierDismissible: false,
         confirmBtnText: 'Evet');
-  }
-
-  deleteCampaign() {
-    setState(() {
-      isLoading = true;
-    });
-    FirestoreService()
-        .deleteCampaign(_campaignId)
-        .then((value) => ToastService().showSuccess(value, context))
-        .onError(
-            (error, stackTrace) => ToastService().showError(error, context))
-        .whenComplete(() => setState(() {
-              isLoading = false;
-            }));
-    Navigator.of(context).pop();
-    setState(() {
-      _selectedCampaign = null;
-      _desc.text = '';
-      _key.text = '';
-      _start.text = '';
-      _finish.text = '';
-      _campaignId = null;
-    });
   }
 
   openDialog() {
@@ -516,7 +525,10 @@ class _CampaignsState extends State<Campaigns> {
                                   style: ElevatedButton.styleFrom(
                                     primary: Colors.green[800],
                                   )))
-                          : (_selectedCampaign.campaignActive == true)
+                          : (_selectedCampaign.campaignActive == true ||
+                                  _startDate.millisecondsSinceEpoch >
+                                      Timestamp.fromDate(DateTime.now())
+                                          .millisecondsSinceEpoch)
                               ? Column(
                                   children: [
                                     SizedBox(

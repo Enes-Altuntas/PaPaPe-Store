@@ -32,8 +32,13 @@ class _LoginState extends State<Login> {
               email: emailController.text.trim(),
               password: passwordController.text.trim())
           .then((value) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Dashboard()));
+            if (FirebaseAuth.instance.currentUser != null &&
+                FirebaseAuth.instance.currentUser.emailVerified) {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Dashboard()));
+            } else {
+              ToastService().showError(value, context);
+            }
           })
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -123,8 +128,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final _firebaseUser = context.watch<User>();
-    return (_firebaseUser != null && _firebaseUser.emailVerified == true)
+    return (FirebaseAuth.instance.currentUser != null &&
+            FirebaseAuth.instance.currentUser.emailVerified)
         ? Dashboard()
         : Scaffold(
             body: (isLoading == false)

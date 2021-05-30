@@ -16,14 +16,16 @@ class AuthService {
   }
 
   // Giriş
-  Future signIn({String email, String password}) async {
+  Future<String> signIn({String email, String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
 
       if (_firebaseAuth.currentUser.emailVerified == false) {
         await _firebaseAuth.signOut();
+        return 'Hesabınız henüz aktifleştirilmedi ! Mail kutunuzu kontrol ediniz !';
       }
+      return 'Hoşgeldiniz !';
     } on FirebaseAuthException catch (e) {
       if (e.code == 'wrong-password' || e.code == 'user-not-found') {
         throw 'Geçersiz kullanıcı adı veya şifre !';

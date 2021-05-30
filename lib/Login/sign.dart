@@ -1,4 +1,3 @@
-import 'package:bulovva_store/Login/login.dart';
 import 'package:bulovva_store/Services/authentication_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -49,8 +48,7 @@ class _SignState extends State<Sign> {
                 confirmBtnColor: Theme.of(context).primaryColor,
                 onConfirmBtnTap: () {
                   Navigator.of(context).pop();
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Login()));
+                  Navigator.of(context).pop();
                 },
                 barrierDismissible: false,
                 confirmBtnText: 'Evet');
