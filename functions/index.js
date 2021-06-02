@@ -22,7 +22,7 @@ exports.campaignCheckStart = functions.pubsub.schedule('* * * * *').onRun(async 
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
-                                body: 'Yayınlamış olduğunuz kampanyanın saati geldi. Kampanyanız başlıyor!'
+                                body: 'Hazır olun çünkü kampanyanız başlıyor !'
                             }
                         })
                     })
@@ -47,7 +47,7 @@ exports.campaignCheckFinish = functions.pubsub.schedule('* * * * *').onRun(async
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
-                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!'
+                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı !'
                             }
                         })
                     })
@@ -72,7 +72,7 @@ exports.campaignStartHttp = functions.https.onRequest(async (req, res) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
-                                body: 'Yayınlamış olduğunuz kampanyanın saati geldi. Kampanyanız başlıyor!'
+                                body: 'Hazır olun çünkü kampanyanız başlıyor !'
                             }
                         })
                     })
@@ -98,7 +98,7 @@ exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
-                                body: 'Yayınlamış olduğunuz kampanya sona erdi. Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!'
+                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!'
                             }
                         })
                     })
