@@ -282,7 +282,7 @@ class _CampaignsState extends State<Campaigns> {
         type: CoolAlertType.warning,
         title: '',
         text:
-            'Seçili kampanyayı tekrar yayınlamak, bu kampanyayı aktif kampanyanız yapar. Kampanyayı tekrar yayınlamak istediğinize emin misiniz?',
+            'Seçili kampanyayı tekrar yayınlamak, bu kampanyayı aktif kampanyanız haline getirir. Kampanyayı tekrar yayınlamak istediğinize emin misiniz?',
         showCancelBtn: true,
         backgroundColor: Theme.of(context).primaryColor,
         confirmBtnColor: Theme.of(context).primaryColor,

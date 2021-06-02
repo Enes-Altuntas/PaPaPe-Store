@@ -205,7 +205,7 @@ class FirestoreService {
       await _db
           .collection('markers')
           .doc(_userId)
-          .update({'hasCampaign': true});
+          .update({'hasCampaign': false});
 
       return 'Kampanyanız başarıyla kaydedilmiştir !';
     } catch (e) {
@@ -223,6 +223,11 @@ class FirestoreService {
           .collection('campaigns')
           .doc(campaign.campaignId)
           .set(campaign.toMap());
+
+      await _db
+          .collection('markers')
+          .doc(_userId)
+          .update({'hasCampaign': false});
 
       return 'Kampanyanız başarıyla güncellenmiştir !';
     } catch (e) {
@@ -253,7 +258,7 @@ class FirestoreService {
       await _db
           .collection('markers')
           .doc(_userId)
-          .update({'hasCampaign': true});
+          .update({'hasCampaign': false});
 
       return 'Kampanyanız başarıyla tekrar yayınlandı !';
     } catch (e) {
@@ -293,6 +298,11 @@ class FirestoreService {
           .collection('campaigns')
           .doc(campaignId)
           .delete();
+
+      await _db
+          .collection('markers')
+          .doc(_userId)
+          .update({'hasCampaign': false});
 
       return 'Kampanyanız başarıyla silinmiştir !';
     } catch (e) {
