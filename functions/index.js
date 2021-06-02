@@ -1,74 +1,110 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
 const { firestore } = require("firebase-admin");
-admin.initializeApp();
+var serviceAccount = require("./bulovva-7fdb8-firebase-adminsdk-o4lrw-6ee1829186.json");
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 const db = admin.firestore();
-
-exports.campaignCheckFinish = functions.pubsub.schedule('* * * * *').onRun(async (context) => {
-    await db.collection('stores').get().then((value) => {
-        value.docs.forEach(async (doc) => {
-            await db.collection('stores/' + doc.id + '/campaigns').get().then((valueCamp) => {
-                valueCamp.docs.forEach(async (campaign) => {
-                    if (campaign.data().campaignFinish <= firestore.Timestamp.now() && campaign.data().campaignActive == true) {
-                        await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', false);
-                        await db.doc('tokens/' + doc.id).get().then(async (token) => {
-                            await admin.messaging().sendToDevice(token.data().tokenId, {
-                                notification: {
-                                    title: "Kampanyanız sona erdi !",
-                                    body: 'Yayınlamış olduğunuz kampanya sona erdi. Haydi durmayın yeni bir kampanya yayınlayın !'
-                                }
-                            })
-                        })
-                    }
-                })
-            })
-        })
-    });
-})
 
 exports.campaignCheckStart = functions.pubsub.schedule('* * * * *').onRun(async (context) => {
     await db.collection('stores').get().then((value) => {
         value.docs.forEach(async (doc) => {
-            await db.collection('stores/' + doc.id + '/campaigns').get().then((valueCamp) => {
+            var query = db.collection('stores/' + doc.id + '/campaigns')
+            query = query.where('automatedStart', '==', false)
+            query = query.where('campaignStart', '<=', firestore.Timestamp.now())
+            query = query.where('campaignActive', '==', false)
+            await query.get().then((valueCamp) => {
                 valueCamp.docs.forEach(async (campaign) => {
-                    if (campaign.data().campaignStart <= firestore.Timestamp.now() && campaign.data().campaignActive == false) {
-                        await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', true);
-                        await db.doc('tokens/' + doc.id).get().then(async (token) => {
-                            await admin.messaging().sendToDevice(token.data().tokenId, {
-                                notification: {
-                                    title: "Kampanyanız başlıyor !",
-                                    body: 'Yayınlamış olduğunuz kampanyanın saati geldi. Kampanyanız başlıyor !'
-                                }
-                            })
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', true, 'automatedStart', true);
+                    await db.doc('markers/' + doc.id).update('hasCampaign', true);
+                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                            notification: {
+                                title: "Kampanyanız başlıyor !",
+                                body: 'Yayınlamış olduğunuz kampanyanın saati geldi. Kampanyanız başlıyor!'
+                            }
                         })
-                    }
+                    })
                 })
             })
         })
     });
 })
 
-// exports.campaignCheck = functions.https.onRequest(async (req, res) => {
-//     await db.collection('stores').get().then((value) => {
-//         value.docs.forEach(async (doc) => {
-//             await db.collection('stores/' + doc.id + '/campaigns').get().then((valueCamp) => {
-//                 valueCamp.docs.forEach(async (campaign) => {
-//                     if (campaign.data().campaignFinish <= firestore.Timestamp.now() && campaign.data().campaignActive == true) {
-//                         await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', false);
-//                         console.log(campaign.data());
-//                         await db.doc('tokens/' + doc.id).get().then((token) => {
-//                             console.log(token.data().tokenId);
-//                             admin.messaging().sendToDevice(token.data().tokenId, {
-//                                 notification: {
-//                                     title: "Kampanyanız sona erdi !",
-//                                     body: 'Yayınlamış olduğunuz kampanya sona erdi. Haydi durmayın yeni bir kampanya yayınlayın !'
-//                                 }
-//                             })
-//                         })
-//                     }
-//                 })
-//             })
-//         })
-//     });
-//     res.send('Başarılı !');
-// })
+exports.campaignCheckFinish = functions.pubsub.schedule('* * * * *').onRun(async (context) => {
+    await db.collection('stores').get().then((value) => {
+        value.docs.forEach(async (doc) => {
+            var query = db.collection('stores/' + doc.id + '/campaigns')
+            query = query.where('automatedStop', '==', false)
+            query = query.where('campaignFinish', '<=', firestore.Timestamp.now())
+            query = query.where('campaignActive', '==', true)
+            await query.get().then((valueCamp) => {
+                valueCamp.docs.forEach(async (campaign) => {
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', false, 'automatedStop', true);
+                    await db.doc('markers/' + doc.id).update('hasCampaign', false);
+                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                            notification: {
+                                title: "Kampanyanız sona erdi !",
+                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!'
+                            }
+                        })
+                    })
+                })
+            })
+        })
+    });
+})
+
+exports.campaignStartHttp = functions.https.onRequest(async (req, res) => {
+    await db.collection('stores').get().then((value) => {
+        value.docs.forEach(async (doc) => {
+            var query = db.collection('stores/' + doc.id + '/campaigns')
+            query = query.where('automatedStart', '==', false)
+            query = query.where('campaignStart', '<=', firestore.Timestamp.now())
+            query = query.where('campaignActive', '==', false)
+            await query.get().then((valueCamp) => {
+                valueCamp.docs.forEach(async (campaign) => {
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', true, 'automatedStart', true);
+                    await db.doc('markers/' + doc.id).update('hasCampaign', true);
+                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                            notification: {
+                                title: "Kampanyanız başlıyor !",
+                                body: 'Yayınlamış olduğunuz kampanyanın saati geldi. Kampanyanız başlıyor!'
+                            }
+                        })
+                    })
+                })
+            })
+        })
+    });
+    res.send('Başarılı !');
+})
+
+exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
+    await db.collection('stores').get().then((value) => {
+        value.docs.forEach(async (doc) => {
+            var query = db.collection('stores/' + doc.id + '/campaigns')
+            query = query.where('automatedStop', '==', false)
+            query = query.where('campaignFinish', '<=', firestore.Timestamp.now())
+            query = query.where('campaignActive', '==', true)
+            await query.get().then((valueCamp) => {
+                valueCamp.docs.forEach(async (campaign) => {
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', false, 'automatedStop', true);
+                    await db.doc('markers/' + doc.id).update('hasCampaign', false);
+                    await db.doc('tokens/' + doc.id).get().then(async (token) => {
+                        await admin.messaging().sendToDevice(token.data().tokenId, {
+                            notification: {
+                                title: "Kampanyanız sona erdi !",
+                                body: 'Yayınlamış olduğunuz kampanya sona erdi. Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!'
+                            }
+                        })
+                    })
+                })
+            })
+        })
+    });
+    res.send('Başarılı !');
+})

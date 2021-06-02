@@ -81,6 +81,8 @@ class _CampaignsState extends State<Campaigns> {
         isLoading = true;
       });
       Campaign _campaign = Campaign(
+          automatedStart: false,
+          automatedStop: false,
           campaignActive: (_startDate.millisecondsSinceEpoch >
                   Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch)
               ? false
@@ -126,6 +128,8 @@ class _CampaignsState extends State<Campaigns> {
         isLoading = true;
       });
       Campaign _campaign = Campaign(
+          automatedStart: false,
+          automatedStop: false,
           campaignActive: (_startDate.millisecondsSinceEpoch >
                   Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch)
               ? false
@@ -172,6 +176,8 @@ class _CampaignsState extends State<Campaigns> {
         isLoading = true;
       });
       Campaign _campaign = Campaign(
+          automatedStart: false,
+          automatedStop: false,
           campaignActive: (_startDate.millisecondsSinceEpoch >
                   Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch)
               ? false
