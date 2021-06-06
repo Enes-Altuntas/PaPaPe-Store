@@ -409,6 +409,15 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          iconTheme: IconThemeData(color: Colors.white),
+          elevation: 5,
+          centerTitle: true,
+          title: Text('BULB',
+              style: TextStyle(
+                  fontSize: 25.0, fontFamily: 'Bebas', color: Colors.white)),
+        ),
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColor,
           label: (_storeProvider.storeId == null)

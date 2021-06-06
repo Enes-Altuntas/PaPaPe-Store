@@ -392,7 +392,7 @@ class _CampaignsState extends State<Campaigns> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     (_selectedCampaign == null)
-                        ? Text('Kampanya Yarat',
+                        ? Text('Kampanya Yayınla',
                             style: TextStyle(
                                 fontSize: 25.0,
                                 fontFamily: 'Bebas',
@@ -526,11 +526,21 @@ class _CampaignsState extends State<Campaigns> {
                                   },
                                   child: Text(
                                     'Kampanyayı Kaydet',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.green[900]),
                                   ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.green[800],
-                                  )))
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all<EdgeInsets>(
+                                          EdgeInsets.all(15)),
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Colors.green[900]),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(50.0),
+                                              side: BorderSide(
+                                                  width: 2,
+                                                  color: Colors.green[900]))))))
                           : (_selectedCampaign.campaignActive == true ||
                                   _startDate.millisecondsSinceEpoch >
                                       Timestamp.fromDate(DateTime.now())
@@ -617,126 +627,351 @@ class _CampaignsState extends State<Campaigns> {
   @override
   Widget build(BuildContext context) {
     return (isLoading == false)
-        ? Scaffold(
-            floatingActionButton: FloatingActionButton.extended(
-              backgroundColor: Theme.of(context).primaryColor,
-              label: Text(
-                'Kampanya',
-                style: TextStyle(color: Colors.white),
+        ? Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextButton(
+                      child: Text("Kampanya Yayınla".toUpperCase(),
+                          style: TextStyle(fontSize: 14)),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.all(15)),
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).primaryColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      side: BorderSide(
+                                          width: 2,
+                                          color: Theme.of(context)
+                                              .primaryColor)))),
+                      onPressed: () {
+                        openDialog();
+                      }),
+                ),
               ),
-              icon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                openDialog();
-              },
-            ),
-            body: StreamBuilder<List<Campaign>>(
-              stream: FirestoreService().getStoreCampaigns(),
-              builder: (context, snapshot) {
-                return (snapshot.connectionState == ConnectionState.active)
-                    ? (snapshot.data.length != 0)
-                        ? ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  color: (snapshot.data[index].campaignActive)
-                                      ? Colors.green[800]
-                                      : Theme.of(context).primaryColor,
-                                  shadowColor: Theme.of(context).primaryColor,
-                                  elevation: 10.0,
-                                  child: ListTile(
-                                    onTap: () {
-                                      setState(() {
-                                        _selectedCampaign =
-                                            snapshot.data[index];
-                                      });
-                                      openDialog();
-                                    },
-                                    title: Padding(
-                                      padding: const EdgeInsets.only(top: 8.0),
-                                      child: Text(
-                                        snapshot.data[index].campaignDesc,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    ),
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Kampanya Başlangıç: ${formatDate(snapshot.data[index].campaignStart)}',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          Text(
-                                            'Kampanya Bitiş: ${formatDate(snapshot.data[index].campaignFinish)}',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 8.0),
-                                            child: Text(
-                                              'Kampanya Anahtarı: #${snapshot.data[index].campaignKey}',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 8.0),
-                                            child: Text(
-                                              'Alınmış kampanya kodu sayısı: ${snapshot.data[index].campaignCounter}',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        : Center(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.assignment_late_outlined,
-                                      size: 100.0,
-                                      color: Theme.of(context).primaryColor),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: Text(
-                                      'Henüz yayınlamış olduğunuz herhangi bir kampanya bulunmamaktadır !',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 25.0,
+              Flexible(
+                child: StreamBuilder<List<Campaign>>(
+                  stream: FirestoreService().getStoreCampaigns(),
+                  builder: (context, snapshot) {
+                    return (snapshot.connectionState == ConnectionState.active)
+                        ? (snapshot.data.length != 0)
+                            ? ListView.builder(
+                                itemCount: snapshot.data.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                        ),
+                                        clipBehavior: Clip.antiAlias,
+                                        color: Colors.white,
+                                        shadowColor: Colors.black,
+                                        elevation: 5.0,
+                                        child: Container(
+                                          height: 440,
+                                          child: InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedCampaign =
+                                                      snapshot.data[index];
+                                                });
+                                                openDialog();
+                                              },
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Stack(
+                                                      children: [
+                                                        ColorFiltered(
+                                                          colorFilter:
+                                                              ColorFilter.mode(
+                                                                  Colors
+                                                                      .black
+                                                                      .withOpacity(
+                                                                          0.6),
+                                                                  BlendMode
+                                                                      .multiply),
+                                                          child: Container(
+                                                            width:
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                            child: Image.network(
+                                                                snapshot
+                                                                    .data[index]
+                                                                    .campaignPicRef,
+                                                                fit: BoxFit
+                                                                    .fitWidth),
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          bottom: 10,
+                                                          right: 25,
+                                                          child: Row(
+                                                            children: [
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
+                                                                child: Text(
+                                                                  "#${snapshot.data[index].campaignKey}",
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18.0),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          bottom: 40,
+                                                          left: 10,
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .access_time,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
+                                                                child: Text(
+                                                                  formatDate(snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .campaignStart),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18.0),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          bottom: 10,
+                                                          left: 10,
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(
+                                                                  Icons
+                                                                      .access_alarm,
+                                                                  color: Colors
+                                                                      .white),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
+                                                                child: Text(
+                                                                  formatDate(snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .campaignFinish),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18.0),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Positioned(
+                                                          top: 25,
+                                                          right: 25,
+                                                          child: Row(
+                                                            children: [
+                                                              Icon(
+                                                                Icons
+                                                                    .visibility,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            10.0),
+                                                                child: Text(
+                                                                  snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .campaignCounter
+                                                                      .toString(),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          18.0),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        bottom:
+                                                                            10.0),
+                                                                child: (snapshot
+                                                                            .data[
+                                                                                index]
+                                                                            .campaignActive ==
+                                                                        true)
+                                                                    ? Text(
+                                                                        'Kampanya Yayında'
+                                                                            .toUpperCase(),
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            color: Colors.green[800],
+                                                                            fontSize: 16.0),
+                                                                      )
+                                                                    : (snapshot.data[index].campaignStart.millisecondsSinceEpoch >
+                                                                            Timestamp.now().millisecondsSinceEpoch)
+                                                                        ? Text(
+                                                                            'Kampanya Beklemede'.toUpperCase(),
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.amber[800],
+                                                                                fontSize: 16.0),
+                                                                          )
+                                                                        : Text(
+                                                                            'Kampanya İnaktif'.toUpperCase(),
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style: TextStyle(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Colors.red[800],
+                                                                                fontSize: 16.0),
+                                                                          )),
+                                                            Text(
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .campaignDesc,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .hintColor,
+                                                                  fontSize:
+                                                                      16.0),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ))
+                                                ],
+                                              )),
+                                        )),
+                                  );
+                                },
+                              )
+                            : Center(
+                                child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.assignment_late_outlined,
+                                          size: 100.0,
                                           color:
                                               Theme.of(context).primaryColor),
-                                    ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: Text(
+                                          'Henüz yayınlamış olduğunuz herhangi bir kampanya bulunmamaktadır !',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 25.0,
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              )
+                        : Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
                             ),
-                          )
-                    : Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
-                      );
-              },
-            ),
+                          );
+                  },
+                ),
+              ),
+            ],
           )
         : Center(
             child: CircularProgressIndicator(

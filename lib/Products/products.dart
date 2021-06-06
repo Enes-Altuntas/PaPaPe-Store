@@ -615,6 +615,7 @@ class _MenuState extends State<Menu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:bulovva_store/Campaigns/campaigns.dart';
 import 'package:bulovva_store/Comments/comments.dart';
 import 'package:bulovva_store/Login/login.dart';
@@ -19,10 +21,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _currentIndex = 0;
   StoreProvider _storeProvider;
   Future getUserInfo;
-  List<Widget> _widgets = <Widget>[Campaigns(), Menu(), Reports(), Profile()];
   bool isInit = true;
   bool isLoading = false;
 
@@ -86,77 +86,101 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: false,
-        title: Text('Bulovva İşletme',
-            style: TextStyle(
-                fontSize: 25.0,
-                fontFamily: 'Bebas',
-                color: Theme.of(context).primaryColor)),
-        actions: [
-          TextButton(
-              onPressed: () {
-                exitYesNo();
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: AppBar(
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => Profile()));
               },
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.exit_to_app,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
-                    child: Text(
-                      'Çıkış Yap',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
                     ),
-                  )
-                ],
+                  ],
+                ),
               )),
-        ],
-      ),
-      body: FutureBuilder(
-          future: getUserInfo,
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return (snapshot.connectionState == ConnectionState.done)
-                ? (isLoading == false)
-                    ? SafeArea(
-                        child: _widgets.elementAt(_currentIndex),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
-                      )
-                : Center(
-                    child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
-                    ),
-                  );
-          }),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
-        unselectedIconTheme:
-            IconThemeData(color: Theme.of(context).primaryColor, size: 20),
-        selectedIconTheme: IconThemeData(color: Colors.red, size: 35),
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_shopping_cart), label: 'Kampanyalar'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.art_track), label: 'Ürünler'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.campaign), label: 'Yorumlar'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+          backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
+          centerTitle: true,
+          bottom: TabBar(
+            labelColor: Colors.white,
+            labelStyle: TextStyle(fontFamily: 'Bebas', fontSize: 18.0),
+            indicatorColor: Colors.transparent,
+            tabs: [
+              Tab(
+                text: 'Kampanyalar',
+              ),
+              Tab(text: 'Menü'),
+              Tab(
+                text: 'Yorumlar',
+              ),
+            ],
+          ),
+          title: Text('BULB',
+              style: TextStyle(
+                  fontSize: 25.0, fontFamily: 'Bebas', color: Colors.white)),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  exitYesNo();
+                },
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    )
+                  ],
+                )),
+          ],
+        ),
+        body: FutureBuilder(
+            future: getUserInfo,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              return (snapshot.connectionState == ConnectionState.done)
+                  ? (isLoading == false)
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(50.0),
+                                            topRight: Radius.circular(50.0))),
+                                    child: TabBarView(
+                                      children: [
+                                        Campaigns(),
+                                        Menu(),
+                                        Reports(),
+                                      ],
+                                    )),
+                              ),
+                            ],
+                          ),
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          ),
+                        )
+                  : Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      ),
+                    );
+            }),
       ),
     );
   }

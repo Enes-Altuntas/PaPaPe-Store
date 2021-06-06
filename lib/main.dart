@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
           title: 'Bulovva İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primaryColor: Colors.red[700],
+            primaryColor: Colors.red.shade900,
             primaryColorDark: Colors.black,
             accentColor: Colors.red,
             hintColor: Colors.grey.shade800,

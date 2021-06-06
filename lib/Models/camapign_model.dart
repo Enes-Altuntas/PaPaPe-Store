@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Campaign {
   final bool campaignActive;
+  final String campaignPicRef;
   final bool automatedStart;
   final bool automatedStop;
   final String campaignDesc;
@@ -14,6 +15,7 @@ class Campaign {
 
   Campaign({
     this.campaignActive,
+    this.campaignPicRef,
     this.automatedStart,
     this.automatedStop,
     this.campaignDesc,
@@ -28,6 +30,7 @@ class Campaign {
   Campaign.fromFirestore(Map<String, dynamic> data)
       : campaignActive = data['campaignActive'],
         automatedStart = data['automatedStart'],
+        campaignPicRef = data['campaignPicRef'],
         automatedStop = data['automatedStop'],
         campaignDesc = data['campaignDesc'],
         campaignKey = data['campaignKey'],
@@ -41,6 +44,7 @@ class Campaign {
     return {
       'campaignActive': campaignActive,
       'automatedStart': automatedStart,
+      'campaignPicRef': campaignPicRef,
       'automatedStop': automatedStop,
       'campaignDesc': campaignDesc,
       'campaignKey': campaignKey,
