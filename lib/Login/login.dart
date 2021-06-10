@@ -20,6 +20,7 @@ class _LoginState extends State<Login> {
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool isLoading = false;
   bool isVisible = false;
+  bool isInit = true;
 
   void signIn() {
     setState(() {
@@ -112,18 +113,20 @@ class _LoginState extends State<Login> {
     }
   }
 
-  AssetImage myImage;
-
   @override
   void initState() {
     super.initState();
-    myImage = AssetImage('assets/images/icon.png');
   }
 
   @override
-  void didChangeDependencies() {
+  Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
-    precacheImage(myImage, context);
+    if (isInit) {
+      await FirebaseAuth.instance.currentUser.reload();
+      setState(() {
+        isInit = false;
+      });
+    }
   }
 
   @override

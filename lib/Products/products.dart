@@ -163,27 +163,63 @@ class _MenuState extends State<Menu> {
                         ),
                       ),
                       (_selectedCategory == null)
-                          ? SizedBox(
-                              width: MediaQuery.of(_context).size.width,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    saveCategory();
-                                  },
-                                  child: Text('Kategori Ekle'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.green[800],
-                                  )),
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(_context).size.width,
+                                child: TextButton(
+                                    onPressed: () {
+                                      saveCategory();
+                                    },
+                                    child: Text(
+                                      'Kategori Ekle',
+                                      style:
+                                          TextStyle(color: Colors.green[900]),
+                                    ),
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.all(15)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.green[900]),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50.0),
+                                                side: BorderSide(
+                                                    width: 2,
+                                                    color: Colors.green[900]))))),
+                              ),
                             )
-                          : SizedBox(
-                              width: MediaQuery.of(_context).size.width,
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    updateCategory();
-                                  },
-                                  child: Text('Kategori Düzenle'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.green[800],
-                                  )),
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(_context).size.width,
+                                child: TextButton(
+                                    onPressed: () {
+                                      updateCategory();
+                                    },
+                                    child: Text(
+                                      'Kategori Düzenle',
+                                      style:
+                                          TextStyle(color: Colors.green[900]),
+                                    ),
+                                    style: ButtonStyle(
+                                        padding: MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.all(15)),
+                                        foregroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Colors.green[900]),
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50.0),
+                                                side: BorderSide(
+                                                    width: 2,
+                                                    color: Colors.green[900]))))),
+                              ),
                             ),
                     ],
                   ),
@@ -334,43 +370,97 @@ class _MenuState extends State<Menu> {
                                       }),
                                 )),
                             (_selectedProduct == null)
-                                ? SizedBox(
-                                    width: MediaQuery.of(_context).size.width,
-                                    child: ElevatedButton(
-                                        onPressed: () {
-                                          saveProduct();
-                                        },
-                                        child: Text('Ürün Ekle'),
-                                        style: ElevatedButton.styleFrom(
-                                          primary: Colors.green[800],
-                                        )),
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: SizedBox(
+                                      width: MediaQuery.of(_context).size.width,
+                                      child: TextButton(
+                                          onPressed: () {
+                                            saveProduct();
+                                          },
+                                          child: Text(
+                                            'Ürün Ekle',
+                                            style: TextStyle(
+                                                color: Colors.green[900]),
+                                          ),
+                                          style: ButtonStyle(
+                                              padding:
+                                                  MaterialStateProperty.all<EdgeInsets>(
+                                                      EdgeInsets.all(15)),
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<Color>(
+                                                      Colors.green[900]),
+                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                      side: BorderSide(
+                                                          width: 2,
+                                                          color: Colors.green[900]))))),
+                                    ),
                                   )
                                 : Column(
                                     children: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(_context).size.width,
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              updateProduct();
-                                            },
-                                            child: Text('Ürün Düzenle'),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.green[800],
-                                            )),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 20.0),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(_context)
+                                              .size
+                                              .width,
+                                          child: TextButton(
+                                              onPressed: () {
+                                                updateProduct();
+                                              },
+                                              child: Text(
+                                                'Ürün Düzenle',
+                                                style: TextStyle(
+                                                    color: Colors.green[900]),
+                                              ),
+                                              style: ButtonStyle(
+                                                  padding: MaterialStateProperty
+                                                      .all<EdgeInsets>(
+                                                          EdgeInsets.all(15)),
+                                                  foregroundColor:
+                                                      MaterialStateProperty.all<Color>(
+                                                          Colors.green[900]),
+                                                  shape: MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(50.0),
+                                                          side: BorderSide(width: 2, color: Colors.green[900]))))),
+                                        ),
                                       ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(_context).size.width,
-                                        child: ElevatedButton(
-                                            onPressed: () {
-                                              deleteProdYesNo(_context);
-                                            },
-                                            child: Text('Ürün Sil'),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Theme.of(context)
-                                                  .primaryColor,
-                                            )),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: SizedBox(
+                                          width: MediaQuery.of(_context)
+                                              .size
+                                              .width,
+                                          child: TextButton(
+                                              onPressed: () {
+                                                deleteProdYesNo(_context);
+                                              },
+                                              child: Text(
+                                                'Ürün Sil',
+                                                style: TextStyle(
+                                                    color: Colors.red[900]),
+                                              ),
+                                              style: ButtonStyle(
+                                                  padding: MaterialStateProperty
+                                                      .all<EdgeInsets>(
+                                                          EdgeInsets.all(15)),
+                                                  foregroundColor:
+                                                      MaterialStateProperty.all<Color>(
+                                                          Colors.red[900]),
+                                                  shape: MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.circular(50.0),
+                                                          side: BorderSide(width: 2, color: Colors.red[900]))))),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -614,206 +704,250 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton.extended(
-            backgroundColor: Theme.of(context).primaryColor,
-            label: Text(
-              'Kategori',
-              style: TextStyle(color: Colors.white),
-            ),
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              openCategoryDialog();
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: FloatingActionButton.extended(
-              backgroundColor: Theme.of(context).primaryColor,
-              label: Text('Ürün', style: TextStyle(color: Colors.white)),
-              icon: Icon(
-                Icons.add,
-                color: Colors.white,
+    return (_isLoading == false)
+        ? Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextButton(
+                      child: Text("Yeni Kategori Oluştur".toUpperCase(),
+                          style: TextStyle(fontSize: 14)),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.all(15)),
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).primaryColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      side: BorderSide(
+                                          width: 2,
+                                          color: Theme.of(context)
+                                              .primaryColor)))),
+                      onPressed: () {
+                        openCategoryDialog();
+                      }),
+                ),
               ),
-              onPressed: () {
-                openProductDialog();
-              },
-            ),
-          ),
-        ],
-      ),
-      body: (_isLoading == false)
-          ? StreamBuilder<List<ProductCategory>>(
-              stream: FirestoreService().getProductCategories(),
-              builder: (context, snapshot) {
-                category = snapshot.data;
-                return (snapshot.connectionState == ConnectionState.active)
-                    ? (snapshot.hasData == true)
-                        ? (snapshot.data.length > 0)
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: snapshot.data.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 8,
-                                    color: (index % 2 == 0)
-                                        ? Theme.of(context).primaryColor
-                                        : Colors.white,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  snapshot
-                                                      .data[index].categoryName,
-                                                  style: TextStyle(
-                                                      fontSize: 18.0,
-                                                      fontFamily: 'Bebas',
-                                                      color: (index % 2 != 0)
-                                                          ? Theme.of(context)
-                                                              .primaryColor
-                                                          : Colors.white),
-                                                ),
-                                                Row(
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextButton(
+                      child: Text("Yeni Ürün Oluştur".toUpperCase(),
+                          style: TextStyle(fontSize: 14)),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.all(15)),
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).primaryColor),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      side: BorderSide(
+                                          width: 2,
+                                          color: Theme.of(context)
+                                              .primaryColor)))),
+                      onPressed: () {
+                        openProductDialog();
+                      }),
+                ),
+              ),
+              Flexible(
+                child: StreamBuilder<List<ProductCategory>>(
+                  stream: FirestoreService().getProductCategories(),
+                  builder: (context, snapshot) {
+                    category = snapshot.data;
+                    return (snapshot.connectionState == ConnectionState.active)
+                        ? (snapshot.hasData == true)
+                            ? (snapshot.data.length > 0)
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                8,
+                                        color: Colors.white,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
-                                                    GestureDetector(
-                                                      child: Icon(Icons.edit,
-                                                          color: (index % 2 !=
-                                                                  0)
-                                                              ? Theme.of(
-                                                                      context)
-                                                                  .primaryColor
-                                                              : Colors.white),
-                                                      onTap: () {
-                                                        setState(() {
-                                                          _selectedCategory =
-                                                              snapshot
-                                                                  .data[index];
-                                                        });
-                                                        openCategoryDialog();
-                                                      },
+                                                    Text(
+                                                      snapshot.data[index]
+                                                          .categoryName,
+                                                      style: TextStyle(
+                                                          fontSize: 20.0,
+                                                          fontFamily: 'Bebas',
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColor),
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10.0),
-                                                      child: GestureDetector(
-                                                        child: Icon(
-                                                          Icons.delete,
-                                                          color: (index % 2 !=
-                                                                  0)
-                                                              ? Theme.of(
+                                                    Row(
+                                                      children: [
+                                                        GestureDetector(
+                                                          child: Icon(
+                                                              Icons.edit,
+                                                              color: Theme.of(
                                                                       context)
-                                                                  .primaryColor
-                                                              : Colors.white,
+                                                                  .primaryColor),
+                                                          onTap: () {
+                                                            setState(() {
+                                                              _selectedCategory =
+                                                                  snapshot.data[
+                                                                      index];
+                                                            });
+                                                            openCategoryDialog();
+                                                          },
                                                         ),
-                                                        onTap: () {
-                                                          deleteCatYesNo(
-                                                              context,
-                                                              snapshot
-                                                                  .data[index]);
-                                                        },
-                                                      ),
-                                                    ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10.0),
+                                                          child:
+                                                              GestureDetector(
+                                                            child: Icon(
+                                                              Icons.delete,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor,
+                                                            ),
+                                                            onTap: () {
+                                                              deleteCatYesNo(
+                                                                  context,
+                                                                  snapshot.data[
+                                                                      index]);
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    )
                                                   ],
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          StreamBuilder<List<Product>>(
-                                              stream: FirestoreService()
-                                                  .getProducts(snapshot
-                                                      .data[index].categoryId),
-                                              builder:
-                                                  (context, snapshotProduct) {
-                                                products = snapshotProduct.data;
-                                                return (snapshotProduct
-                                                            .connectionState ==
-                                                        ConnectionState.active)
-                                                    ? (snapshotProduct
-                                                                .hasData ==
-                                                            true)
-                                                        ? (snapshotProduct.data
-                                                                    .length >
-                                                                0)
-                                                            ? ListView.builder(
-                                                                shrinkWrap:
-                                                                    true,
-                                                                physics:
-                                                                    ClampingScrollPhysics(),
-                                                                itemCount:
-                                                                    snapshotProduct
+                                                ),
+                                              ),
+                                              StreamBuilder<List<Product>>(
+                                                  stream: FirestoreService()
+                                                      .getProducts(snapshot
+                                                          .data[index]
+                                                          .categoryId),
+                                                  builder: (context,
+                                                      snapshotProduct) {
+                                                    products =
+                                                        snapshotProduct.data;
+                                                    return (snapshotProduct
+                                                                .connectionState ==
+                                                            ConnectionState
+                                                                .active)
+                                                        ? (snapshotProduct
+                                                                    .hasData ==
+                                                                true)
+                                                            ? (snapshotProduct
                                                                         .data
-                                                                        .length,
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        indexDishes) {
-                                                                  return Card(
-                                                                    color: (index %
-                                                                                2 !=
-                                                                            0)
-                                                                        ? Theme.of(context)
-                                                                            .primaryColor
-                                                                        : Colors
-                                                                            .white,
+                                                                        .length >
+                                                                    0)
+                                                                ? Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        top:
+                                                                            10.0),
+                                                                    child: ListView.builder(
+                                                                        shrinkWrap: true,
+                                                                        physics: ClampingScrollPhysics(),
+                                                                        itemCount: snapshotProduct.data.length,
+                                                                        itemBuilder: (context, indexDishes) {
+                                                                          return Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(bottom: 10.0),
+                                                                            child:
+                                                                                Card(
+                                                                              elevation: 5,
+                                                                              color: Colors.white,
+                                                                              child: ListTile(
+                                                                                onTap: () {
+                                                                                  setState(() {
+                                                                                    _selectedProduct = snapshotProduct.data[indexDishes];
+                                                                                  });
+                                                                                  openProductDialog();
+                                                                                },
+                                                                                title: Row(
+                                                                                  children: [
+                                                                                    Text(
+                                                                                      snapshotProduct.data[indexDishes].productName,
+                                                                                      style: TextStyle(color: Theme.of(context).hintColor, fontWeight: FontWeight.bold, fontSize: 16.0),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                                trailing: Column(
+                                                                                  children: [],
+                                                                                ),
+                                                                                subtitle: Padding(
+                                                                                  padding: const EdgeInsets.only(top: 8.0),
+                                                                                  child: Column(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Text(snapshotProduct.data[indexDishes].productDesc, style: TextStyle(color: Theme.of(context).hintColor)),
+                                                                                      Padding(
+                                                                                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                                                                        child: Text(
+                                                                                          'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} ${snapshotProduct.data[indexDishes].currency}',
+                                                                                          style: TextStyle(color: Theme.of(context).hintColor, fontWeight: FontWeight.bold, fontSize: 15.0),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }),
+                                                                  )
+                                                                : Center(
                                                                     child:
-                                                                        ListTile(
-                                                                      onTap:
-                                                                          () {
-                                                                        setState(
-                                                                            () {
-                                                                          _selectedProduct =
-                                                                              snapshotProduct.data[indexDishes];
-                                                                        });
-                                                                        openProductDialog();
-                                                                      },
-                                                                      title:
-                                                                          Row(
-                                                                        children: [
-                                                                          Text(
-                                                                            snapshotProduct.data[indexDishes].productName,
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .assignment_late_outlined,
+                                                                          size:
+                                                                              30.0,
+                                                                          color: (index % 2 != 0)
+                                                                              ? Theme.of(context).primaryColor
+                                                                              : Colors.white,
+                                                                        ),
+                                                                        Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.only(top: 20.0),
+                                                                          child:
+                                                                              Text(
+                                                                            'Henüz kategoriniz için girilmiş bir ürününüz bulunmamaktadır !',
+                                                                            textAlign:
+                                                                                TextAlign.center,
                                                                             style:
-                                                                                TextStyle(color: (index % 2 != 0) ? Colors.white : Theme.of(context).hintColor),
+                                                                                TextStyle(color: (index % 2 != 0) ? Theme.of(context).primaryColor : Colors.white, fontSize: 20.0),
                                                                           ),
-                                                                        ],
-                                                                      ),
-                                                                      trailing:
-                                                                          Column(
-                                                                        children: [
-                                                                          Text(
-                                                                              'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} ${snapshotProduct.data[indexDishes].currency}',
-                                                                              style: TextStyle(color: (index % 2 != 0) ? Colors.white : Theme.of(context).hintColor)),
-                                                                        ],
-                                                                      ),
-                                                                      subtitle:
-                                                                          Padding(
-                                                                        padding:
-                                                                            const EdgeInsets.only(top: 8.0),
-                                                                        child: Text(
-                                                                            snapshotProduct.data[indexDishes].productDesc,
-                                                                            style: TextStyle(color: (index % 2 != 0) ? Colors.white : Theme.of(context).hintColor)),
-                                                                      ),
+                                                                        ),
+                                                                      ],
                                                                     ),
-                                                                  );
-                                                                })
+                                                                  )
                                                             : Center(
                                                                 child: Column(
                                                                   mainAxisAlignment:
@@ -825,12 +959,6 @@ class _MenuState extends State<Menu> {
                                                                           .assignment_late_outlined,
                                                                       size:
                                                                           30.0,
-                                                                      color: (index % 2 !=
-                                                                              0)
-                                                                          ? Theme.of(context)
-                                                                              .primaryColor
-                                                                          : Colors
-                                                                              .white,
                                                                     ),
                                                                     Padding(
                                                                       padding: const EdgeInsets
@@ -843,57 +971,51 @@ class _MenuState extends State<Menu> {
                                                                         textAlign:
                                                                             TextAlign.center,
                                                                         style: TextStyle(
-                                                                            color: (index % 2 != 0)
-                                                                                ? Theme.of(context).primaryColor
-                                                                                : Colors.white,
-                                                                            fontSize: 20.0),
+                                                                            fontSize:
+                                                                                15.0),
                                                                       ),
                                                                     ),
                                                                   ],
                                                                 ),
                                                               )
                                                         : Center(
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Icon(
-                                                                  Icons
-                                                                      .assignment_late_outlined,
-                                                                  size: 30.0,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .only(
-                                                                      top:
-                                                                          20.0),
-                                                                  child: Text(
-                                                                    'Henüz kategoriniz için girilmiş bir ürününüz bulunmamaktadır !',
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            15.0),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          )
-                                                    : Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                      ));
-                                              }),
-                                        ],
-                                      ),
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                          ));
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.assignment_late_outlined,
+                                          size: 100.0,
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20.0),
+                                          child: Text(
+                                            'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 25.0,
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                },
-                              )
+                                  )
                             : Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -909,48 +1031,28 @@ class _MenuState extends State<Menu> {
                                         'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            fontSize: 25.0,
                                             color:
-                                                Theme.of(context).primaryColor),
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 25.0),
                                       ),
                                     ),
                                   ],
                                 ),
                               )
                         : Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.assignment_late_outlined,
-                                  size: 100.0,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
-                                  child: Text(
-                                    'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 25.0),
-                                  ),
-                                ),
-                              ],
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
                             ),
-                          )
-                    : Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
-                        ),
-                      );
-              },
-            )
-          : Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
+                          );
+                  },
+                ),
               ),
+            ],
+          )
+        : Center(
+            child: CircularProgressIndicator(
+              backgroundColor: Colors.white,
             ),
-    );
+          );
   }
 }

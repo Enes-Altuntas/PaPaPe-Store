@@ -12,9 +12,9 @@ class Reports extends StatefulWidget {
 class _ReportsState extends State<Reports> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: StreamBuilder<List<Comments>>(
+    return Padding(
+      padding: const EdgeInsets.only(top: 25.0),
+      child: StreamBuilder<List<Comments>>(
         stream: FirestoreService().getReports(),
         builder: (context, snapshot) {
           return (snapshot.connectionState == ConnectionState.active)
@@ -26,34 +26,47 @@ class _ReportsState extends State<Reports> {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Card(
-                                color: Theme.of(context).primaryColor,
-                                shadowColor: Theme.of(context).primaryColor,
-                                elevation: 10.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                ),
+                                color: Colors.white,
+                                shadowColor: Colors.black,
+                                elevation: 5.0,
                                 child: ListTile(
                                   title: Padding(
                                     padding: const EdgeInsets.only(top: 8.0),
                                     child: Text(
                                       snapshot.data[index].reportTitle,
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(
+                                          color: Theme.of(context).hintColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17.0),
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
                                   subtitle: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8.0, bottom: 8.0),
-                                    child: Text(
-                                      snapshot.data[index].reportDesc,
-                                      style: TextStyle(color: Colors.white),
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          snapshot.data[index].reportDesc,
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).hintColor),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 10.0),
+                                          child: Text(
+                                              'Puan: ${snapshot.data[index].reportScore.toString()}',
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15.0)),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  trailing: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                          'Puan: ${snapshot.data[index].reportScore.toString()}',
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ],
                                   ),
                                 ),
                               ),

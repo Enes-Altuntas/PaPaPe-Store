@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:bulovva_store/Models/camapign_model.dart';
 import 'package:bulovva_store/Providers/store_provider.dart';
 import 'package:bulovva_store/Services/firestore_service.dart';
@@ -5,6 +6,9 @@ import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
@@ -24,6 +28,7 @@ class _CampaignsState extends State<Campaigns> {
   final TextEditingController _start = TextEditingController();
   final TextEditingController _finish = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  File campaignPic;
   Timestamp _startDate;
   Timestamp _finishDate;
   String _campaignId;
@@ -91,7 +96,9 @@ class _CampaignsState extends State<Campaigns> {
           campaignCounter: 0,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
+          delInd: false,
           campaignKey: _key.text.toUpperCase(),
+          campaignLocalImage: campaignPic,
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -109,6 +116,7 @@ class _CampaignsState extends State<Campaigns> {
         _start.text = '';
         _finish.text = '';
         _campaignId = null;
+        campaignPic = null;
       });
     }
   }
@@ -138,7 +146,11 @@ class _CampaignsState extends State<Campaigns> {
           campaignDesc: _selectedCampaign.campaignDesc,
           campaignFinish: _finishDate,
           campaignKey: _selectedCampaign.campaignKey,
+          delInd: false,
           campaignStart: _startDate,
+          campaignLocalImage: (campaignPic != null)
+              ? campaignPic
+              : _selectedCampaign.campaignPicRef,
           campaignCounter: _selectedCampaign.campaignCounter,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -157,6 +169,7 @@ class _CampaignsState extends State<Campaigns> {
         _start.text = '';
         _finish.text = '';
         _campaignId = null;
+        campaignPic = null;
       });
     }
   }
@@ -185,6 +198,10 @@ class _CampaignsState extends State<Campaigns> {
           campaignId: _campaignId,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
+          delInd: false,
+          campaignLocalImage: (campaignPic != null)
+              ? campaignPic
+              : _selectedCampaign.campaignPicRef,
           campaignKey: _key.text.toUpperCase(),
           campaignCounter: _selectedCampaign.campaignCounter,
           campaignStart: _startDate,
@@ -205,6 +222,7 @@ class _CampaignsState extends State<Campaigns> {
         _start.text = '';
         _finish.text = '';
         _campaignId = null;
+        campaignPic = null;
       });
     }
   }
@@ -229,6 +247,7 @@ class _CampaignsState extends State<Campaigns> {
       _start.text = '';
       _finish.text = '';
       _campaignId = null;
+      campaignPic = null;
     });
   }
 
@@ -252,6 +271,7 @@ class _CampaignsState extends State<Campaigns> {
       _start.text = '';
       _finish.text = '';
       _campaignId = null;
+      campaignPic = null;
     });
   }
 
@@ -363,6 +383,36 @@ class _CampaignsState extends State<Campaigns> {
         confirmBtnText: 'Evet');
   }
 
+  getImage() async {
+    setState(() {
+      isLoading = true;
+    });
+    Navigator.of(context).pop();
+    await Permission.photos.request();
+    PermissionStatus permissionStatus = await Permission.photos.status;
+    if (permissionStatus.isGranted) {
+      PickedFile image =
+          await ImagePicker().getImage(source: ImageSource.gallery);
+      if (image != null) {
+        File cropped = await ImageCropper.cropImage(
+            sourcePath: image.path,
+            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
+            compressQuality: 100,
+            compressFormat: ImageCompressFormat.jpg,
+            androidUiSettings: AndroidUiSettings(
+                toolbarTitle: 'Resmi Düzenle',
+                toolbarColor: Theme.of(context).primaryColor,
+                statusBarColor: Theme.of(context).primaryColor,
+                backgroundColor: Colors.white));
+        setState(() {
+          campaignPic = cropped;
+          isLoading = false;
+        });
+        openDialog();
+      }
+    }
+  }
+
   openDialog() {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
@@ -418,207 +468,366 @@ class _CampaignsState extends State<Campaigns> {
                           _start.text = '';
                           _finish.text = '';
                           _campaignId = null;
+                          campaignPic = null;
                         });
                       },
                     ),
                   ]),
             ),
-            content: SingleChildScrollView(
-              child: Form(
-                key: formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      maxLength: 255,
-                      validator: validateCampaignDesc,
-                      enabled: (_selectedCampaign != null &&
-                              _selectedCampaign.campaignActive == false)
-                          ? false
-                          : true,
-                      maxLines: 3,
-                      controller: _desc,
-                      decoration: InputDecoration(
-                          labelText: 'Kampanya Açıklaması',
-                          border: OutlineInputBorder()),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: TextFormField(
-                        validator: validateCampaignKey,
-                        enabled: (_selectedCampaign != null &&
-                                _selectedCampaign.campaignActive == false)
-                            ? false
-                            : true,
-                        controller: _key,
-                        maxLength: 15,
-                        decoration: InputDecoration(
-                            labelText: 'Kampanya Anahtarı',
-                            prefix: Text('#'),
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: TextFormField(
-                        controller: _start,
-                        validator: validateCampaignStart,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                            labelText: 'Kampanya Başlangıç',
-                            border: OutlineInputBorder()),
-                        onTap: () {
-                          DatePicker.showDateTimePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime.now(),
-                              maxTime: DateTime(2050, 1, 1), onConfirm: (date) {
-                            setState(() {
-                              _startDate = Timestamp.fromDate(date);
-                              _start.text = formatDate(_startDate);
-                              _finish.text = '';
-                            });
-                          },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.tr);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: TextFormField(
-                        validator: validateCampaignFinish,
-                        controller: _finish,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                            labelText: 'Kampanya Bitiş',
-                            border: OutlineInputBorder()),
-                        onTap: () {
-                          if (_startDate != null) {
-                            DatePicker.showDateTimePicker(context,
-                                showTitleActions: true,
-                                minTime: _startDate.toDate(),
-                                maxTime: DateTime(2050, 1, 1),
-                                onConfirm: (date) {
-                              setState(() {
-                                _finishDate = Timestamp.fromDate(date);
-                                _finish.text = formatDate(_finishDate);
-                              });
-                            },
-                                currentTime: _startDate.toDate(),
-                                locale: LocaleType.tr);
-                          } else {
-                            ToastService().showWarning(
-                                "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
-                                context);
-                          }
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: (_selectedCampaign == null)
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextButton(
-                                  onPressed: () {
-                                    saveYesNo();
+            content: Column(
+              children: [
+                (campaignPic != null)
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height / 4,
+                        width: MediaQuery.of(context).size.width,
+                        child: Image.file(campaignPic, fit: BoxFit.fill),
+                      )
+                    : (_selectedCampaign != null &&
+                            _selectedCampaign.campaignPicRef != null)
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height / 4,
+                            width: MediaQuery.of(context).size.width,
+                            child: Image.network(
+                                _selectedCampaign.campaignPicRef,
+                                fit: BoxFit.fill),
+                          )
+                        : Placeholder(
+                            fallbackHeight:
+                                MediaQuery.of(context).size.height / 4,
+                          ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: TextFormField(
+                              maxLength: 255,
+                              validator: validateCampaignDesc,
+                              enabled: (_selectedCampaign != null &&
+                                      _selectedCampaign.campaignActive == false)
+                                  ? false
+                                  : true,
+                              maxLines: 3,
+                              controller: _desc,
+                              decoration: InputDecoration(
+                                  labelText: 'Kampanya Açıklaması',
+                                  border: OutlineInputBorder()),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: TextFormField(
+                              validator: validateCampaignKey,
+                              enabled: (_selectedCampaign != null &&
+                                      _selectedCampaign.campaignActive == false)
+                                  ? false
+                                  : true,
+                              controller: _key,
+                              maxLength: 15,
+                              decoration: InputDecoration(
+                                  labelText: 'Kampanya Anahtarı',
+                                  prefix: Text('#'),
+                                  border: OutlineInputBorder()),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: TextFormField(
+                              controller: _start,
+                              validator: validateCampaignStart,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                  labelText: 'Kampanya Başlangıç',
+                                  border: OutlineInputBorder()),
+                              onTap: () {
+                                DatePicker.showDateTimePicker(context,
+                                    showTitleActions: true,
+                                    minTime: DateTime.now(),
+                                    maxTime: DateTime(2050, 1, 1),
+                                    onConfirm: (date) {
+                                  setState(() {
+                                    _startDate = Timestamp.fromDate(date);
+                                    _start.text = formatDate(_startDate);
+                                    _finish.text = '';
+                                  });
+                                },
+                                    currentTime: DateTime.now(),
+                                    locale: LocaleType.tr);
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: TextFormField(
+                              validator: validateCampaignFinish,
+                              controller: _finish,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                  labelText: 'Kampanya Bitiş',
+                                  border: OutlineInputBorder()),
+                              onTap: () {
+                                if (_startDate != null) {
+                                  DatePicker.showDateTimePicker(context,
+                                      showTitleActions: true,
+                                      minTime: _startDate.toDate(),
+                                      maxTime: DateTime(2050, 1, 1),
+                                      onConfirm: (date) {
+                                    setState(() {
+                                      _finishDate = Timestamp.fromDate(date);
+                                      _finish.text = formatDate(_finishDate);
+                                    });
                                   },
-                                  child: Text(
-                                    'Kampanyayı Kaydet',
-                                    style: TextStyle(color: Colors.green[900]),
-                                  ),
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all<EdgeInsets>(
-                                          EdgeInsets.all(15)),
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.green[900]),
-                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                              side: BorderSide(
-                                                  width: 2,
-                                                  color: Colors.green[900]))))))
-                          : (_selectedCampaign.campaignActive == true ||
-                                  _startDate.millisecondsSinceEpoch >
-                                      Timestamp.fromDate(DateTime.now())
-                                          .millisecondsSinceEpoch)
-                              ? Column(
-                                  children: [
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: TextButton(
-                                            onPressed: () {
-                                              updateYesNo();
-                                            },
-                                            child: Text(
-                                              'Kampanyayı Güncelle',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.green[800],
-                                            ))),
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: TextButton(
-                                            onPressed: () {
-                                              removeYesNo();
-                                            },
-                                            child: Text(
-                                              'Kampanyayı Sonlandır',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Theme.of(context)
-                                                  .primaryColor,
-                                            )))
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: TextButton(
-                                            onPressed: () {
-                                              renewYesNo();
-                                            },
-                                            child: Text(
-                                              'Yeniden Kampanya Ver',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.green[800],
-                                            ))),
-                                    SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: TextButton(
-                                            onPressed: () {
-                                              deleteYesNo();
-                                            },
-                                            child: Text(
-                                              'Kampanyayı Listeden Kaldır',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Theme.of(context)
-                                                  .primaryColor,
-                                            )))
-                                  ],
-                                ),
+                                      currentTime: _startDate.toDate(),
+                                      locale: LocaleType.tr);
+                                } else {
+                                  ToastService().showWarning(
+                                      "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
+                                      context);
+                                }
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: (_selectedCampaign == null)
+                                ? Column(
+                                    children: [
+                                      SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: TextButton(
+                                              onPressed: () {
+                                                getImage();
+                                              },
+                                              child: Text(
+                                                'Resim Ekle',
+                                                style: TextStyle(
+                                                    color: Colors.red[900]),
+                                              ),
+                                              style: ButtonStyle(
+                                                  padding:
+                                                      MaterialStateProperty.all<EdgeInsets>(
+                                                          EdgeInsets.all(15)),
+                                                  foregroundColor:
+                                                      MaterialStateProperty.all<Color>(
+                                                          Colors.red[900]),
+                                                  shape: MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(50.0),
+                                                          side: BorderSide(width: 2, color: Colors.red[900])))))),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: SizedBox(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: TextButton(
+                                                onPressed: () {
+                                                  saveYesNo();
+                                                },
+                                                child: Text(
+                                                  'Kampanyayı Kaydet',
+                                                  style: TextStyle(
+                                                      color: Colors.green[900]),
+                                                ),
+                                                style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all<EdgeInsets>(
+                                                            EdgeInsets.all(15)),
+                                                    foregroundColor:
+                                                        MaterialStateProperty.all<Color>(
+                                                            Colors.green[900]),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(50.0),
+                                                            side: BorderSide(width: 2, color: Colors.green[900])))))),
+                                      ),
+                                    ],
+                                  )
+                                : (_selectedCampaign.campaignActive == true ||
+                                        _startDate.millisecondsSinceEpoch >
+                                            Timestamp.fromDate(DateTime.now())
+                                                .millisecondsSinceEpoch)
+                                    ? Column(
+                                        children: [
+                                          SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  updateYesNo();
+                                                },
+                                                child: Text(
+                                                  'Kampanyayı Güncelle',
+                                                  style: TextStyle(
+                                                      color: Colors.green[800]),
+                                                ),
+                                                style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all<EdgeInsets>(
+                                                            EdgeInsets.all(15)),
+                                                    foregroundColor:
+                                                        MaterialStateProperty.all<Color>(
+                                                            Colors.green[800]),
+                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    50.0),
+                                                            side: BorderSide(
+                                                                width: 2,
+                                                                color: Colors.green[800])))),
+                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      getImage();
+                                                    },
+                                                    child: Text(
+                                                      'Resim Değiştir',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.red[900]),
+                                                    ),
+                                                    style: ButtonStyle(
+                                                        padding: MaterialStateProperty.all<EdgeInsets>(
+                                                            EdgeInsets.all(15)),
+                                                        foregroundColor: MaterialStateProperty.all<Color>(
+                                                            Colors.green[900]),
+                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius.circular(
+                                                                        50.0),
+                                                                side: BorderSide(
+                                                                    width: 2,
+                                                                    color: Colors.red[900])))))),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    removeYesNo();
+                                                  },
+                                                  child: Text(
+                                                    'Kampanyayı Sonlandır',
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      padding: MaterialStateProperty.all<EdgeInsets>(
+                                                          EdgeInsets.all(15)),
+                                                      foregroundColor:
+                                                          MaterialStateProperty.all<Color>(
+                                                              Theme.of(context)
+                                                                  .primaryColor),
+                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(
+                                                                  50.0),
+                                                              side: BorderSide(
+                                                                  width: 2,
+                                                                  color: Theme.of(context).primaryColor)))),
+                                                )),
+                                          )
+                                        ],
+                                      )
+                                    : Column(
+                                        children: [
+                                          SizedBox(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  renewYesNo();
+                                                },
+                                                child: Text(
+                                                  'Yeniden Kampanya Ver',
+                                                  style: TextStyle(
+                                                      color: Colors.green[800]),
+                                                ),
+                                                style: ButtonStyle(
+                                                    padding:
+                                                        MaterialStateProperty.all<EdgeInsets>(
+                                                            EdgeInsets.all(15)),
+                                                    foregroundColor:
+                                                        MaterialStateProperty.all<Color>(
+                                                            Colors.green[800]),
+                                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    50.0),
+                                                            side: BorderSide(
+                                                                width: 2,
+                                                                color: Colors.green[800])))),
+                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: SizedBox(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    deleteYesNo();
+                                                  },
+                                                  child: Text(
+                                                    'Kampanyayı Listeden Kaldır',
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      padding: MaterialStateProperty.all<EdgeInsets>(
+                                                          EdgeInsets.all(15)),
+                                                      foregroundColor:
+                                                          MaterialStateProperty.all<Color>(
+                                                              Theme.of(context)
+                                                                  .primaryColor),
+                                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(
+                                                                  50.0),
+                                                              side: BorderSide(
+                                                                  width: 2,
+                                                                  color: Theme.of(context).primaryColor)))),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           );
         });
@@ -659,7 +868,7 @@ class _CampaignsState extends State<Campaigns> {
                   stream: FirestoreService().getStoreCampaigns(),
                   builder: (context, snapshot) {
                     return (snapshot.connectionState == ConnectionState.active)
-                        ? (snapshot.data.length != 0)
+                        ? (snapshot.data != null && snapshot.data.length != 0)
                             ? ListView.builder(
                                 itemCount: snapshot.data.length,
                                 itemBuilder: (context, index) {
@@ -676,7 +885,10 @@ class _CampaignsState extends State<Campaigns> {
                                         shadowColor: Colors.black,
                                         elevation: 5.0,
                                         child: Container(
-                                          height: 440,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5,
                                           child: InkWell(
                                               onTap: () {
                                                 setState(() {
@@ -688,32 +900,61 @@ class _CampaignsState extends State<Campaigns> {
                                               child: Column(
                                                 children: [
                                                   Expanded(
-                                                    flex: 2,
+                                                    flex: 6,
                                                     child: Stack(
                                                       children: [
-                                                        ColorFiltered(
-                                                          colorFilter:
-                                                              ColorFilter.mode(
-                                                                  Colors
-                                                                      .black
-                                                                      .withOpacity(
-                                                                          0.6),
-                                                                  BlendMode
-                                                                      .multiply),
-                                                          child: Container(
-                                                            width:
-                                                                MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width,
-                                                            child: Image.network(
+                                                        (snapshot.data[index]
+                                                                    .campaignPicRef !=
+                                                                null)
+                                                            ? Image.network(
                                                                 snapshot
                                                                     .data[index]
                                                                     .campaignPicRef,
+                                                                loadingBuilder:
+                                                                    (context, child,
+                                                                        loadingProgress) {
+                                                                return loadingProgress ==
+                                                                        null
+                                                                    ? Container(
+                                                                        width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width,
+                                                                        child: ColorFiltered(
+                                                                            colorFilter:
+                                                                                ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.multiply),
+                                                                            child: child),
+                                                                      )
+                                                                    : Center(
+                                                                        child:
+                                                                            CircularProgressIndicator(
+                                                                          backgroundColor:
+                                                                              Colors.white,
+                                                                        ),
+                                                                      );
+                                                              },
                                                                 fit: BoxFit
-                                                                    .fitWidth),
-                                                          ),
-                                                        ),
+                                                                    .fitWidth)
+                                                            : Container(
+                                                                color: Theme.of(context)
+                                                                    .primaryColor,
+                                                                width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width,
+                                                                height:
+                                                                    MediaQuery.of(context)
+                                                                        .size
+                                                                        .height,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    'Kampanya Resim Yok',
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            20.0),
+                                                                  ),
+                                                                )),
                                                         Positioned(
                                                           bottom: 10,
                                                           right: 25,
@@ -861,7 +1102,7 @@ class _CampaignsState extends State<Campaigns> {
                                                     ),
                                                   ),
                                                   Expanded(
-                                                      flex: 1,
+                                                      flex: 4,
                                                       child: Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -905,7 +1146,7 @@ class _CampaignsState extends State<Campaigns> {
                                                                                 fontSize: 16.0),
                                                                           )
                                                                         : Text(
-                                                                            'Kampanya İnaktif'.toUpperCase(),
+                                                                            'Kampanya Yayında Değil'.toUpperCase(),
                                                                             textAlign:
                                                                                 TextAlign.center,
                                                                             style: TextStyle(

@@ -176,6 +176,7 @@ class FirestoreService {
         .doc(_userId)
         .collection('campaigns')
         .orderBy('createdAt', descending: true)
+        .where('delInd', isEqualTo: false)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => Campaign.fromFirestore(doc.data()))
@@ -184,6 +185,14 @@ class FirestoreService {
 
   Future<String> saveCampaign(Campaign campaign) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
+    if (campaign.campaignLocalImage != null) {
+      await savePicture(campaign.campaignLocalImage, campaign.campaignId)
+          .onError((error, stackTrace) => throw error)
+          .whenComplete(() {
+        campaign.campaignPicRef = downloadUrl;
+      });
+    }
 
     try {
       await _db
@@ -215,6 +224,14 @@ class FirestoreService {
 
   Future<String> updateCampaign(Campaign campaign) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
+    if (campaign.campaignLocalImage != null) {
+      await savePicture(campaign.campaignLocalImage, campaign.campaignId)
+          .onError((error, stackTrace) => throw error)
+          .whenComplete(() {
+        campaign.campaignPicRef = downloadUrl;
+      });
+    }
 
     try {
       await _db
@@ -297,7 +314,7 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .doc(campaignId)
-          .delete();
+          .update({'campaignActive': false, 'delInd': true});
 
       await _db
           .collection('markers')

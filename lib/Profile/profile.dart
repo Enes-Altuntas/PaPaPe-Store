@@ -12,6 +12,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -272,21 +273,31 @@ class _ProfileState extends State<Profile> {
     setState(() {
       isLoading = true;
     });
-    final _picker = ImagePicker();
-    PickedFile image;
     await Permission.photos.request();
     PermissionStatus permissionStatus = await Permission.photos.status;
     if (permissionStatus.isGranted) {
-      image = await _picker
-          .getImage(source: ImageSource.gallery)
-          .whenComplete(() => setState(() {
-                isLoading = false;
-              }));
-      File file = File(image.path);
+      PickedFile image =
+          await ImagePicker().getImage(source: ImageSource.gallery);
       if (image != null) {
-        _storeProvider.changeStoreLocalImagePath(file);
+        File cropped = await ImageCropper.cropImage(
+            sourcePath: image.path,
+            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2),
+            compressQuality: 100,
+            compressFormat: ImageCompressFormat.jpg,
+            androidUiSettings: AndroidUiSettings(
+                toolbarTitle: 'Resmi Düzenle',
+                toolbarColor: Theme.of(context).primaryColor,
+                statusBarColor: Theme.of(context).primaryColor,
+                backgroundColor: Colors.white));
+
+        if (cropped != null) {
+          _storeProvider.changeStoreLocalImagePath(cropped);
+        }
       }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   checkTaxNo(String value) {
@@ -466,7 +477,25 @@ class _ProfileState extends State<Profile> {
                                             MediaQuery.of(context).size.width,
                                         child: Image.network(
                                           _storeProvider.storePicRef,
-                                          fit: BoxFit.scaleDown,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            return loadingProgress == null
+                                                ? Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                            .size
+                                                            .width,
+                                                    child: child,
+                                                  )
+                                                : Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      backgroundColor:
+                                                          Colors.white,
+                                                    ),
+                                                  );
+                                          },
+                                          fit: BoxFit.fitWidth,
                                         ),
                                       )
                                     : Placeholder(
