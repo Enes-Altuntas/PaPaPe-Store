@@ -13,10 +13,10 @@ exports.campaignCheckStart = functions.pubsub.schedule('* * * * *').onRun(async 
             var query = db.collection('stores/' + doc.id + '/campaigns')
             query = query.where('automatedStart', '==', false)
             query = query.where('campaignStart', '<=', firestore.Timestamp.now())
-            query = query.where('campaignActive', '==', false)
+            query = query.where('campaignStatus', '==', 'inactive')
             await query.get().then((valueCamp) => {
                 valueCamp.docs.forEach(async (campaign) => {
-                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', true, 'automatedStart', true);
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', 'active', 'automatedStart', true);
                     await db.doc('markers/' + doc.id).update('hasCampaign', true);
                     await db.doc('tokens/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
@@ -38,10 +38,10 @@ exports.campaignCheckFinish = functions.pubsub.schedule('* * * * *').onRun(async
             var query = db.collection('stores/' + doc.id + '/campaigns')
             query = query.where('automatedStop', '==', false)
             query = query.where('campaignFinish', '<=', firestore.Timestamp.now())
-            query = query.where('campaignActive', '==', true)
+            query = query.where('campaignStatus', '==', 'active')
             await query.get().then((valueCamp) => {
                 valueCamp.docs.forEach(async (campaign) => {
-                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', false, 'automatedStop', true);
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'inactive', 'automatedStop', true);
                     await db.doc('markers/' + doc.id).update('hasCampaign', false);
                     await db.doc('tokens/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
@@ -63,10 +63,10 @@ exports.campaignStartHttp = functions.https.onRequest(async (req, res) => {
             var query = db.collection('stores/' + doc.id + '/campaigns')
             query = query.where('automatedStart', '==', false)
             query = query.where('campaignStart', '<=', firestore.Timestamp.now())
-            query = query.where('campaignActive', '==', false)
+            query = query.where('campaignStatus', '==', 'wait')
             await query.get().then((valueCamp) => {
                 valueCamp.docs.forEach(async (campaign) => {
-                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', true, 'automatedStart', true);
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'active', 'automatedStart', true);
                     await db.doc('markers/' + doc.id).update('hasCampaign', true);
                     await db.doc('tokens/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
@@ -89,10 +89,10 @@ exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
             var query = db.collection('stores/' + doc.id + '/campaigns')
             query = query.where('automatedStop', '==', false)
             query = query.where('campaignFinish', '<=', firestore.Timestamp.now())
-            query = query.where('campaignActive', '==', true)
+            query = query.where('campaignStatus', '==', 'active')
             await query.get().then((valueCamp) => {
                 valueCamp.docs.forEach(async (campaign) => {
-                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', false, 'automatedStop', true);
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'inactive', 'automatedStop', true);
                     await db.doc('markers/' + doc.id).update('hasCampaign', false);
                     await db.doc('tokens/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
@@ -107,4 +107,16 @@ exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
         })
     });
     res.send('Başarılı !');
-})
+});
+
+exports.commentCreate = functions.firestore.document('stores/{storeId}/reports/{reportId}').onCreate(async (snapshot, context) => {
+    const { storeId } = context.params;
+    await db.doc('tokens/' + storeId).get().then(async (token) => {
+        await admin.messaging().sendToDevice(token.data().tokenId, {
+            notification: {
+                title: "Yeni Yorum Geldi !",
+                body: 'Sanırım birileri size bir şey söylemek istiyor.'
+            }
+        })
+    })
+});

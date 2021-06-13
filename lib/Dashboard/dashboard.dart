@@ -89,7 +89,6 @@ class _DashboardState extends State<Dashboard> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           leading: GestureDetector(
               onTap: () {
@@ -107,7 +106,13 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
               )),
-          backgroundColor: Theme.of(context).primaryColor,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.red[600], Colors.purple[500]],
+                    begin: Alignment.centerRight,
+                    end: Alignment.centerLeft)),
+          ),
           elevation: 0,
           centerTitle: true,
           bottom: TabBar(
@@ -118,15 +123,14 @@ class _DashboardState extends State<Dashboard> {
               Tab(
                 text: 'Kampanyalar',
               ),
-              Tab(text: 'Menü'),
+              Tab(text: 'Ürünler'),
               Tab(
                 text: 'Yorumlar',
               ),
             ],
           ),
-          title: Text('BULB',
-              style: TextStyle(
-                  fontSize: 25.0, fontFamily: 'Bebas', color: Colors.white)),
+          title: Text('bulb',
+              style: TextStyle(fontSize: 30.0, color: Colors.white)),
           actions: [
             TextButton(
                 onPressed: () {
@@ -142,45 +146,52 @@ class _DashboardState extends State<Dashboard> {
                 )),
           ],
         ),
-        body: FutureBuilder(
-            future: getUserInfo,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return (snapshot.connectionState == ConnectionState.done)
-                  ? (isLoading == false)
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(50.0),
-                                            topRight: Radius.circular(50.0))),
-                                    child: TabBarView(
-                                      children: [
-                                        Campaigns(),
-                                        Menu(),
-                                        Reports(),
-                                      ],
-                                    )),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: Colors.white,
-                          ),
-                        )
-                  : Center(
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.white,
-                      ),
-                    );
-            }),
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.red[600], Colors.purple[500]],
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft)),
+          child: FutureBuilder(
+              future: getUserInfo,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return (snapshot.connectionState == ConnectionState.done)
+                    ? (isLoading == false)
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(50.0),
+                                              topRight: Radius.circular(50.0))),
+                                      child: TabBarView(
+                                        children: [
+                                          Campaigns(),
+                                          Menu(),
+                                          Reports(),
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.white,
+                            ),
+                          )
+                    : Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                        ),
+                      );
+              }),
+        ),
       ),
     );
   }

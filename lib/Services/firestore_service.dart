@@ -201,7 +201,7 @@ class FirestoreService {
           .collection('campaigns')
           .get()
           .then((value) => value.docs.forEach((element) {
-                element.reference.update({'campaignActive': false});
+                element.reference.update({'campaignStatus': 'inactive'});
               }));
 
       await _db
@@ -262,7 +262,7 @@ class FirestoreService {
           .collection('campaigns')
           .get()
           .then((value) => value.docs.forEach((element) {
-                element.reference.update({'campaignActive': false});
+                element.reference.update({'campaignStatus': 'inactive'});
               }));
 
       await _db
@@ -292,7 +292,7 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .doc(campaignId)
-          .update({'campaignActive': false});
+          .update({'campaignStatus': 'inactive'});
 
       await _db
           .collection('markers')
@@ -314,7 +314,7 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .doc(campaignId)
-          .update({'campaignActive': false, 'delInd': true});
+          .update({'campaignActive': 'inactive', 'delInd': true});
 
       await _db
           .collection('markers')

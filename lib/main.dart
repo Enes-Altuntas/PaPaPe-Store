@@ -36,9 +36,9 @@ class MyApp extends StatelessWidget {
           title: 'Bulovva İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primaryColor: Colors.red.shade900,
+            primaryColor: Colors.purple,
             primaryColorDark: Colors.black,
-            accentColor: Colors.red,
+            accentColor: Colors.red[600],
             hintColor: Colors.grey.shade800,
           ),
           home: Login()),

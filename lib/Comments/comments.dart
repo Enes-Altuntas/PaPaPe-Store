@@ -29,43 +29,52 @@ class _ReportsState extends State<Reports> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
+                                clipBehavior: Clip.antiAlias,
                                 color: Colors.white,
                                 shadowColor: Colors.black,
                                 elevation: 5.0,
-                                child: ListTile(
-                                  title: Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
-                                    child: Text(
-                                      snapshot.data[index].reportTitle,
-                                      style: TextStyle(
-                                          color: Theme.of(context).hintColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17.0),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          snapshot.data[index].reportDesc,
-                                          style: TextStyle(
-                                              color:
-                                                  Theme.of(context).hintColor),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10.0),
-                                          child: Text(
-                                              'Puan: ${snapshot.data[index].reportScore.toString()}',
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .hintColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15.0)),
-                                        ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          colors: [
+                                        Colors.red[600],
+                                        Colors.purple
                                       ],
+                                          begin: Alignment.bottomRight,
+                                          end: Alignment.topLeft)),
+                                  child: ListTile(
+                                    title: Padding(
+                                      padding: const EdgeInsets.only(top: 8.0),
+                                      child: Text(
+                                        snapshot.data[index].reportTitle,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17.0),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            snapshot.data[index].reportDesc,
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: Text(
+                                                'Puan: ${snapshot.data[index].reportScore.toString()}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.0)),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

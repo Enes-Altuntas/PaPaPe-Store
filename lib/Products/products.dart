@@ -733,7 +733,7 @@ class _MenuState extends State<Menu> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                padding: const EdgeInsets.only(bottom: 10.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: TextButton(
@@ -803,9 +803,8 @@ class _MenuState extends State<Menu> {
                                                         GestureDetector(
                                                           child: Icon(
                                                               Icons.edit,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor),
+                                                              color: Colors
+                                                                  .red[600]),
                                                           onTap: () {
                                                             setState(() {
                                                               _selectedCategory =
@@ -824,9 +823,8 @@ class _MenuState extends State<Menu> {
                                                               GestureDetector(
                                                             child: Icon(
                                                               Icons.delete,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .primaryColor,
+                                                              color: Colors
+                                                                  .red[600],
                                                             ),
                                                             onTap: () {
                                                               deleteCatYesNo(
@@ -877,39 +875,53 @@ class _MenuState extends State<Menu> {
                                                                             child:
                                                                                 Card(
                                                                               elevation: 5,
+                                                                              shape: RoundedRectangleBorder(
+                                                                                borderRadius: BorderRadius.circular(50.0),
+                                                                              ),
+                                                                              clipBehavior: Clip.antiAlias,
                                                                               color: Colors.white,
-                                                                              child: ListTile(
-                                                                                onTap: () {
-                                                                                  setState(() {
-                                                                                    _selectedProduct = snapshotProduct.data[indexDishes];
-                                                                                  });
-                                                                                  openProductDialog();
-                                                                                },
-                                                                                title: Row(
-                                                                                  children: [
-                                                                                    Text(
-                                                                                      snapshotProduct.data[indexDishes].productName,
-                                                                                      style: TextStyle(color: Theme.of(context).hintColor, fontWeight: FontWeight.bold, fontSize: 16.0),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                                trailing: Column(
-                                                                                  children: [],
-                                                                                ),
-                                                                                subtitle: Padding(
-                                                                                  padding: const EdgeInsets.only(top: 8.0),
-                                                                                  child: Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    children: [
-                                                                                      Text(snapshotProduct.data[indexDishes].productDesc, style: TextStyle(color: Theme.of(context).hintColor)),
-                                                                                      Padding(
-                                                                                        padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                                                                        child: Text(
-                                                                                          'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} ${snapshotProduct.data[indexDishes].currency}',
-                                                                                          style: TextStyle(color: Theme.of(context).hintColor, fontWeight: FontWeight.bold, fontSize: 15.0),
+                                                                              child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                    gradient: LinearGradient(colors: [
+                                                                                  Colors.red[600],
+                                                                                  Colors.purple
+                                                                                ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(15.0),
+                                                                                  child: ListTile(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        _selectedProduct = snapshotProduct.data[indexDishes];
+                                                                                      });
+                                                                                      openProductDialog();
+                                                                                    },
+                                                                                    title: Row(
+                                                                                      children: [
+                                                                                        Text(
+                                                                                          snapshotProduct.data[indexDishes].productName,
+                                                                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
                                                                                         ),
+                                                                                      ],
+                                                                                    ),
+                                                                                    trailing: Column(
+                                                                                      children: [],
+                                                                                    ),
+                                                                                    subtitle: Padding(
+                                                                                      padding: const EdgeInsets.only(top: 8.0),
+                                                                                      child: Column(
+                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                        children: [
+                                                                                          Text(snapshotProduct.data[indexDishes].productDesc, style: TextStyle(color: Colors.white)),
+                                                                                          Padding(
+                                                                                            padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                                                                            child: Text(
+                                                                                              'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} ${snapshotProduct.data[indexDishes].currency}',
+                                                                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0),
+                                                                                            ),
+                                                                                          ),
+                                                                                        ],
                                                                                       ),
-                                                                                    ],
+                                                                                    ),
                                                                                   ),
                                                                                 ),
                                                                               ),
