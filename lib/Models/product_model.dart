@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class Product {
   final String productDesc;
   final String productName;
@@ -5,15 +7,18 @@ class Product {
   final String productId;
   final String currency;
   final String productCatId;
+  String productPicRef;
+  File productLocalImage;
 
-  Product({
-    this.productDesc,
-    this.productName,
-    this.productPrice,
-    this.productId,
-    this.currency,
-    this.productCatId,
-  });
+  Product(
+      {this.productDesc,
+      this.productName,
+      this.productPrice,
+      this.productId,
+      this.currency,
+      this.productCatId,
+      this.productPicRef,
+      this.productLocalImage});
 
   Product.fromFirestore(Map<String, dynamic> data)
       : productDesc = data['productDesc'],
@@ -21,7 +26,8 @@ class Product {
         productPrice = data['productPrice'],
         productId = data['productId'],
         currency = data['currency'],
-        productCatId = data['productCatId'];
+        productCatId = data['productCatId'],
+        productPicRef = data['productPicRef'];
 
   Map<String, dynamic> toMap() {
     return {
@@ -31,6 +37,7 @@ class Product {
       'productId': productId,
       'currency': currency,
       'productCatId': productCatId,
+      'productPicRef': productPicRef,
     };
   }
 }
