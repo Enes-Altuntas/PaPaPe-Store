@@ -446,6 +446,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -456,8 +457,9 @@ class _CampaignSingleState extends State<CampaignSingle> {
         ),
         elevation: 0,
         centerTitle: true,
-        title:
-            Text('bulb', style: TextStyle(fontSize: 30.0, color: Colors.white)),
+        title: Text('bulb',
+            style: TextStyle(
+                fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
       ),
       body: Container(
         decoration: BoxDecoration(

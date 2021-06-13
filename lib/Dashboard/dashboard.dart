@@ -89,6 +89,7 @@ class _DashboardState extends State<Dashboard> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           leading: GestureDetector(
               onTap: () {
@@ -130,7 +131,8 @@ class _DashboardState extends State<Dashboard> {
             ],
           ),
           title: Text('bulb',
-              style: TextStyle(fontSize: 30.0, color: Colors.white)),
+              style: TextStyle(
+                  fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
           actions: [
             TextButton(
                 onPressed: () {

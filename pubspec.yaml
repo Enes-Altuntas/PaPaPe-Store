@@ -67,9 +67,9 @@ flutter:
       fonts:
         - asset: assets/fonts/BebasNeue-Regular.ttf
           weight: 400
-    - family: Redressed
+    - family: Dancing
       fonts:
-        - asset: assets/fonts/Redressed-Regular.ttf
+        - asset: assets/fonts/DancingScript-Regular.ttf
           weight: 400
     - family: Roboto
       fonts:
