@@ -119,10 +119,50 @@ class _CampaignsState extends State<Campaigns> {
                                                         MediaQuery.of(context)
                                                             .size
                                                             .width,
-                                                    child: Image.network(
-                                                        snapshot.data[index]
-                                                            .campaignPicRef,
-                                                        fit: BoxFit.fitWidth),
+                                                    decoration: BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                            colors: [
+                                                          Colors.red[600],
+                                                          Colors.purple[500]
+                                                        ],
+                                                            begin: Alignment
+                                                                .centerRight,
+                                                            end: Alignment
+                                                                .centerLeft)),
+                                                    child: (snapshot.data[index]
+                                                                .campaignPicRef !=
+                                                            null)
+                                                        ? Image.network(
+                                                            snapshot.data[index]
+                                                                .campaignPicRef,
+                                                            loadingBuilder:
+                                                                (context, child,
+                                                                    loadingProgress) {
+                                                            return loadingProgress ==
+                                                                    null
+                                                                ? child
+                                                                : Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                    ),
+                                                                  );
+                                                          },
+                                                            fit:
+                                                                BoxFit.fitWidth)
+                                                        : Center(
+                                                            child: Text(
+                                                                'Kampanya Resmi Yok',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontFamily:
+                                                                        'Bebas',
+                                                                    fontSize:
+                                                                        20.0)),
+                                                          ),
                                                   ),
                                                   Positioned(
                                                       right: 20.0,
@@ -181,30 +221,16 @@ class _CampaignsState extends State<Campaigns> {
                                                 ],
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10.0),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 10.0),
-                                                  child: Flexible(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                          snapshot.data[index]
-                                                              .campaignTitle,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                              fontSize: 18.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                    ),
-                                                  ),
-                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Text(
+                                                    snapshot.data[index]
+                                                        .campaignTitle,
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 18.0,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
                                               ),
                                               Padding(
                                                 padding:

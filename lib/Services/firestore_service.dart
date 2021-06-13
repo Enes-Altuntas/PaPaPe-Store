@@ -255,6 +255,14 @@ class FirestoreService {
   Future<String> renewCampaign(Campaign campaign) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
+    if (campaign.campaignLocalImage != null) {
+      await savePicture(campaign.campaignLocalImage, campaign.campaignId)
+          .onError((error, stackTrace) => throw error)
+          .whenComplete(() {
+        campaign.campaignPicRef = downloadUrl;
+      });
+    }
+
     try {
       await _db
           .collection('stores')

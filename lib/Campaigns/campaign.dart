@@ -97,6 +97,16 @@ class _CampaignSingleState extends State<CampaignSingle> {
     }
   }
 
+  deleteImage() {
+    setState(() {
+      campaignPic = null;
+    });
+    if (widget.campaignData != null &&
+        widget.campaignData.campaignPicRef != null) {
+      widget.campaignData.campaignPicRef = null;
+    }
+  }
+
   getImage() async {
     setState(() {
       isLoading = true;
@@ -173,15 +183,15 @@ class _CampaignSingleState extends State<CampaignSingle> {
           automatedStart: false,
           automatedStop: false,
           campaignStatus: 'wait',
+          campaignTitle: _title.text,
           campaignId: widget.campaignData.campaignId,
-          campaignDesc: widget.campaignData.campaignDesc,
+          campaignDesc: _desc.text,
           campaignFinish: _finishDate,
-          campaignKey: widget.campaignData.campaignKey,
+          campaignKey: _key.text.toUpperCase(),
           delInd: false,
           campaignStart: _startDate,
-          campaignLocalImage: (campaignPic != null)
-              ? campaignPic
-              : widget.campaignData.campaignPicRef,
+          campaignLocalImage: campaignPic,
+          campaignPicRef: widget.campaignData.campaignPicRef,
           campaignCounter: widget.campaignData.campaignCounter,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -213,13 +223,13 @@ class _CampaignSingleState extends State<CampaignSingle> {
           automatedStart: false,
           automatedStop: false,
           campaignStatus: 'wait',
+          campaignTitle: _title.text,
           campaignId: widget.campaignData.campaignId,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
           delInd: false,
-          campaignLocalImage: (campaignPic != null)
-              ? campaignPic
-              : widget.campaignData.campaignPicRef,
+          campaignLocalImage: campaignPic,
+          campaignPicRef: widget.campaignData.campaignPicRef,
           campaignKey: _key.text.toUpperCase(),
           campaignCounter: widget.campaignData.campaignCounter,
           campaignStart: _startDate,
@@ -518,9 +528,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                               ))),
                                       TextButton(
                                           onPressed: () {
-                                            setState(() {
-                                              campaignPic = null;
-                                            });
+                                            deleteImage();
                                           },
                                           child: Container(
                                               height: 50.0,
@@ -614,9 +622,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                             visible: picBtn,
                                             child: TextButton(
                                                 onPressed: () {
-                                                  setState(() {
-                                                    campaignPic = null;
-                                                  });
+                                                  deleteImage();
                                                 },
                                                 child: Container(
                                                     height: 50.0,
@@ -755,7 +761,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         child: TextFormField(
                                           controller: _start,
                                           validator: validateCampaignStart,
-                                          readOnly: true,
+                                          enabled: isEnabled,
                                           decoration: InputDecoration(
                                               labelText: 'Kampanya Başlangıç',
                                               border: OutlineInputBorder()),
@@ -787,7 +793,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         child: TextFormField(
                                           validator: validateCampaignFinish,
                                           controller: _finish,
-                                          readOnly: true,
+                                          enabled: isEnabled,
                                           decoration: InputDecoration(
                                               labelText: 'Kampanya Bitiş',
                                               border: OutlineInputBorder()),
