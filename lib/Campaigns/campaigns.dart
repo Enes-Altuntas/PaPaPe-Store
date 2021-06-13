@@ -229,6 +229,8 @@ class _CampaignsState extends State<Campaigns> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 18.0,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
                                                         fontWeight:
                                                             FontWeight.bold)),
                                               ),
@@ -242,78 +244,80 @@ class _CampaignsState extends State<Campaigns> {
                                                         TextAlign.center),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 20.0),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Column(
-                                                      children: [
-                                                        Text(
-                                                            formatDate(snapshot
-                                                                .data[index]
-                                                                .campaignStart),
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                child: Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.9,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Colors.red[600],
+                                                            Colors.purple[500]
+                                                          ],
+                                                          begin: Alignment
+                                                              .centerRight,
+                                                          end: Alignment
+                                                              .centerLeft)),
+                                                  child: Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 10.0,
+                                                                bottom: 5.0),
+                                                        child: Text(
+                                                            'Kampanya Başlangıç : ${formatDate(snapshot.data[index].campaignStart)}',
                                                             textAlign: TextAlign
                                                                 .center,
                                                             style: TextStyle(
                                                                 fontSize: 14.0,
+                                                                color: Colors
+                                                                    .white,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold)),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 8.0),
-                                                          child: Text(
-                                                              formatDate(snapshot
-                                                                  .data[index]
-                                                                  .campaignFinish),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      14.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
-                                                        )
-                                                      ],
-                                                    ),
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.0),
-                                                          gradient: LinearGradient(
-                                                              colors: [
-                                                                Colors.red[600],
-                                                                Colors
-                                                                    .purple[500]
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerRight,
-                                                              end: Alignment
-                                                                  .centerLeft)),
-                                                      child: Padding(
+                                                      ),
+                                                      Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(8.0),
+                                                                .only(top: 5.0),
+                                                        child: Text(
+                                                            'Kampanya Bitiş : ${formatDate(snapshot.data[index].campaignFinish)}',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                fontSize: 14.0,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 10.0,
+                                                                bottom: 10.0),
                                                         child: Text(
                                                             '#${snapshot.data[index].campaignKey.toUpperCase()}',
                                                             style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
+                                                                fontSize: 18.0,
                                                                 color: Colors
                                                                     .white)),
                                                       ),
-                                                    )
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ],

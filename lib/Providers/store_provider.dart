@@ -100,6 +100,11 @@ class StoreProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  changeStorePicRef(value) {
+    _storePicRef = value;
+    notifyListeners();
+  }
+
   changePers1(String value) {
     _pers1 = value;
     notifyListeners();

@@ -478,7 +478,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                     topRight: Radius.circular(50.0))),
             child: (isLoading == false)
                 ? Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       (campaignPic != null)
                           ? Padding(
@@ -669,7 +668,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
                                           borderRadius:
-                                              BorderRadius.circular(50.0),
+                                              BorderRadius.circular(35.0),
                                           gradient: LinearGradient(
                                               colors: [
                                                 Colors.red[600],
