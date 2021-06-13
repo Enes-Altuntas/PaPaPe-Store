@@ -99,25 +99,17 @@ class _SignState extends State<Sign> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  color: Theme.of(context).primaryColor,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      gradient: LinearGradient(
+                          colors: [Colors.red[600], Colors.purple[500]],
+                          begin: Alignment.centerRight,
+                          end: Alignment.centerLeft)),
                   child: Form(
                     key: formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 30.0),
-                          child: Container(
-                            height: MediaQuery.of(context).size.height / 5,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/images/icon.png"),
-                                fit: BoxFit.scaleDown,
-                              ),
-                            ),
-                          ),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
