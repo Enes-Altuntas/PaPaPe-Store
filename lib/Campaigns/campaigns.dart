@@ -272,7 +272,8 @@ class _CampaignsState extends State<Campaigns> {
                                                                   width: 40.0,
                                                                   decoration: BoxDecoration(
                                                                       color: Colors
-                                                                          .amber,
+                                                                              .amber[
+                                                                          600],
                                                                       borderRadius:
                                                                           BorderRadius.circular(
                                                                               30.0)),

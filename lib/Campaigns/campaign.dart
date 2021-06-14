@@ -125,6 +125,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
             androidUiSettings: AndroidUiSettings(
                 toolbarTitle: 'Resmi Düzenle',
                 toolbarColor: Theme.of(context).primaryColor,
+                toolbarWidgetColor: Colors.white,
                 statusBarColor: Theme.of(context).primaryColor,
                 backgroundColor: Colors.white));
         setState(() {

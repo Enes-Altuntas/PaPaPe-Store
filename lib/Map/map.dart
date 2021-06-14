@@ -91,45 +91,88 @@ class _MapsState extends State<Maps> {
     }
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: Text('Konum Seçimi',
-              style: TextStyle(
-                  fontSize: 25.0, fontFamily: 'Bebas', color: Colors.white))),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).primaryColor,
-        label: Text(
-          'Konumu Kaydet',
-          style: TextStyle(color: Colors.white),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.red[600], Colors.purple[500]],
+                  begin: Alignment.centerRight,
+                  end: Alignment.centerLeft)),
         ),
-        icon: Icon(
-          Icons.save,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          decidePick();
-        },
+        elevation: 0,
+        centerTitle: true,
+        title: Text('bulb',
+            style: TextStyle(
+                fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      body: Column(
-        children: [
-          Expanded(
-            flex: 10,
-            child: GoogleMap(
-              onMapCreated: (GoogleMapController controller) {
-                changeMapMode();
-                _controller = controller;
-              },
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                      _storeProvider.curLocLat, _storeProvider.curLocLong),
-                  zoom: 17.0),
-              markers: Set.from(picker),
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
-              onTap: pick,
-            ),
-          )
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                colors: [Colors.red[600], Colors.purple[500]],
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft)),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: Column(
+            children: [
+              Expanded(
+                flex: 10,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomCenter,
+                  children: [
+                    GoogleMap(
+                      onMapCreated: (GoogleMapController controller) {
+                        changeMapMode();
+                        _controller = controller;
+                      },
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(_storeProvider.curLocLat,
+                              _storeProvider.curLocLong),
+                          zoom: 17.0),
+                      markers: Set.from(picker),
+                      myLocationButtonEnabled: true,
+                      myLocationEnabled: true,
+                      onTap: pick,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.0),
+                            gradient: LinearGradient(
+                                colors: [Colors.red[600], Colors.purple[500]],
+                                begin: Alignment.centerRight,
+                                end: Alignment.centerLeft)),
+                        child: TextButton(
+                          onPressed: decidePick,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.save,
+                                color: Colors.white,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10.0),
+                                child: Text(
+                                  'Konumu Kaydet',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'Bebas',
+                                      fontSize: 18.0),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
