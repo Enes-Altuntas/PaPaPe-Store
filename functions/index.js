@@ -13,10 +13,10 @@ exports.campaignStartJob = functions.pubsub.schedule('* * * * *').onRun(async (c
             var query = db.collection('stores/' + doc.id + '/campaigns')
             query = query.where('automatedStart', '==', false)
             query = query.where('campaignStart', '<=', firestore.Timestamp.now())
-            query = query.where('campaignStatus', '==', 'inactive')
+            query = query.where('campaignStatus', '==', 'wait')
             await query.get().then((valueCamp) => {
                 valueCamp.docs.forEach(async (campaign) => {
-                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignActive', 'active', 'automatedStart', true);
+                    await db.doc('stores/' + doc.id + '/campaigns/' + campaign.id).update('campaignStatus', 'active', 'automatedStart', true);
                     await db.doc('markers/' + doc.id).update('hasCampaign', true);
                     await db.doc('tokens/' + doc.id).get().then(async (token) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {

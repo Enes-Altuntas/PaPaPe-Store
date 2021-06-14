@@ -210,7 +210,7 @@ class _LoginState extends State<Login> {
                                             border: OutlineInputBorder(),
                                             icon: Icon(
                                                 Icons.account_circle_outlined),
-                                            labelText: 'E-Mail'),
+                                            labelText: 'E-posta'),
                                         validator: validateMail),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10.0),
@@ -221,7 +221,7 @@ class _LoginState extends State<Login> {
                                         decoration: InputDecoration(
                                             border: OutlineInputBorder(),
                                             icon: Icon(Icons.vpn_key_outlined),
-                                            labelText: 'Şifre',
+                                            labelText: 'Parola',
                                             suffixIcon: IconButton(
                                               icon: (isVisible == false)
                                                   ? Icon(Icons.visibility_off)
@@ -247,7 +247,7 @@ class _LoginState extends State<Login> {
                                         TextButton(
                                             onPressed: rememberPass,
                                             child: Text(
-                                              'Şifremi Unuttum !',
+                                              'Parolamı Unuttum !',
                                               style: TextStyle(
                                                   color: Theme.of(context)
                                                       .hintColor),

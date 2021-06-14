@@ -100,7 +100,6 @@ class _SignState extends State<Sign> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
                       gradient: LinearGradient(
                           colors: [Colors.red[600], Colors.purple[500]],
                           begin: Alignment.centerRight,
@@ -110,127 +109,161 @@ class _SignState extends State<Sign> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column(
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.9,
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 20, color: Colors.black)
-                                  ],
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    right: 20.0,
-                                    left: 20.0,
-                                    bottom: 20.0,
-                                    top: 20.0),
-                                child: Column(
-                                  children: [
-                                    TextFormField(
-                                        controller: emailController,
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            icon: Icon(
-                                                Icons.account_circle_outlined),
-                                            labelText: 'E-Mail'),
-                                        validator: validateMail),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                        obscureText:
-                                            (isVisible == false) ? true : false,
-                                        controller: passwordController,
-                                        decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            icon: Icon(Icons.vpn_key_outlined),
-                                            labelText: 'Şifre',
-                                            suffixIcon: IconButton(
-                                              icon: (isVisible == false)
-                                                  ? Icon(Icons.visibility_off)
-                                                  : Icon(Icons.visibility),
-                                              onPressed: () {
-                                                if (isVisible == true) {
-                                                  setState(() {
-                                                    isVisible = false;
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    isVisible = true;
-                                                  });
-                                                }
-                                              },
-                                            )),
-                                        validator: validatePass,
-                                      ),
+                            Text('bulb',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: 'Dancing',
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          color: Colors.black87,
+                                          blurRadius: 20,
+                                          offset: Offset(5.0, 5.0))
+                                    ],
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            10)),
+                            Text('" Bulunduğun lokasyona bak ! "',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          color: Colors.black87,
+                                          blurRadius: 20,
+                                          offset: Offset(5.0, 5.0))
+                                    ],
+                                    fontFamily: 'Dancing',
+                                    fontSize:
+                                        MediaQuery.of(context).size.height /
+                                            30)),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50.0),
+                              boxShadow: [
+                                BoxShadow(blurRadius: 20, color: Colors.black)
+                              ],
+                              color: Colors.white,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 20.0,
+                                  left: 20.0,
+                                  bottom: 20.0,
+                                  top: 20.0),
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                      controller: emailController,
+                                      keyboardType: TextInputType.emailAddress,
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          icon: Icon(
+                                              Icons.account_circle_outlined),
+                                          labelText: 'E-Posta'),
+                                      validator: validateMail),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: TextFormField(
+                                      obscureText:
+                                          (isVisible == false) ? true : false,
+                                      controller: passwordController,
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          icon: Icon(Icons.vpn_key_outlined),
+                                          labelText: 'Yeni Parola',
+                                          suffixIcon: IconButton(
+                                            icon: (isVisible == false)
+                                                ? Icon(Icons.visibility_off)
+                                                : Icon(Icons.visibility),
+                                            onPressed: () {
+                                              if (isVisible == true) {
+                                                setState(() {
+                                                  isVisible = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  isVisible = true;
+                                                });
+                                              }
+                                            },
+                                          )),
+                                      validator: validatePass,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                        obscureText:
-                                            (isVisible == false) ? true : false,
-                                        controller: passwordVerifyController,
-                                        decoration: InputDecoration(
-                                            border: OutlineInputBorder(),
-                                            icon: Icon(Icons.vpn_key_outlined),
-                                            labelText: 'Şifre Tekrar',
-                                            suffixIcon: IconButton(
-                                              icon: (isVisible == false)
-                                                  ? Icon(Icons.visibility_off)
-                                                  : Icon(Icons.visibility),
-                                              onPressed: () {
-                                                if (isVisible == true) {
-                                                  setState(() {
-                                                    isVisible = false;
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    isVisible = true;
-                                                  });
-                                                }
-                                              },
-                                            )),
-                                        validator: validatePass,
-                                      ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: TextFormField(
+                                      obscureText:
+                                          (isVisible == false) ? true : false,
+                                      controller: passwordVerifyController,
+                                      decoration: InputDecoration(
+                                          border: OutlineInputBorder(),
+                                          icon: Icon(Icons.vpn_key_outlined),
+                                          labelText: 'Yeni Parola (Tekrar)',
+                                          suffixIcon: IconButton(
+                                            icon: (isVisible == false)
+                                                ? Icon(Icons.visibility_off)
+                                                : Icon(Icons.visibility),
+                                            onPressed: () {
+                                              if (isVisible == true) {
+                                                setState(() {
+                                                  isVisible = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  isVisible = true;
+                                                });
+                                              }
+                                            },
+                                          )),
+                                      validator: validatePass,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 5.0),
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.9,
-                                        child: ElevatedButton(
-                                            onPressed: signUp,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                FaIcon(
-                                                    FontAwesomeIcons.userPlus),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10.0),
-                                                  child: Text('Kayıt Ol',
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
-                                                ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                          gradient: LinearGradient(
+                                              colors: [
+                                                Colors.red[600],
+                                                Colors.purple[500]
                                               ],
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                                primary: Colors.amber[900])),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                              begin: Alignment.centerRight,
+                                              end: Alignment.centerLeft)),
+                                      child: TextButton(
+                                          onPressed: signUp,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              FaIcon(FontAwesomeIcons.userPlus,
+                                                  color: Colors.white),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Text('Kayıt Ol',
+                                                    style: TextStyle(
+                                                        color: Colors.white)),
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),

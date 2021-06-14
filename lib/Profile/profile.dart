@@ -52,14 +52,20 @@ class _ProfileState extends State<Profile> {
   Future<void> didChangeDependencies() async {
     if (isInit) {
       _storeProvider = Provider.of<StoreProvider>(context);
-      if (_storeProvider != null) {
-        setState(() {
-          picBtn = true;
-        });
-      }
       getUserInfo = _getStoreInfo();
       setState(() {
         isInit = false;
+      });
+    }
+    if (_storeProvider != null &&
+        (_storeProvider.storeLocalImagePath != null ||
+            _storeProvider.storePicRef != null)) {
+      setState(() {
+        picBtn = true;
+      });
+    } else {
+      setState(() {
+        picBtn = false;
       });
     }
     super.didChangeDependencies();
@@ -287,11 +293,12 @@ class _ProfileState extends State<Profile> {
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
-            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2),
+            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
                 toolbarTitle: 'Resmi Düzenle',
+                toolbarWidgetColor: Colors.white,
                 toolbarColor: Theme.of(context).primaryColor,
                 statusBarColor: Theme.of(context).primaryColor,
                 backgroundColor: Colors.white));
@@ -469,90 +476,143 @@ class _ProfileState extends State<Profile> {
                         Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Stack(
-                            alignment: AlignmentDirectional.bottomCenter,
-                            children: [
-                            Container(
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(35.0),
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Colors.red[600],
-                                        Colors.purple[500]
-                                      ],
-                                      begin: Alignment.centerRight,
-                                      end: Alignment.centerLeft)),
-                              child:
-                                  (_storeProvider.storeLocalImagePath != null)
-                                      ? Image.file(
-                                          _storeProvider.storeLocalImagePath)
-                                      : (_storeProvider.storePicRef != null)
-                                          ? Image.network(
-                                              _storeProvider.storePicRef)
-                                          : Text('Resim Ekle'),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              alignment: AlignmentDirectional.bottomCenter,
                               children: [
-                                Visibility(
-                                  visible: picBtn,
-                                  child: TextButton(
-                                      onPressed: () {
-                                        getImageAndUpload();
-                                      },
-                                      child: Container(
-                                          height: 50.0,
-                                          width: 50.0,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
+                                InkWell(
+                                  onTap: getImageAndUpload,
+                                  child: Container(
+                                      clipBehavior: Clip.antiAlias,
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              3.5,
+                                      width: MediaQuery.of(context).size.width,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50.0),
+                                          gradient: LinearGradient(
+                                              colors: [
+                                                Colors.red[600],
+                                                Colors.purple[500]
+                                              ],
+                                              begin: Alignment.centerRight,
+                                              end: Alignment.centerLeft)),
+                                      child: (_storeProvider
+                                                  .storeLocalImagePath !=
+                                              null)
+                                          ? Image.file(
+                                              _storeProvider
+                                                  .storeLocalImagePath,
+                                              fit: BoxFit.fitWidth)
+                                          : (_storeProvider.storePicRef != null)
+                                              ? Image.network(
+                                                  _storeProvider.storePicRef,
+                                                  fit: BoxFit.fitWidth,
+                                                  loadingBuilder: (context,
+                                                      child, loadingProgress) {
+                                                    return loadingProgress ==
+                                                            null
+                                                        ? child
+                                                        : Center(
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                            ),
+                                                          );
+                                                  },
+                                                )
+                                              : Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 20.0),
+                                                      child: Icon(
+                                                        Icons.upload_file,
+                                                        color: Colors.white,
+                                                        size: 50.0,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Resim Ekle',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontFamily: 'Bebas',
+                                                          fontSize: 20.0),
+                                                    ),
                                                   ],
-                                                  begin: Alignment.centerRight,
-                                                  end: Alignment.centerLeft)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.edit,
-                                                  color: Colors.white),
-                                            ],
-                                          ))),
+                                                )),
                                 ),
-                                Visibility(
-                                  visible: picBtn,
-                                  child: TextButton(
-                                      onPressed: () {
-                                        deleteImage();
-                                      },
-                                      child: Container(
-                                          height: 50.0,
-                                          width: 50.0,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
-                                                  ],
-                                                  begin: Alignment.centerRight,
-                                                  end: Alignment.centerLeft)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Icon(Icons.delete,
-                                                  color: Colors.white),
-                                            ],
-                                          ))),
-                                ),
-                              ],
-                            )
-                          ]),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Visibility(
+                                      visible: picBtn,
+                                      child: TextButton(
+                                          onPressed: () {
+                                            getImageAndUpload();
+                                          },
+                                          child: Container(
+                                              height: 50.0,
+                                              width: 50.0,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0),
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.red[600],
+                                                        Colors.purple[500]
+                                                      ],
+                                                      begin:
+                                                          Alignment.centerRight,
+                                                      end: Alignment
+                                                          .centerLeft)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.edit,
+                                                      color: Colors.white),
+                                                ],
+                                              ))),
+                                    ),
+                                    Visibility(
+                                      visible: picBtn,
+                                      child: TextButton(
+                                          onPressed: () {
+                                            deleteImage();
+                                          },
+                                          child: Container(
+                                              height: 50.0,
+                                              width: 50.0,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0),
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.red[600],
+                                                        Colors.purple[500]
+                                                      ],
+                                                      begin:
+                                                          Alignment.centerRight,
+                                                      end: Alignment
+                                                          .centerLeft)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.delete,
+                                                      color: Colors.white),
+                                                ],
+                                              ))),
+                                    ),
+                                  ],
+                                )
+                              ]),
                         ),
                         Expanded(
                           child: Padding(
@@ -1022,6 +1082,59 @@ class _ProfileState extends State<Profile> {
                                                       icon: Icon(Icons.phone),
                                                       border:
                                                           OutlineInputBorder()),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 15.0, bottom: 15.0),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Colors.red[600],
+                                                            Colors.purple[500]
+                                                          ],
+                                                          begin: Alignment
+                                                              .centerRight,
+                                                          end: Alignment
+                                                              .centerLeft)),
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.9,
+                                                  child: TextButton(
+                                                    onPressed: () {
+                                                      saveStore();
+                                                    },
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 8.0),
+                                                          child: Icon(
+                                                            Icons.save,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'Kaydet',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Bebas',
+                                                            color: Colors.white,
+                                                            fontSize: 17,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ],

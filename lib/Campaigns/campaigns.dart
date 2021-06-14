@@ -5,6 +5,7 @@ import 'package:bulovva_store/Services/firestore_service.dart';
 import 'package:bulovva_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -218,6 +219,71 @@ class _CampaignsState extends State<Campaigns> {
                                                           ),
                                                         ),
                                                       )),
+                                                  Positioned(
+                                                      top: 20.0,
+                                                      left: 20.0,
+                                                      child: (snapshot
+                                                                  .data[index]
+                                                                  .campaignStatus ==
+                                                              'active')
+                                                          ? Container(
+                                                              height: 40.0,
+                                                              width: 40.0,
+                                                              decoration: BoxDecoration(
+                                                                  color: Colors
+                                                                      .green,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              30.0)),
+                                                              child: Center(
+                                                                child: FaIcon(
+                                                                    FontAwesomeIcons
+                                                                        .checkCircle,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            )
+                                                          : (snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .campaignStatus ==
+                                                                  'inactive')
+                                                              ? Container(
+                                                                  height: 40.0,
+                                                                  width: 40.0,
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors
+                                                                              .red[
+                                                                          600],
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              30.0)),
+                                                                  child: Center(
+                                                                    child: FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .ban,
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                )
+                                                              : Container(
+                                                                  height: 40.0,
+                                                                  width: 40.0,
+                                                                  decoration: BoxDecoration(
+                                                                      color: Colors
+                                                                          .amber,
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              30.0)),
+                                                                  child: Center(
+                                                                    child: FaIcon(
+                                                                        FontAwesomeIcons
+                                                                            .hourglassHalf,
+                                                                        color: Colors
+                                                                            .white),
+                                                                  ),
+                                                                ))
                                                 ],
                                               ),
                                               Padding(
