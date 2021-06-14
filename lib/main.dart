@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
-          title: 'Bulovva İşletme',
+          title: 'Bulb İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: Colors.purple,
