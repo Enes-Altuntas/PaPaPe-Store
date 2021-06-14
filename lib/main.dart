@@ -17,7 +17,11 @@ FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await firebaseMessaging.requestPermission();
+  handleNotifications();
+}
+
+handleNotifications() async {
+  await firebaseMessaging.requestPermission(sound: true);
   await firebaseMessaging.subscribeToTopic("isletmeler");
 }
 
@@ -33,7 +37,7 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
-          title: 'Bulb İşletme',
+          title: 'BULB İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: Colors.purple,
