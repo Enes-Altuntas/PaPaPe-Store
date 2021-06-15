@@ -440,7 +440,6 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -454,6 +453,24 @@ class _ProfileState extends State<Profile> {
           title: Text('bulb',
               style: TextStyle(
                   fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: TextButton(
+                  onPressed: () {
+                    saveStore();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 30.0,
+                      )
+                    ],
+                  )),
+            ),
+          ],
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -471,684 +488,609 @@ class _ProfileState extends State<Profile> {
                       topLeft: Radius.circular(50.0),
                       topRight: Radius.circular(50.0))),
               child: (isLoading == false)
-                  ? Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Stack(
-                              alignment: AlignmentDirectional.bottomCenter,
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: SingleChildScrollView(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Form(
+                            autovalidateMode: AutovalidateMode.always,
+                            child: Column(
                               children: [
-                                InkWell(
-                                  onTap: getImageAndUpload,
-                                  child: Container(
-                                      clipBehavior: Clip.antiAlias,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              3.5,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                Colors.red[600],
-                                                Colors.purple[500]
-                                              ],
-                                              begin: Alignment.centerRight,
-                                              end: Alignment.centerLeft)),
-                                      child: (_storeProvider
-                                                  .storeLocalImagePath !=
-                                              null)
-                                          ? Image.file(
-                                              _storeProvider
-                                                  .storeLocalImagePath,
-                                              fit: BoxFit.fitWidth)
-                                          : (_storeProvider.storePicRef != null)
-                                              ? Image.network(
-                                                  _storeProvider.storePicRef,
-                                                  fit: BoxFit.fitWidth,
-                                                  loadingBuilder: (context,
-                                                      child, loadingProgress) {
-                                                    return loadingProgress ==
-                                                            null
-                                                        ? child
-                                                        : Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              backgroundColor:
-                                                                  Colors.white,
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Stack(
+                                      alignment:
+                                          AlignmentDirectional.bottomCenter,
+                                      children: [
+                                        InkWell(
+                                          onTap: getImageAndUpload,
+                                          child: Container(
+                                              clipBehavior: Clip.antiAlias,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  3.5,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50.0),
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.red[600],
+                                                        Colors.purple[500]
+                                                      ],
+                                                      begin:
+                                                          Alignment.centerRight,
+                                                      end: Alignment
+                                                          .centerLeft)),
+                                              child: (_storeProvider
+                                                          .storeLocalImagePath !=
+                                                      null)
+                                                  ? Image.file(
+                                                      _storeProvider
+                                                          .storeLocalImagePath,
+                                                      fit: BoxFit.fitWidth)
+                                                  : (_storeProvider
+                                                              .storePicRef !=
+                                                          null)
+                                                      ? Image.network(
+                                                          _storeProvider
+                                                              .storePicRef,
+                                                          fit: BoxFit.fitWidth,
+                                                          loadingBuilder: (context,
+                                                              child,
+                                                              loadingProgress) {
+                                                            return loadingProgress ==
+                                                                    null
+                                                                ? child
+                                                                : Center(
+                                                                    child:
+                                                                        CircularProgressIndicator(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                    ),
+                                                                  );
+                                                          },
+                                                        )
+                                                      : Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          20.0),
+                                                              child: Icon(
+                                                                Icons
+                                                                    .upload_file,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 50.0,
+                                                              ),
                                                             ),
-                                                          );
-                                                  },
-                                                )
-                                              : Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              bottom: 20.0),
-                                                      child: Icon(
-                                                        Icons.upload_file,
-                                                        color: Colors.white,
-                                                        size: 50.0,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      'Resim Ekle',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontFamily: 'Bebas',
-                                                          fontSize: 20.0),
-                                                    ),
-                                                  ],
-                                                )),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Visibility(
-                                      visible: picBtn,
-                                      child: TextButton(
-                                          onPressed: () {
-                                            getImageAndUpload();
-                                          },
-                                          child: Container(
-                                              height: 50.0,
-                                              width: 50.0,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Colors.red[600],
-                                                        Colors.purple[500]
-                                                      ],
-                                                      begin:
-                                                          Alignment.centerRight,
-                                                      end: Alignment
-                                                          .centerLeft)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.edit,
-                                                      color: Colors.white),
-                                                ],
-                                              ))),
-                                    ),
-                                    Visibility(
-                                      visible: picBtn,
-                                      child: TextButton(
-                                          onPressed: () {
-                                            deleteImage();
-                                          },
-                                          child: Container(
-                                              height: 50.0,
-                                              width: 50.0,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Colors.red[600],
-                                                        Colors.purple[500]
-                                                      ],
-                                                      begin:
-                                                          Alignment.centerRight,
-                                                      end: Alignment
-                                                          .centerLeft)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.delete,
-                                                      color: Colors.white),
-                                                ],
-                                              ))),
-                                    ),
-                                  ],
-                                )
-                              ]),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: SingleChildScrollView(
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Form(
-                                  autovalidateMode: AutovalidateMode.always,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(50.0),
-                                            gradient: LinearGradient(
-                                                colors: [
-                                                  Colors.red[600],
-                                                  Colors.purple[500]
-                                                ],
-                                                begin: Alignment.centerRight,
-                                                end: Alignment.centerLeft)),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.9,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            getLocation();
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8.0),
-                                                child: Icon(
-                                                  Icons
-                                                      .add_location_alt_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              Text(
-                                                'Konum Al',
-                                                style: TextStyle(
-                                                  fontFamily: 'Bebas',
-                                                  color: Colors.white,
-                                                  fontSize: 17,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
-                                                  ],
-                                                  begin: Alignment.centerRight,
-                                                  end: Alignment.centerLeft)),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.9,
-                                          child: TextButton(
-                                              onPressed: () {
-                                                deleteUser();
-                                              },
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 8.0),
-                                                    child: Icon(
-                                                        Icons.delete_forever,
-                                                        color: Colors.white),
-                                                  ),
-                                                  Text(
-                                                    'Hesabı Sil',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Bebas',
-                                                      color: Colors.white,
-                                                      fontSize: 17,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                        ),
-                                      ),
-                                      Form(
-                                        key: formkey,
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.9,
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.0),
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 10, right: 10),
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.grey),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  child: DropdownButton(
-                                                      value: _selectedCat,
-                                                      isExpanded: true,
-                                                      underline: SizedBox(),
-                                                      hint: Text(
-                                                          "İşletme için kategori seçiniz !"),
-                                                      items: storeCats.map(
-                                                          (StoreCategory
-                                                              storeCat) {
-                                                        return new DropdownMenuItem<
-                                                            String>(
-                                                          value: storeCat
-                                                              .storeCatName,
-                                                          onTap: () {
-                                                            _selectedCat =
-                                                                storeCat
-                                                                    .storeCatName;
-                                                          },
-                                                          child: new Text(
-                                                            storeCat
-                                                                .storeCatName,
-                                                          ),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (value) {
-                                                        selectCategory(value);
-                                                        _storeProvider
-                                                            .changeStoreCategory(
-                                                                value);
-                                                      }),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.0),
-                                                child: Container(
-                                                  padding: EdgeInsets.only(
-                                                      left: 10, right: 10),
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.grey),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5)),
-                                                  child: DropdownButton(
-                                                      value: _selectedAltCat,
-                                                      isExpanded: true,
-                                                      underline: SizedBox(),
-                                                      hint: Text(
-                                                          "İşletme için alt kategori seçiniz !"),
-                                                      items: storeAltCats.map(
-                                                          (StoreAltCategory
-                                                              storeAltCat) {
-                                                        return new DropdownMenuItem<
-                                                            String>(
-                                                          value: storeAltCat
-                                                              .storeAltCatName,
-                                                          onTap: () {
-                                                            _selectedAltCat =
-                                                                storeAltCat
-                                                                    .storeAltCatName;
-                                                          },
-                                                          child: new Text(
-                                                            storeAltCat
-                                                                .storeAltCatName,
-                                                          ),
-                                                        );
-                                                      }).toList(),
-                                                      onChanged: (value) {
-                                                        _storeProvider
-                                                            .changeStoreAltCategory(
-                                                                value);
-                                                      }),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 20.0),
-                                                child: TextFormField(
-                                                  controller: taxNo,
-                                                  validator: validateTaxNo,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changeStoreTaxNo(
-                                                            value);
-                                                    validateTaxNo(value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  maxLength: 10,
-                                                  decoration: InputDecoration(
-                                                      icon: Icon(
-                                                          Icons.attach_money),
-                                                      labelText:
-                                                          'İşletme Vergi Numarası',
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  controller: taxLoc,
-                                                  validator: validateTaxLoc,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changeStoreTaxLoc(
-                                                            value);
-                                                  },
-                                                  maxLength: 25,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  decoration: InputDecoration(
-                                                      icon: Icon(Icons
-                                                          .account_balance),
-                                                      border:
-                                                          OutlineInputBorder(),
-                                                      labelText:
-                                                          'İşletme Vergi Dairesi'),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  controller: name,
-                                                  validator: validateName,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changeStoreName(value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  decoration: InputDecoration(
-                                                      labelText: 'İşletme İsmi',
-                                                      icon: Icon(Icons
-                                                          .announcement_sharp),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                  maxLength: 35,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  validator: validateAddress,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changeStoreAddress(
-                                                            value);
-                                                  },
-                                                  controller: address,
-                                                  maxLength: 255,
-                                                  maxLines: 3,
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İşletme Adresi',
-                                                      icon: Icon(Icons
-                                                          .add_location_rounded),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  validator: validatePhone,
-                                                  controller: phone,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changeStorePhone(
-                                                            value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.phone,
-                                                  maxLength: 10,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İşletme Telefon Numarası',
-                                                      prefix: Text('+90'),
-                                                      icon: Icon(Icons.phone),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  validator: validatePersName,
-                                                  controller: pers1,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changePers1(value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  maxLength: 50,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İlgili kişi isim-soyisim (1)',
-                                                      icon: Icon(Icons
-                                                          .account_circle_outlined),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  validator: validatePersPhone,
-                                                  controller: pers1Phone,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changePers1Phone(
-                                                            value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.phone,
-                                                  maxLength: 10,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İlgili kişi telefon (1)',
-                                                      prefix: Text('+90'),
-                                                      icon: Icon(Icons.phone),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  controller: pers2,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changePers2(value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  maxLength: 50,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İlgili kişi isim-soyisim (2)',
-                                                      icon: Icon(Icons
-                                                          .account_circle_outlined),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  controller: pers2Phone,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changePers2Phone(
-                                                            value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.phone,
-                                                  maxLength: 10,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İlgili kişi telefon (2)',
-                                                      prefix: Text('+90'),
-                                                      icon: Icon(Icons.phone),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  controller: pers3,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changePers3(value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.text,
-                                                  maxLength: 50,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İlgili kişi isim-soyisim (3)',
-                                                      icon: Icon(Icons
-                                                          .account_circle_outlined),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0),
-                                                child: TextFormField(
-                                                  controller: pers3Phone,
-                                                  onChanged: (value) {
-                                                    _storeProvider
-                                                        .changePers3Phone(
-                                                            value);
-                                                  },
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .hintColor),
-                                                  keyboardType:
-                                                      TextInputType.phone,
-                                                  maxLength: 10,
-                                                  decoration: InputDecoration(
-                                                      labelText:
-                                                          'İlgili kişi telefon (3)',
-                                                      prefix: Text('+90'),
-                                                      icon: Icon(Icons.phone),
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 15.0, bottom: 15.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50.0),
-                                                      gradient: LinearGradient(
-                                                          colors: [
-                                                            Colors.red[600],
-                                                            Colors.purple[500]
+                                                            Text(
+                                                              'Resim Ekle',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontFamily:
+                                                                      'Bebas',
+                                                                  fontSize:
+                                                                      20.0),
+                                                            ),
                                                           ],
-                                                          begin: Alignment
-                                                              .centerRight,
-                                                          end: Alignment
-                                                              .centerLeft)),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.9,
-                                                  child: TextButton(
-                                                    onPressed: () {
-                                                      saveStore();
-                                                    },
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  right: 8.0),
-                                                          child: Icon(
-                                                            Icons.save,
-                                                            color: Colors.white,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          'Kaydet',
-                                                          style: TextStyle(
-                                                            fontFamily: 'Bebas',
-                                                            color: Colors.white,
-                                                            fontSize: 17,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                                        )),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Visibility(
+                                              visible: picBtn,
+                                              child: TextButton(
+                                                  onPressed: () {
+                                                    getImageAndUpload();
+                                                  },
+                                                  child: Container(
+                                                      height: 50.0,
+                                                      width: 50.0,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50.0),
+                                                          gradient: LinearGradient(
+                                                              colors: [
+                                                                Colors.red[600],
+                                                                Colors
+                                                                    .purple[500]
+                                                              ],
+                                                              begin: Alignment
+                                                                  .centerRight,
+                                                              end: Alignment
+                                                                  .centerLeft)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(Icons.edit,
+                                                              color:
+                                                                  Colors.white),
+                                                        ],
+                                                      ))),
+                                            ),
+                                            Visibility(
+                                              visible: picBtn,
+                                              child: TextButton(
+                                                  onPressed: () {
+                                                    deleteImage();
+                                                  },
+                                                  child: Container(
+                                                      height: 50.0,
+                                                      width: 50.0,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      50.0),
+                                                          gradient: LinearGradient(
+                                                              colors: [
+                                                                Colors.red[600],
+                                                                Colors
+                                                                    .purple[500]
+                                                              ],
+                                                              begin: Alignment
+                                                                  .centerRight,
+                                                              end: Alignment
+                                                                  .centerLeft)),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(Icons.delete,
+                                                              color:
+                                                                  Colors.white),
+                                                        ],
+                                                      ))),
+                                            ),
+                                          ],
+                                        )
+                                      ]),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      gradient: LinearGradient(
+                                          colors: [
+                                            Colors.red[600],
+                                            Colors.purple[500]
+                                          ],
+                                          begin: Alignment.centerRight,
+                                          end: Alignment.centerLeft)),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  child: TextButton(
+                                    onPressed: () {
+                                      getLocation();
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
+                                          child: Icon(
+                                            Icons.add_location_alt_outlined,
+                                            color: Colors.white,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          'Konum Al',
+                                          style: TextStyle(
+                                            fontFamily: 'Bebas',
+                                            color: Colors.white,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(50.0),
+                                        gradient: LinearGradient(
+                                            colors: [
+                                              Colors.red[600],
+                                              Colors.purple[500]
+                                            ],
+                                            begin: Alignment.centerRight,
+                                            end: Alignment.centerLeft)),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    child: TextButton(
+                                        onPressed: () {
+                                          deleteUser();
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8.0),
+                                              child: Icon(Icons.delete_forever,
+                                                  color: Colors.white),
+                                            ),
+                                            Text(
+                                              'Hesabı Sil',
+                                              style: TextStyle(
+                                                fontFamily: 'Bebas',
+                                                color: Colors.white,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ),
+                                Form(
+                                  key: formkey,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20.0),
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: DropdownButton(
+                                                value: _selectedCat,
+                                                isExpanded: true,
+                                                underline: SizedBox(),
+                                                hint: Text(
+                                                    "İşletme için kategori seçiniz !"),
+                                                items: storeCats.map(
+                                                    (StoreCategory storeCat) {
+                                                  return new DropdownMenuItem<
+                                                      String>(
+                                                    value:
+                                                        storeCat.storeCatName,
+                                                    onTap: () {
+                                                      _selectedCat =
+                                                          storeCat.storeCatName;
+                                                    },
+                                                    child: new Text(
+                                                      storeCat.storeCatName,
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (value) {
+                                                  selectCategory(value);
+                                                  _storeProvider
+                                                      .changeStoreCategory(
+                                                          value);
+                                                }),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20.0),
+                                          child: Container(
+                                            padding: EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                            child: DropdownButton(
+                                                value: _selectedAltCat,
+                                                isExpanded: true,
+                                                underline: SizedBox(),
+                                                hint: Text(
+                                                    "İşletme için alt kategori seçiniz !"),
+                                                items: storeAltCats.map(
+                                                    (StoreAltCategory
+                                                        storeAltCat) {
+                                                  return new DropdownMenuItem<
+                                                      String>(
+                                                    value: storeAltCat
+                                                        .storeAltCatName,
+                                                    onTap: () {
+                                                      _selectedAltCat =
+                                                          storeAltCat
+                                                              .storeAltCatName;
+                                                    },
+                                                    child: new Text(
+                                                      storeAltCat
+                                                          .storeAltCatName,
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (value) {
+                                                  _storeProvider
+                                                      .changeStoreAltCategory(
+                                                          value);
+                                                }),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 20.0),
+                                          child: TextFormField(
+                                            controller: taxNo,
+                                            validator: validateTaxNo,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changeStoreTaxNo(value);
+                                              validateTaxNo(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.number,
+                                            maxLength: 10,
+                                            decoration: InputDecoration(
+                                                icon: Icon(Icons.attach_money),
+                                                labelText:
+                                                    'İşletme Vergi Numarası',
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            controller: taxLoc,
+                                            validator: validateTaxLoc,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changeStoreTaxLoc(value);
+                                            },
+                                            maxLength: 25,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            decoration: InputDecoration(
+                                                icon:
+                                                    Icon(Icons.account_balance),
+                                                border: OutlineInputBorder(),
+                                                labelText:
+                                                    'İşletme Vergi Dairesi'),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            controller: name,
+                                            validator: validateName,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changeStoreName(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            decoration: InputDecoration(
+                                                labelText: 'İşletme İsmi',
+                                                icon: Icon(
+                                                    Icons.announcement_sharp),
+                                                border: OutlineInputBorder()),
+                                            maxLength: 35,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            validator: validateAddress,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changeStoreAddress(value);
+                                            },
+                                            controller: address,
+                                            maxLength: 255,
+                                            maxLines: 3,
+                                            keyboardType: TextInputType.text,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            decoration: InputDecoration(
+                                                labelText: 'İşletme Adresi',
+                                                icon: Icon(
+                                                    Icons.add_location_rounded),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            validator: validatePhone,
+                                            controller: phone,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changeStorePhone(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.phone,
+                                            maxLength: 10,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İşletme Telefon Numarası',
+                                                prefix: Text('+90'),
+                                                icon: Icon(Icons.phone),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            validator: validatePersName,
+                                            controller: pers1,
+                                            onChanged: (value) {
+                                              _storeProvider.changePers1(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.text,
+                                            maxLength: 50,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İlgili kişi isim-soyisim (1)',
+                                                icon: Icon(Icons
+                                                    .account_circle_outlined),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            validator: validatePersPhone,
+                                            controller: pers1Phone,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changePers1Phone(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.phone,
+                                            maxLength: 10,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İlgili kişi telefon (1)',
+                                                prefix: Text('+90'),
+                                                icon: Icon(Icons.phone),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            controller: pers2,
+                                            onChanged: (value) {
+                                              _storeProvider.changePers2(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.text,
+                                            maxLength: 50,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İlgili kişi isim-soyisim (2)',
+                                                icon: Icon(Icons
+                                                    .account_circle_outlined),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            controller: pers2Phone,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changePers2Phone(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.phone,
+                                            maxLength: 10,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İlgili kişi telefon (2)',
+                                                prefix: Text('+90'),
+                                                icon: Icon(Icons.phone),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15.0),
+                                          child: TextFormField(
+                                            controller: pers3,
+                                            onChanged: (value) {
+                                              _storeProvider.changePers3(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.text,
+                                            maxLength: 50,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İlgili kişi isim-soyisim (3)',
+                                                icon: Icon(Icons
+                                                    .account_circle_outlined),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 15.0, bottom: 15.0),
+                                          child: TextFormField(
+                                            controller: pers3Phone,
+                                            onChanged: (value) {
+                                              _storeProvider
+                                                  .changePers3Phone(value);
+                                            },
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                            keyboardType: TextInputType.phone,
+                                            maxLength: 10,
+                                            decoration: InputDecoration(
+                                                labelText:
+                                                    'İlgili kişi telefon (3)',
+                                                prefix: Text('+90'),
+                                                icon: Icon(Icons.phone),
+                                                border: OutlineInputBorder()),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     )
                   : Center(
                       child: CircularProgressIndicator(

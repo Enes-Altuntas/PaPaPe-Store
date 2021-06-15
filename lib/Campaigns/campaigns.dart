@@ -288,8 +288,10 @@ class _CampaignsState extends State<Campaigns> {
                                                 ],
                                               ),
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.all(20.0),
+                                                padding: const EdgeInsets.only(
+                                                    left: 20.0,
+                                                    right: 20.0,
+                                                    top: 20.0),
                                                 child: Text(
                                                     snapshot.data[index]
                                                         .campaignTitle,

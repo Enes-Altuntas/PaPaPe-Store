@@ -53,7 +53,7 @@ class _MenuState extends State<Menu> {
       return;
     }
     if (category.length > 0) {
-      if (_selectedCategory != null && _selectedProduct.productCatId != null) {
+      if (_selectedProduct != null && _selectedProduct.productCatId != null) {
         int index = category.indexWhere(
             (element) => element.categoryId == _selectedProduct.productCatId);
         setState(() {
@@ -63,9 +63,9 @@ class _MenuState extends State<Menu> {
       await Navigator.of(context)
           .push(MaterialPageRoute(
               builder: (context) => ProductSingle(
-                    productData: _selectedProduct,
-                    selectedCategory: _selectedCat,
-                  )))
+                  productData: _selectedProduct,
+                  selectedCategory: _selectedCat,
+                  category: category)))
           .whenComplete(() {
         setState(() {
           _selectedProduct = null;
@@ -308,14 +308,25 @@ class _MenuState extends State<Menu> {
                                                                                     },
                                                                                     title: Row(
                                                                                       children: [
-                                                                                        Text(
-                                                                                          snapshotProduct.data[indexDishes].productName,
-                                                                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
+                                                                                        Flexible(
+                                                                                          child: Text(
+                                                                                            snapshotProduct.data[indexDishes].productName,
+                                                                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
+                                                                                          ),
                                                                                         ),
                                                                                       ],
                                                                                     ),
-                                                                                    trailing: Column(
-                                                                                      children: [],
+                                                                                    trailing: Container(
+                                                                                      height: MediaQuery.of(context).size.height,
+                                                                                      child: Padding(
+                                                                                        padding: const EdgeInsets.only(left: 10.0),
+                                                                                        child: Column(
+                                                                                          mainAxisAlignment: MainAxisAlignment.center,
+                                                                                          children: [
+                                                                                            Icon(Icons.arrow_forward, color: Colors.white)
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
                                                                                     ),
                                                                                     subtitle: Padding(
                                                                                       padding: const EdgeInsets.only(top: 8.0),
@@ -351,10 +362,9 @@ class _MenuState extends State<Menu> {
                                                                           Icons
                                                                               .assignment_late_outlined,
                                                                           size:
-                                                                              30.0,
-                                                                          color: (index % 2 != 0)
-                                                                              ? Theme.of(context).primaryColor
-                                                                              : Colors.white,
+                                                                              70.0,
+                                                                          color:
+                                                                              Theme.of(context).primaryColor,
                                                                         ),
                                                                         Padding(
                                                                           padding:
@@ -365,7 +375,7 @@ class _MenuState extends State<Menu> {
                                                                             textAlign:
                                                                                 TextAlign.center,
                                                                             style:
-                                                                                TextStyle(color: (index % 2 != 0) ? Theme.of(context).primaryColor : Colors.white, fontSize: 20.0),
+                                                                                TextStyle(color: Theme.of(context).primaryColor, fontSize: 20.0),
                                                                           ),
                                                                         ),
                                                                       ],

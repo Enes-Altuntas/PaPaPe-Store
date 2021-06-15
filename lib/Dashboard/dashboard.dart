@@ -134,18 +134,21 @@ class _DashboardState extends State<Dashboard> {
               style: TextStyle(
                   fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
           actions: [
-            TextButton(
-                onPressed: () {
-                  exitYesNo();
-                },
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                    )
-                  ],
-                )),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: TextButton(
+                  onPressed: () {
+                    exitYesNo();
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.exit_to_app,
+                        color: Colors.white,
+                      )
+                    ],
+                  )),
+            ),
           ],
         ),
         body: Container(

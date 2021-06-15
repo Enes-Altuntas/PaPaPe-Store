@@ -423,6 +423,14 @@ class FirestoreService {
   Future<String> saveProduct(Product product) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
+    if (product.productLocalImage != null) {
+      await savePicture(product.productLocalImage, product.productCatId)
+          .onError((error, stackTrace) => throw error)
+          .whenComplete(() {
+        product.productPicRef = downloadUrl;
+      });
+    }
+
     try {
       await _db
           .collection('stores')
@@ -439,22 +447,15 @@ class FirestoreService {
     }
   }
 
-  Future<String> updateProduct(Product product, Product oldProduct) async {
+  Future<String> updateProduct(Product product) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
-    if (oldProduct.productCatId != product.productCatId) {
-      try {
-        await _db
-            .collection('stores')
-            .doc(_userId)
-            .collection('products')
-            .doc(oldProduct.productCatId)
-            .collection('alt_products')
-            .doc(oldProduct.productId)
-            .delete();
-      } catch (e) {
-        throw 'Ürününüz silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
-      }
+    if (product.productLocalImage != null) {
+      await savePicture(product.productLocalImage, product.productCatId)
+          .onError((error, stackTrace) => throw error)
+          .whenComplete(() {
+        product.productPicRef = downloadUrl;
+      });
     }
 
     try {

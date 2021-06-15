@@ -41,6 +41,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
   bool endBtn = false;
   bool picBtn = false;
   bool isInit = true;
+  bool picDeleted = false;
 
   String formatDate(Timestamp date) {
     var _date = DateTime.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch)
@@ -100,6 +101,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
   deleteImage() {
     setState(() {
       campaignPic = null;
+      picDeleted = true;
     });
     if (widget.campaignData != null &&
         widget.campaignData.campaignPicRef != null) {
@@ -130,10 +132,13 @@ class _CampaignSingleState extends State<CampaignSingle> {
                 backgroundColor: Colors.white));
         setState(() {
           campaignPic = cropped;
-          isLoading = false;
+          picDeleted = false;
         });
       }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   saveCampaign() {
@@ -192,7 +197,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
           delInd: false,
           campaignStart: _startDate,
           campaignLocalImage: campaignPic,
-          campaignPicRef: widget.campaignData.campaignPicRef,
+          campaignPicRef:
+              (picDeleted) ? null : widget.campaignData.campaignPicRef,
           campaignCounter: widget.campaignData.campaignCounter,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -230,7 +236,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignFinish: _finishDate,
           delInd: false,
           campaignLocalImage: campaignPic,
-          campaignPicRef: widget.campaignData.campaignPicRef,
+          campaignPicRef:
+              (picDeleted) ? null : widget.campaignData.campaignPicRef,
           campaignKey: _key.text.toUpperCase(),
           campaignCounter: widget.campaignData.campaignCounter,
           campaignStart: _startDate,
@@ -447,7 +454,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -478,91 +484,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
                     topLeft: Radius.circular(50.0),
                     topRight: Radius.circular(50.0))),
             child: (isLoading == false)
-                ? Column(
-                    children: [
-                      (campaignPic != null)
-                          ? Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Stack(
-                                alignment: AlignmentDirectional.bottomCenter,
-                                children: [
-                                  Container(
-                                    clipBehavior: Clip.antiAlias,
-                                    height: MediaQuery.of(context).size.height /
-                                        3.5,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0)),
-                                    child: Image.file(campaignPic,
-                                        fit: BoxFit.fitWidth),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextButton(
-                                          onPressed: () {
-                                            getImage();
-                                          },
-                                          child: Container(
-                                              height: 50.0,
-                                              width: 50.0,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Colors.red[600],
-                                                        Colors.purple[500]
-                                                      ],
-                                                      begin:
-                                                          Alignment.centerRight,
-                                                      end: Alignment
-                                                          .centerLeft)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.edit,
-                                                      color: Colors.white),
-                                                ],
-                                              ))),
-                                      TextButton(
-                                          onPressed: () {
-                                            deleteImage();
-                                          },
-                                          child: Container(
-                                              height: 50.0,
-                                              width: 50.0,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Colors.red[600],
-                                                        Colors.purple[500]
-                                                      ],
-                                                      begin:
-                                                          Alignment.centerRight,
-                                                      end: Alignment
-                                                          .centerLeft)),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.delete,
-                                                      color: Colors.white),
-                                                ],
-                                              ))),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )
-                          : (widget.campaignData != null &&
-                                  widget.campaignData.campaignPicRef != null)
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          (campaignPic != null)
                               ? Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Stack(
@@ -579,505 +506,574 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(50.0)),
-                                        child: Image.network(
-                                            widget.campaignData.campaignPicRef,
+                                        child: Image.file(campaignPic,
                                             fit: BoxFit.fitWidth),
                                       ),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Visibility(
-                                            visible: picBtn,
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  getImage();
-                                                },
-                                                child: Container(
-                                                    height: 50.0,
-                                                    width: 50.0,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50.0),
-                                                        gradient: LinearGradient(
-                                                            colors: [
-                                                              Colors.red[600],
-                                                              Colors.purple[500]
-                                                            ],
-                                                            begin: Alignment
-                                                                .centerRight,
-                                                            end: Alignment
-                                                                .centerLeft)),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(Icons.edit,
-                                                            color:
-                                                                Colors.white),
-                                                      ],
-                                                    ))),
-                                          ),
-                                          Visibility(
-                                            visible: picBtn,
-                                            child: TextButton(
-                                                onPressed: () {
-                                                  deleteImage();
-                                                },
-                                                child: Container(
-                                                    height: 50.0,
-                                                    width: 50.0,
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(50.0),
-                                                        gradient: LinearGradient(
-                                                            colors: [
-                                                              Colors.red[600],
-                                                              Colors.purple[500]
-                                                            ],
-                                                            begin: Alignment
-                                                                .centerRight,
-                                                            end: Alignment
-                                                                .centerLeft)),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Icon(Icons.delete,
-                                                            color:
-                                                                Colors.white),
-                                                      ],
-                                                    ))),
-                                          ),
+                                          TextButton(
+                                              onPressed: () {
+                                                getImage();
+                                              },
+                                              child: Container(
+                                                  height: 50.0,
+                                                  width: 50.0,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Colors.red[600],
+                                                            Colors.purple[500]
+                                                          ],
+                                                          begin: Alignment
+                                                              .centerRight,
+                                                          end: Alignment
+                                                              .centerLeft)),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(Icons.edit,
+                                                          color: Colors.white),
+                                                    ],
+                                                  ))),
+                                          TextButton(
+                                              onPressed: () {
+                                                deleteImage();
+                                              },
+                                              child: Container(
+                                                  height: 50.0,
+                                                  width: 50.0,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50.0),
+                                                      gradient: LinearGradient(
+                                                          colors: [
+                                                            Colors.red[600],
+                                                            Colors.purple[500]
+                                                          ],
+                                                          begin: Alignment
+                                                              .centerRight,
+                                                          end: Alignment
+                                                              .centerLeft)),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(Icons.delete,
+                                                          color: Colors.white),
+                                                    ],
+                                                  ))),
                                         ],
                                       )
                                     ],
                                   ),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: InkWell(
-                                    onTap: getImage,
-                                    child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              3.5,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(35.0),
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                Colors.red[600],
-                                                Colors.purple[500]
-                                              ],
-                                              begin: Alignment.centerRight,
-                                              end: Alignment.centerLeft)),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                              : (widget.campaignData != null &&
+                                      widget.campaignData.campaignPicRef !=
+                                          null)
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Stack(
+                                        alignment:
+                                            AlignmentDirectional.bottomCenter,
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 20.0),
-                                            child: Icon(
-                                              Icons.upload_file,
-                                              color: Colors.white,
-                                              size: 50.0,
-                                            ),
+                                          Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height /
+                                                3.5,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        50.0)),
+                                            child: Image.network(
+                                                widget.campaignData
+                                                    .campaignPicRef,
+                                                loadingBuilder: (context, child,
+                                                    loadingProgress) {
+                                              return loadingProgress == null
+                                                  ? child
+                                                  : Center(
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                      ),
+                                                    );
+                                            }, fit: BoxFit.fitWidth),
                                           ),
-                                          Text(
-                                            'Resim Ekle',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: 'Bebas',
-                                                fontSize: 20.0),
-                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Visibility(
+                                                visible: picBtn,
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      getImage();
+                                                    },
+                                                    child: Container(
+                                                        height: 50.0,
+                                                        width: 50.0,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50.0),
+                                                            gradient: LinearGradient(
+                                                                colors: [
+                                                                  Colors
+                                                                      .red[600],
+                                                                  Colors.purple[
+                                                                      500]
+                                                                ],
+                                                                begin: Alignment
+                                                                    .centerRight,
+                                                                end: Alignment
+                                                                    .centerLeft)),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(Icons.edit,
+                                                                color: Colors
+                                                                    .white),
+                                                          ],
+                                                        ))),
+                                              ),
+                                              Visibility(
+                                                visible: picBtn,
+                                                child: TextButton(
+                                                    onPressed: () {
+                                                      deleteImage();
+                                                    },
+                                                    child: Container(
+                                                        height: 50.0,
+                                                        width: 50.0,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50.0),
+                                                            gradient: LinearGradient(
+                                                                colors: [
+                                                                  Colors
+                                                                      .red[600],
+                                                                  Colors.purple[
+                                                                      500]
+                                                                ],
+                                                                begin: Alignment
+                                                                    .centerRight,
+                                                                end: Alignment
+                                                                    .centerLeft)),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(Icons.delete,
+                                                                color: Colors
+                                                                    .white),
+                                                          ],
+                                                        ))),
+                                              ),
+                                            ],
+                                          )
                                         ],
                                       ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: InkWell(
+                                        onTap: getImage,
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3.5,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(35.0),
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.red[600],
+                                                    Colors.purple[500]
+                                                  ],
+                                                  begin: Alignment.centerRight,
+                                                  end: Alignment.centerLeft)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 20.0),
+                                                child: Icon(
+                                                  Icons.upload_file,
+                                                  color: Colors.white,
+                                                  size: 50.0,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Resim Ekle',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: 'Bebas',
+                                                    fontSize: 20.0),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                     ),
+                          Form(
+                            key: formKey,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.9,
+                              child: Column(children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 20.0),
+                                  child: TextFormField(
+                                    maxLength: 50,
+                                    validator: validateCampaignTitle,
+                                    enabled: isEnabled,
+                                    controller: _title,
+                                    decoration: InputDecoration(
+                                        labelText: 'Kampanya Başlığı',
+                                        border: OutlineInputBorder()),
                                   ),
                                 ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: formKey,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width * 0.9,
-                                child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 20.0),
-                                        child: TextFormField(
-                                          maxLength: 50,
-                                          validator: validateCampaignTitle,
-                                          enabled: isEnabled,
-                                          controller: _title,
-                                          decoration: InputDecoration(
-                                              labelText: 'Kampanya Başlığı',
-                                              border: OutlineInputBorder()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: TextFormField(
-                                          maxLength: 255,
-                                          validator: validateCampaignDesc,
-                                          enabled: isEnabled,
-                                          keyboardType: TextInputType.text,
-                                          maxLines: 3,
-                                          controller: _desc,
-                                          decoration: InputDecoration(
-                                              labelText: 'Kampanya Açıklaması',
-                                              border: OutlineInputBorder()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: TextFormField(
-                                          validator: validateCampaignKey,
-                                          enabled: isEnabled,
-                                          controller: _key,
-                                          maxLength: 15,
-                                          decoration: InputDecoration(
-                                              labelText: 'Kampanya Anahtarı',
-                                              prefix: Text('#'),
-                                              border: OutlineInputBorder()),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0, bottom: 8.0),
-                                        child: TextFormField(
-                                          controller: _start,
-                                          validator: validateCampaignStart,
-                                          enabled: isEnabled,
-                                          decoration: InputDecoration(
-                                              labelText: 'Kampanya Başlangıç',
-                                              border: OutlineInputBorder()),
-                                          onTap: () {
-                                            DatePicker.showDateTimePicker(
-                                                context,
-                                                showTitleActions: true,
-                                                minTime: DateTime.now().add(
-                                                    new Duration(minutes: 15)),
-                                                maxTime: DateTime(2030, 1, 1),
-                                                onConfirm: (date) {
-                                              setState(() {
-                                                _startDate =
-                                                    Timestamp.fromDate(date);
-                                                _start.text =
-                                                    formatDate(_startDate);
-                                                _finish.text = '';
-                                              });
-                                            },
-                                                currentTime: DateTime.now().add(
-                                                    new Duration(minutes: 15)),
-                                                locale: LocaleType.tr);
-                                          },
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8.0, bottom: 10.0),
-                                        child: TextFormField(
-                                          validator: validateCampaignFinish,
-                                          controller: _finish,
-                                          enabled: isEnabled,
-                                          decoration: InputDecoration(
-                                              labelText: 'Kampanya Bitiş',
-                                              border: OutlineInputBorder()),
-                                          onTap: () {
-                                            if (_startDate != null) {
-                                              DatePicker.showDateTimePicker(
-                                                  context,
-                                                  showTitleActions: true,
-                                                  minTime: _startDate
-                                                      .toDate()
-                                                      .add(new Duration(
-                                                          hours: 1)),
-                                                  maxTime: DateTime(2050, 1, 1),
-                                                  onConfirm: (date) {
-                                                setState(() {
-                                                  _finishDate =
-                                                      Timestamp.fromDate(date);
-                                                  _finish.text =
-                                                      formatDate(_finishDate);
-                                                });
-                                              },
-                                                  currentTime: _startDate
-                                                      .toDate()
-                                                      .add(new Duration(
-                                                          hours: 1)),
-                                                  locale: LocaleType.tr);
-                                            } else {
-                                              ToastService().showWarning(
-                                                  "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
-                                                  context);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: saveBtn,
-                                        child: TextButton(
-                                            onPressed: () {
-                                              saveYesNo();
-                                            },
-                                            child: Container(
-                                                height: 40.0,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Colors.red[600],
-                                                          Colors.purple[500]
-                                                        ],
-                                                        begin: Alignment
-                                                            .centerRight,
-                                                        end: Alignment
-                                                            .centerLeft)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.save,
-                                                        color: Colors.white),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10.0),
-                                                      child: Text(
-                                                        'Kampanya Yayınla',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18.0,
-                                                            fontFamily:
-                                                                'Bebas'),
-                                                      ),
-                                                    )
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: TextFormField(
+                                    maxLength: 255,
+                                    validator: validateCampaignDesc,
+                                    enabled: isEnabled,
+                                    keyboardType: TextInputType.text,
+                                    maxLines: 3,
+                                    controller: _desc,
+                                    decoration: InputDecoration(
+                                        labelText: 'Kampanya Açıklaması',
+                                        border: OutlineInputBorder()),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: TextFormField(
+                                    validator: validateCampaignKey,
+                                    enabled: isEnabled,
+                                    controller: _key,
+                                    maxLength: 15,
+                                    decoration: InputDecoration(
+                                        labelText: 'Kampanya Anahtarı',
+                                        prefix: Text('#'),
+                                        border: OutlineInputBorder()),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8.0, bottom: 8.0),
+                                  child: TextFormField(
+                                    controller: _start,
+                                    validator: validateCampaignStart,
+                                    enabled: isEnabled,
+                                    decoration: InputDecoration(
+                                        labelText: 'Kampanya Başlangıç',
+                                        border: OutlineInputBorder()),
+                                    onTap: () {
+                                      DatePicker.showDateTimePicker(context,
+                                          showTitleActions: true,
+                                          minTime: DateTime.now()
+                                              .add(new Duration(minutes: 15)),
+                                          maxTime: DateTime(2030, 1, 1),
+                                          onConfirm: (date) {
+                                        setState(() {
+                                          _startDate = Timestamp.fromDate(date);
+                                          _start.text = formatDate(_startDate);
+                                          _finish.text = '';
+                                        });
+                                      },
+                                          currentTime: DateTime.now()
+                                              .add(new Duration(minutes: 15)),
+                                          locale: LocaleType.tr);
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8.0, bottom: 10.0),
+                                  child: TextFormField(
+                                    validator: validateCampaignFinish,
+                                    controller: _finish,
+                                    enabled: isEnabled,
+                                    decoration: InputDecoration(
+                                        labelText: 'Kampanya Bitiş',
+                                        border: OutlineInputBorder()),
+                                    onTap: () {
+                                      if (_startDate != null) {
+                                        DatePicker.showDateTimePicker(context,
+                                            showTitleActions: true,
+                                            minTime: _startDate
+                                                .toDate()
+                                                .add(new Duration(hours: 1)),
+                                            maxTime: DateTime(2050, 1, 1),
+                                            onConfirm: (date) {
+                                          setState(() {
+                                            _finishDate =
+                                                Timestamp.fromDate(date);
+                                            _finish.text =
+                                                formatDate(_finishDate);
+                                          });
+                                        },
+                                            currentTime: _startDate
+                                                .toDate()
+                                                .add(new Duration(hours: 1)),
+                                            locale: LocaleType.tr);
+                                      } else {
+                                        ToastService().showWarning(
+                                            "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
+                                            context);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: saveBtn,
+                                  child: TextButton(
+                                      onPressed: () {
+                                        saveYesNo();
+                                      },
+                                      child: Container(
+                                          height: 40.0,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.red[600],
+                                                    Colors.purple[500]
                                                   ],
-                                                ))),
-                                      ),
-                                      Visibility(
-                                        visible: renewBtn,
-                                        child: TextButton(
-                                            onPressed: renewYesNo,
-                                            child: Container(
-                                                height: 40.0,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Colors.red[600],
-                                                          Colors.purple[500]
-                                                        ],
-                                                        begin: Alignment
-                                                            .centerRight,
-                                                        end: Alignment
-                                                            .centerLeft)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.edit,
-                                                        color: Colors.white),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10.0),
-                                                      child: Text(
-                                                        'Kampanyayı Yinele',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18.0,
-                                                            fontFamily:
-                                                                'Bebas'),
-                                                      ),
-                                                    )
+                                                  begin: Alignment.centerRight,
+                                                  end: Alignment.centerLeft)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.save,
+                                                  color: Colors.white),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Text(
+                                                  'Kampanya Yayınla',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18.0,
+                                                      fontFamily: 'Bebas'),
+                                                ),
+                                              )
+                                            ],
+                                          ))),
+                                ),
+                                Visibility(
+                                  visible: renewBtn,
+                                  child: TextButton(
+                                      onPressed: renewYesNo,
+                                      child: Container(
+                                          height: 40.0,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.red[600],
+                                                    Colors.purple[500]
                                                   ],
-                                                ))),
-                                      ),
-                                      Visibility(
-                                        visible: deleteBtn,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: TextButton(
-                                              onPressed: deleteYesNo,
-                                              child: Container(
-                                                  height: 40.0,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.8,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                      gradient: LinearGradient(
-                                                          colors: [
-                                                            Colors.red[600],
-                                                            Colors.purple[500]
-                                                          ],
-                                                          begin: Alignment
-                                                              .centerRight,
-                                                          end: Alignment
-                                                              .centerLeft)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(Icons.edit,
-                                                          color: Colors.white),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10.0),
-                                                        child: Text(
-                                                          'Kampanyayı Sil',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18.0,
-                                                              fontFamily:
-                                                                  'Bebas'),
-                                                        ),
-                                                      )
+                                                  begin: Alignment.centerRight,
+                                                  end: Alignment.centerLeft)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.edit,
+                                                  color: Colors.white),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Text(
+                                                  'Kampanyayı Yinele',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18.0,
+                                                      fontFamily: 'Bebas'),
+                                                ),
+                                              )
+                                            ],
+                                          ))),
+                                ),
+                                Visibility(
+                                  visible: deleteBtn,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: TextButton(
+                                        onPressed: deleteYesNo,
+                                        child: Container(
+                                            height: 40.0,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.red[600],
+                                                      Colors.purple[500]
                                                     ],
-                                                  ))),
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: updateBtn,
-                                        child: TextButton(
-                                            onPressed: updateYesNo,
-                                            child: Container(
-                                                height: 40.0,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20.0),
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Colors.red[600],
-                                                          Colors.purple[500]
-                                                        ],
-                                                        begin: Alignment
-                                                            .centerRight,
-                                                        end: Alignment
-                                                            .centerLeft)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.edit,
-                                                        color: Colors.white),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 10.0),
-                                                      child: Text(
-                                                        'Kampanyayı Güncelle',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 18.0,
-                                                            fontFamily:
-                                                                'Bebas'),
-                                                      ),
-                                                    )
+                                                    begin:
+                                                        Alignment.centerRight,
+                                                    end: Alignment.centerLeft)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.edit,
+                                                    color: Colors.white),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text(
+                                                    'Kampanyayı Sil',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18.0,
+                                                        fontFamily: 'Bebas'),
+                                                  ),
+                                                )
+                                              ],
+                                            ))),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: updateBtn,
+                                  child: TextButton(
+                                      onPressed: updateYesNo,
+                                      child: Container(
+                                          height: 40.0,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              gradient: LinearGradient(
+                                                  colors: [
+                                                    Colors.red[600],
+                                                    Colors.purple[500]
                                                   ],
-                                                ))),
-                                      ),
-                                      Visibility(
-                                        visible: endBtn,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: TextButton(
-                                              onPressed: removeYesNo,
-                                              child: Container(
-                                                  height: 40.0,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.8,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              20.0),
-                                                      gradient: LinearGradient(
-                                                          colors: [
-                                                            Colors.red[600],
-                                                            Colors.purple[500]
-                                                          ],
-                                                          begin: Alignment
-                                                              .centerRight,
-                                                          end: Alignment
-                                                              .centerLeft)),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(Icons.edit,
-                                                          color: Colors.white),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10.0),
-                                                        child: Text(
-                                                          'Kampanyayı Sonlandır',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 18.0,
-                                                              fontFamily:
-                                                                  'Bebas'),
-                                                        ),
-                                                      )
+                                                  begin: Alignment.centerRight,
+                                                  end: Alignment.centerLeft)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.edit,
+                                                  color: Colors.white),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 10.0),
+                                                child: Text(
+                                                  'Kampanyayı Güncelle',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 18.0,
+                                                      fontFamily: 'Bebas'),
+                                                ),
+                                              )
+                                            ],
+                                          ))),
+                                ),
+                                Visibility(
+                                  visible: endBtn,
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: TextButton(
+                                        onPressed: removeYesNo,
+                                        child: Container(
+                                            height: 40.0,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20.0),
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.red[600],
+                                                      Colors.purple[500]
                                                     ],
-                                                  ))),
-                                        ),
-                                      ),
-                                    ]),
-                              ),
+                                                    begin:
+                                                        Alignment.centerRight,
+                                                    end: Alignment.centerLeft)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.edit,
+                                                    color: Colors.white),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                  child: Text(
+                                                    'Kampanyayı Sonlandır',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 18.0,
+                                                        fontFamily: 'Bebas'),
+                                                  ),
+                                                )
+                                              ],
+                                            ))),
+                                  ),
+                                ),
+                              ]),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   )
                 : Center(
                     child: CircularProgressIndicator(
