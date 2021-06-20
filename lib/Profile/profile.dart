@@ -293,7 +293,7 @@ class _ProfileState extends State<Profile> {
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
-            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
+            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.6),
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(

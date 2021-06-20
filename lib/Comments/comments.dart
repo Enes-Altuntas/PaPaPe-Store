@@ -1,6 +1,8 @@
 import 'package:bulovva_store/Models/comment_model.dart';
 import 'package:bulovva_store/Services/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Reports extends StatefulWidget {
   Reports({Key key}) : super(key: key);
@@ -10,6 +12,14 @@ class Reports extends StatefulWidget {
 }
 
 class _ReportsState extends State<Reports> {
+  final DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss");
+
+  String formatDate(Timestamp date) {
+    var _date = DateTime.fromMillisecondsSinceEpoch(date.millisecondsSinceEpoch)
+        .toLocal();
+    return dateFormat.format(_date);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,6 +70,7 @@ class _ReportsState extends State<Reports> {
                                         children: [
                                           Text(
                                             snapshot.data[index].reportDesc,
+                                            textAlign: TextAlign.center,
                                             style:
                                                 TextStyle(color: Colors.white),
                                           ),
@@ -68,6 +79,16 @@ class _ReportsState extends State<Reports> {
                                                 top: 10.0),
                                             child: Text(
                                                 'Puan: ${snapshot.data[index].reportScore.toString()}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15.0)),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: Text(
+                                                'Yorum Saati: ${formatDate(snapshot.data[index].createdAt)}',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,

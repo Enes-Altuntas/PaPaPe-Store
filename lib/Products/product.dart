@@ -71,6 +71,14 @@ class _ProductSingleState extends State<ProductSingle> {
           .whenComplete(() => setState(() {
                 isLoading = false;
               }));
+      setState(() {
+        _productDesc.text = '';
+        _productName.text = '';
+        _productPrice.text = '';
+        productPic = null;
+        _selectedCatId = null;
+        _selectedCur = null;
+      });
     }
   }
 
@@ -235,7 +243,7 @@ class _ProductSingleState extends State<ProductSingle> {
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
-            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
+            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.6),
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(

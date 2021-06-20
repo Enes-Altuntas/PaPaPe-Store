@@ -29,7 +29,7 @@ class _MenuState extends State<Menu> {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
       ToastService().showInfo(
-          'Kategori eklemeden önce işletme bilgilerinizi kaydetmelisiniz !',
+          'Kategori eklemeden önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
           context);
       return;
     }
@@ -48,7 +48,7 @@ class _MenuState extends State<Menu> {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
       ToastService().showInfo(
-          'Ürün eklemeden önce işletme bilgilerinizi kaydetmelisiniz !',
+          'Ürün eklemeden önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
           context);
       return;
     }

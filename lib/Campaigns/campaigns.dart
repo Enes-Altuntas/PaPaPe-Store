@@ -26,7 +26,7 @@ class _CampaignsState extends State<Campaigns> {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
       ToastService().showInfo(
-          'Kampanya girmeden önce işletme bilgilerinizi kaydetmelisiniz !',
+          'Kampanya yayınlamadan önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
           context);
       return;
     }

@@ -22,7 +22,8 @@ exports.campaignStartJob = functions.pubsub.schedule('* * * * *').onRun(async (c
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
-                                body: 'Hazır olun çünkü kampanyanız başlıyor !'
+                                body: 'Hazır olun çünkü kampanyanız başlıyor !',
+                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -47,7 +48,8 @@ exports.campaignStopJob = functions.pubsub.schedule('* * * * *').onRun(async (co
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
-                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı !'
+                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı !',
+                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -72,7 +74,8 @@ exports.campaignStartHttp = functions.https.onRequest(async (req, res) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız başlıyor !",
-                                body: 'Hazır olun çünkü kampanyanız başlıyor !'
+                                body: 'Hazır olun çünkü kampanyanız başlıyor !',
+                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -98,7 +101,8 @@ exports.campaignStopHttp = functions.https.onRequest(async (req, res) => {
                         await admin.messaging().sendToDevice(token.data().tokenId, {
                             notification: {
                                 title: "Kampanyanız sona erdi !",
-                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!'
+                                body: 'Haydi durmayın tekrar kampanya yayınlamanın tam zamanı!',
+                                sound: 'bulb.mp3'
                             }
                         })
                     })
@@ -115,7 +119,8 @@ exports.commentCreate = functions.firestore.document('stores/{storeId}/reports/{
         await admin.messaging().sendToDevice(token.data().tokenId, {
             notification: {
                 title: "Yeni Yorum Geldi !",
-                body: 'Sanırım birileri size bir şey söylemek istiyor.'
+                body: 'Sanırım birileri size bir şey söylemek istiyor.',
+                sound: 'bulb.mp3'
             }
         })
     })

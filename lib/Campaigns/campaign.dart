@@ -121,7 +121,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
-            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.5),
+            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.6),
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
@@ -167,6 +167,14 @@ class _CampaignSingleState extends State<CampaignSingle> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 isLoading = false;
+                _title.text = '';
+                _desc.text = '';
+                _finishDate = null;
+                _finish.text = '';
+                _startDate = null;
+                _start.text = '';
+                _key.text = '';
+                campaignPic = null;
               }));
     }
   }
@@ -794,6 +802,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     controller: _start,
                                     validator: validateCampaignStart,
                                     enabled: isEnabled,
+                                    readOnly: true,
                                     decoration: InputDecoration(
                                         labelText: 'Kampanya Başlangıç',
                                         border: OutlineInputBorder()),
@@ -823,6 +832,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     validator: validateCampaignFinish,
                                     controller: _finish,
                                     enabled: isEnabled,
+                                    readOnly: true,
                                     decoration: InputDecoration(
                                         labelText: 'Kampanya Bitiş',
                                         border: OutlineInputBorder()),
