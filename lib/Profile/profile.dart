@@ -902,7 +902,7 @@ class _ProfileState extends State<Profile> {
                                                 icon: Icon(
                                                     Icons.announcement_sharp),
                                                 border: OutlineInputBorder()),
-                                            maxLength: 35,
+                                            maxLength: 50,
                                           ),
                                         ),
                                         Padding(
