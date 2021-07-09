@@ -1,14 +1,14 @@
 import 'dart:ui';
 
-import 'package:bulovva_store/Campaigns/campaigns.dart';
-import 'package:bulovva_store/Comments/comments.dart';
-import 'package:bulovva_store/Login/login.dart';
-import 'package:bulovva_store/Models/store_model.dart';
-import 'package:bulovva_store/Products/products.dart';
-import 'package:bulovva_store/Profile/profile.dart';
-import 'package:bulovva_store/Providers/store_provider.dart';
-import 'package:bulovva_store/Services/authentication_service.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
+import 'package:bulb/Campaigns/campaigns.dart';
+import 'package:bulb/Comments/comments.dart';
+import 'package:bulb/Login/login.dart';
+import 'package:bulb/Models/store_model.dart';
+import 'package:bulb/Products/products.dart';
+import 'package:bulb/Profile/profile.dart';
+import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Services/authentication_service.dart';
+import 'package:bulb/Services/firestore_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -109,10 +109,10 @@ class _DashboardState extends State<Dashboard> {
               )),
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.red[600], Colors.purple[500]],
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft)),
+                gradient: LinearGradient(colors: [
+              Theme.of(context).accentColor,
+              Theme.of(context).primaryColor
+            ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
           ),
           elevation: 0,
           centerTitle: true,
@@ -132,7 +132,10 @@ class _DashboardState extends State<Dashboard> {
           ),
           title: Text('bulb',
               style: TextStyle(
-                  fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
+                  fontSize: 45.0,
+                  color: Colors.white,
+                  fontFamily: 'Armatic',
+                  fontWeight: FontWeight.bold)),
           actions: [
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -153,10 +156,10 @@ class _DashboardState extends State<Dashboard> {
         ),
         body: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.red[600], Colors.purple[500]],
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
+              gradient: LinearGradient(colors: [
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColor
+          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
           child: FutureBuilder(
               future: getUserInfo,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -187,12 +190,12 @@ class _DashboardState extends State<Dashboard> {
                           )
                         : Center(
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.white,
+                              color: Colors.white,
                             ),
                           )
                     : Center(
                         child: CircularProgressIndicator(
-                          backgroundColor: Colors.white,
+                          color: Colors.white,
                         ),
                       );
               }),

@@ -1,5 +1,5 @@
-import 'package:bulovva_store/Services/authentication_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Services/authentication_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -100,10 +100,10 @@ class _SignState extends State<Sign> {
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          colors: [Colors.red[600], Colors.purple[500]],
-                          begin: Alignment.centerRight,
-                          end: Alignment.centerLeft)),
+                      gradient: LinearGradient(colors: [
+                    Theme.of(context).accentColor,
+                    Theme.of(context).primaryColor
+                  ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
                   child: Form(
                     key: formkey,
                     child: Column(
@@ -114,7 +114,7 @@ class _SignState extends State<Sign> {
                             Text('bulb',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontFamily: 'Dancing',
+                                    fontFamily: 'Armatic',
                                     shadows: <Shadow>[
                                       Shadow(
                                           color: Colors.black87,
@@ -134,7 +134,8 @@ class _SignState extends State<Sign> {
                                           blurRadius: 20,
                                           offset: Offset(5.0, 5.0))
                                     ],
-                                    fontFamily: 'Dancing',
+                                    fontFamily: 'Armatic',
+                                    fontWeight: FontWeight.bold,
                                     fontSize:
                                         MediaQuery.of(context).size.height /
                                             30)),
@@ -236,8 +237,8 @@ class _SignState extends State<Sign> {
                                               BorderRadius.circular(50.0),
                                           gradient: LinearGradient(
                                               colors: [
-                                                Colors.red[600],
-                                                Colors.purple[500]
+                                                Theme.of(context).accentColor,
+                                                Theme.of(context).primaryColor
                                               ],
                                               begin: Alignment.centerRight,
                                               end: Alignment.centerLeft)),
@@ -271,7 +272,7 @@ class _SignState extends State<Sign> {
                 ),
               )
             : Center(
-                child: CircularProgressIndicator(backgroundColor: Colors.white),
+                child: CircularProgressIndicator(color: Colors.white),
               ));
   }
 }

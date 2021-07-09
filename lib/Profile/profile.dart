@@ -1,13 +1,12 @@
 import 'dart:io';
-import 'package:bulovva_store/Login/login.dart';
-import 'package:bulovva_store/Map/map.dart';
-import 'package:bulovva_store/Models/store_alt_category_model.dart';
-import 'package:bulovva_store/Models/store_category.dart';
-import 'package:bulovva_store/Models/store_model.dart';
-import 'package:bulovva_store/Providers/store_provider.dart';
-import 'package:bulovva_store/Services/authentication_service.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Login/login.dart';
+import 'package:bulb/Map/map.dart';
+import 'package:bulb/Models/store_category.dart';
+import 'package:bulb/Models/store_model.dart';
+import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Services/authentication_service.dart';
+import 'package:bulb/Services/firestore_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +27,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   StoreProvider _storeProvider;
   List<StoreCategory> storeCats = [];
-  List<StoreAltCategory> storeAltCats = [];
   String _selectedCat;
-  String _selectedAltCat;
   Future getUserInfo;
   bool isInit = true;
   bool isLoading = false;
@@ -84,11 +81,6 @@ class _ProfileState extends State<Profile> {
 
     if (_storeProvider != null) {
       _selectedCat = _storeProvider.storeCategory;
-      selectCategory(_selectedCat);
-      if (_storeProvider.storeAltCategory != null &&
-          _storeProvider.storeAltCategory.isNotEmpty) {
-        _selectedAltCat = _storeProvider.storeAltCategory;
-      }
       taxNo.text = _storeProvider.storeTaxNo;
       taxLoc.text = _storeProvider.storeTaxLoc;
       name.text = _storeProvider.storeName;
@@ -101,15 +93,14 @@ class _ProfileState extends State<Profile> {
       pers2Phone.text = _storeProvider.pers2Phone;
       pers3Phone.text = _storeProvider.pers3Phone;
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   saveStore() {
     if (formkey.currentState.validate()) {
-      if (_storeProvider.storeLocalImagePath == null &&
-          _storeProvider.storePicRef == null) {
-        ToastService().showInfo('Lütfen bir resim seçiniz !', context);
-        return;
-      }
       if (_storeProvider.storeLocLat == null ||
           _storeProvider.storeLocLong == null) {
         ToastService().showInfo('Lütfen konum seçiniz !', context);
@@ -117,11 +108,6 @@ class _ProfileState extends State<Profile> {
       }
       if (_storeProvider.storeCategory == null) {
         ToastService().showInfo('Lütfen işletme kategorisi seçiniz !', context);
-        return;
-      }
-      if (_selectedAltCat == null && storeAltCats.length > 0) {
-        ToastService()
-            .showInfo('Lütfen işletme alt kategorisi seçiniz !', context);
         return;
       }
       setState(() {
@@ -169,34 +155,6 @@ class _ProfileState extends State<Profile> {
             isLoading = false;
           });
         });
-  }
-
-  selectCategory(String value) async {
-    setState(() {
-      isLoading = true;
-      _selectedAltCat = null;
-      storeAltCats = [];
-    });
-
-    int index =
-        storeCats.indexWhere((element) => element.storeCatName == value);
-
-    if (index != -1) {
-      QuerySnapshot snapshots =
-          await FirestoreService().getStoreAltCat(storeCats[index].storeCatId);
-
-      if (snapshots.docs.isNotEmpty) {
-        snapshots.docs.forEach((element) {
-          StoreAltCategory altCatElement =
-              StoreAltCategory.fromFirestore(element.data());
-          storeAltCats.add(altCatElement);
-        });
-      }
-    }
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   deleteYesNo() {
@@ -443,16 +401,19 @@ class _ProfileState extends State<Profile> {
         appBar: AppBar(
           flexibleSpace: Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.red[600], Colors.purple[500]],
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft)),
+                gradient: LinearGradient(colors: [
+              Theme.of(context).accentColor,
+              Theme.of(context).primaryColor
+            ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
           ),
           elevation: 0,
           centerTitle: true,
           title: Text('bulb',
               style: TextStyle(
-                  fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
+                  fontSize: 45.0,
+                  color: Colors.white,
+                  fontFamily: 'Armatic',
+                  fontWeight: FontWeight.bold)),
           actions: [
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
@@ -474,10 +435,10 @@ class _ProfileState extends State<Profile> {
         ),
         body: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.red[600], Colors.purple[500]],
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
+              gradient: LinearGradient(colors: [
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColor
+          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
           child: Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Container(
@@ -520,8 +481,10 @@ class _ProfileState extends State<Profile> {
                                                           50.0),
                                                   gradient: LinearGradient(
                                                       colors: [
-                                                        Colors.red[600],
-                                                        Colors.purple[500]
+                                                        Theme.of(context)
+                                                            .accentColor,
+                                                        Theme.of(context)
+                                                            .primaryColor
                                                       ],
                                                       begin:
                                                           Alignment.centerRight,
@@ -540,7 +503,7 @@ class _ProfileState extends State<Profile> {
                                                       ? Image.network(
                                                           _storeProvider
                                                               .storePicRef,
-                                                          fit: BoxFit.fitWidth,
+                                                          fit: BoxFit.fill,
                                                           loadingBuilder: (context,
                                                               child,
                                                               loadingProgress) {
@@ -550,9 +513,8 @@ class _ProfileState extends State<Profile> {
                                                                 : Center(
                                                                     child:
                                                                         CircularProgressIndicator(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
+                                                                      color: Colors
+                                                                          .white,
                                                                     ),
                                                                   );
                                                           },
@@ -609,9 +571,12 @@ class _ProfileState extends State<Profile> {
                                                                       50.0),
                                                           gradient: LinearGradient(
                                                               colors: [
-                                                                Colors.red[600],
-                                                                Colors
-                                                                    .purple[500]
+                                                                Theme.of(
+                                                                        context)
+                                                                    .accentColor,
+                                                                Theme.of(
+                                                                        context)
+                                                                    .primaryColor
                                                               ],
                                                               begin: Alignment
                                                                   .centerRight,
@@ -644,9 +609,12 @@ class _ProfileState extends State<Profile> {
                                                                       50.0),
                                                           gradient: LinearGradient(
                                                               colors: [
-                                                                Colors.red[600],
-                                                                Colors
-                                                                    .purple[500]
+                                                                Theme.of(
+                                                                        context)
+                                                                    .accentColor,
+                                                                Theme.of(
+                                                                        context)
+                                                                    .primaryColor
                                                               ],
                                                               begin: Alignment
                                                                   .centerRight,
@@ -672,8 +640,8 @@ class _ProfileState extends State<Profile> {
                                       borderRadius: BorderRadius.circular(50.0),
                                       gradient: LinearGradient(
                                           colors: [
-                                            Colors.red[600],
-                                            Colors.purple[500]
+                                            Theme.of(context).accentColor,
+                                            Theme.of(context).primaryColor
                                           ],
                                           begin: Alignment.centerRight,
                                           end: Alignment.centerLeft)),
@@ -715,8 +683,8 @@ class _ProfileState extends State<Profile> {
                                             BorderRadius.circular(50.0),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Colors.red[600],
-                                              Colors.purple[500]
+                                              Theme.of(context).accentColor,
+                                              Theme.of(context).primaryColor
                                             ],
                                             begin: Alignment.centerRight,
                                             end: Alignment.centerLeft)),
@@ -790,51 +758,8 @@ class _ProfileState extends State<Profile> {
                                                   );
                                                 }).toList(),
                                                 onChanged: (value) {
-                                                  selectCategory(value);
                                                   _storeProvider
                                                       .changeStoreCategory(
-                                                          value);
-                                                }),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Container(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            child: DropdownButton(
-                                                value: _selectedAltCat,
-                                                isExpanded: true,
-                                                underline: SizedBox(),
-                                                hint: Text(
-                                                    "İşletme için alt kategori seçiniz !"),
-                                                items: storeAltCats.map(
-                                                    (StoreAltCategory
-                                                        storeAltCat) {
-                                                  return new DropdownMenuItem<
-                                                      String>(
-                                                    value: storeAltCat
-                                                        .storeAltCatName,
-                                                    onTap: () {
-                                                      _selectedAltCat =
-                                                          storeAltCat
-                                                              .storeAltCatName;
-                                                    },
-                                                    child: new Text(
-                                                      storeAltCat
-                                                          .storeAltCatName,
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  _storeProvider
-                                                      .changeStoreAltCategory(
                                                           value);
                                                 }),
                                           ),
@@ -1094,7 +1019,7 @@ class _ProfileState extends State<Profile> {
                     )
                   : Center(
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.white,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
             ),

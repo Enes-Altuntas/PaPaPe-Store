@@ -1,7 +1,7 @@
-import 'package:bulovva_store/Dashboard/dashboard.dart';
-import 'package:bulovva_store/Login/sign.dart';
-import 'package:bulovva_store/Services/authentication_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Dashboard/dashboard.dart';
+import 'package:bulb/Login/sign.dart';
+import 'package:bulb/Services/authentication_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -144,7 +144,10 @@ class _LoginState extends State<Login> {
                     height: MediaQuery.of(context).size.height,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
-                            colors: [Colors.red[600], Colors.purple[500]],
+                            colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).accentColor
+                        ],
                             begin: Alignment.centerRight,
                             end: Alignment.centerLeft)),
                     child: Form(
@@ -157,7 +160,7 @@ class _LoginState extends State<Login> {
                               Text('bulb',
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontFamily: 'Dancing',
+                                      fontFamily: 'Armatic',
                                       shadows: <Shadow>[
                                         Shadow(
                                             color: Colors.black87,
@@ -177,7 +180,8 @@ class _LoginState extends State<Login> {
                                             blurRadius: 20,
                                             offset: Offset(5.0, 5.0))
                                       ],
-                                      fontFamily: 'Dancing',
+                                      fontFamily: 'Armatic',
+                                      fontWeight: FontWeight.bold,
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               30)),
@@ -265,8 +269,9 @@ class _LoginState extends State<Login> {
                                                 BorderRadius.circular(50.0),
                                             gradient: LinearGradient(
                                                 colors: [
-                                                  Colors.red[600],
-                                                  Colors.purple[500]
+                                                  Theme.of(context)
+                                                      .primaryColor,
+                                                  Theme.of(context).accentColor
                                                 ],
                                                 begin: Alignment.centerRight,
                                                 end: Alignment.centerLeft)),
@@ -305,8 +310,9 @@ class _LoginState extends State<Login> {
                                                 BorderRadius.circular(20.0),
                                             gradient: LinearGradient(
                                                 colors: [
-                                                  Colors.red[600],
-                                                  Colors.purple[500]
+                                                  Theme.of(context)
+                                                      .primaryColor,
+                                                  Theme.of(context).accentColor
                                                 ],
                                                 begin: Alignment.centerRight,
                                                 end: Alignment.centerLeft)),
@@ -353,8 +359,9 @@ class _LoginState extends State<Login> {
                                                 BorderRadius.circular(20.0),
                                             gradient: LinearGradient(
                                                 colors: [
-                                                  Colors.red[600],
-                                                  Colors.purple[500]
+                                                  Theme.of(context)
+                                                      .primaryColor,
+                                                  Theme.of(context).accentColor
                                                 ],
                                                 begin: Alignment.centerRight,
                                                 end: Alignment.centerLeft)),
@@ -388,8 +395,7 @@ class _LoginState extends State<Login> {
                     ),
                   )
                 : Center(
-                    child: CircularProgressIndicator(
-                        backgroundColor: Colors.white),
+                    child: CircularProgressIndicator(color: Colors.white),
                   ));
   }
 }

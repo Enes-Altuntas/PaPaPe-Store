@@ -1,6 +1,6 @@
-import 'package:bulovva_store/Models/product_category_model.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Models/product_category_model.dart';
+import 'package:bulb/Services/firestore_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -110,24 +110,27 @@ class _CategorySingleState extends State<CategorySingle> {
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.red[600], Colors.purple[500]],
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
+              gradient: LinearGradient(colors: [
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColor
+          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
         ),
         elevation: 0,
         centerTitle: true,
         title: Text('bulb',
             style: TextStyle(
-                fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
+                fontSize: 45.0,
+                color: Colors.white,
+                fontFamily: 'Armatic',
+                fontWeight: FontWeight.bold)),
       ),
       body: (_isLoading == false)
           ? Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Colors.red[600], Colors.purple[500]],
-                      begin: Alignment.centerRight,
-                      end: Alignment.centerLeft)),
+                  gradient: LinearGradient(colors: [
+                Theme.of(context).accentColor,
+                Theme.of(context).primaryColor
+              ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
@@ -181,8 +184,8 @@ class _CategorySingleState extends State<CategorySingle> {
                                             BorderRadius.circular(50.0),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Colors.red[600],
-                                              Colors.purple[500]
+                                              Theme.of(context).accentColor,
+                                              Theme.of(context).primaryColor
                                             ],
                                             begin: Alignment.centerRight,
                                             end: Alignment.centerLeft)),
@@ -234,7 +237,7 @@ class _CategorySingleState extends State<CategorySingle> {
             )
           : Center(
               child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
+                color: Colors.white,
               ),
             ),
     );

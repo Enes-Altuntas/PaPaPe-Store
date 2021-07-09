@@ -1,21 +1,24 @@
 import 'dart:io';
 
-import 'package:bulovva_store/Models/camapign_model.dart';
-import 'package:bulovva_store/Models/markers_model.dart';
-import 'package:bulovva_store/Models/product_category_model.dart';
-import 'package:bulovva_store/Models/product_model.dart';
-import 'package:bulovva_store/Models/comment_model.dart';
-import 'package:bulovva_store/Models/store_model.dart';
-import 'package:bulovva_store/Models/token_model.dart';
-import 'package:bulovva_store/Services/authentication_service.dart';
+import 'package:bulb/Models/camapign_model.dart';
+import 'package:bulb/Models/comment_model.dart';
+import 'package:bulb/Models/markers_model.dart';
+import 'package:bulb/Models/position_model.dart';
+import 'package:bulb/Models/product_category_model.dart';
+import 'package:bulb/Models/product_model.dart';
+import 'package:bulb/Models/store_model.dart';
+import 'package:bulb/Models/token_model.dart';
+import 'package:bulb/Services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:uuid/uuid.dart';
 
 class FirestoreService {
   FirebaseFirestore _db = FirebaseFirestore.instance;
+  Geoflutterfire geo = Geoflutterfire();
   String downloadUrl;
   TaskSnapshot snapshot;
   final _storage = FirebaseStorage.instance;
@@ -69,7 +72,6 @@ class FirestoreService {
           storeLocLat: store.storeLocLat,
           storeLocLong: store.storeLocLong,
           storeCategory: store.storeCategory,
-          storeAltCategory: store.storeAltCategory,
           pers1: store.pers1,
           pers2: store.pers2,
           pers3: store.pers3,
@@ -78,15 +80,17 @@ class FirestoreService {
           pers3Phone: store.pers3Phone,
           storePicRef: downloadUrl);
 
-      Markers newMarker = Markers(
-          hasCampaign: false,
-          markerLatitude: store.storeLocLat,
-          markerLongtitude: store.storeLocLong,
-          storeCategory: store.storeCategory,
-          storeAltCategory: store.storeAltCategory,
-          storeId: newStore.storeId,
-          markerId: _uuid,
-          markerTitle: store.storeName);
+      GeoFirePoint center =
+          geo.point(latitude: store.storeLocLat, longitude: store.storeLocLong);
+
+      FirestoreMarkers newMarker = FirestoreMarkers(
+        hasCampaign: false,
+        storeCategory: store.storeCategory,
+        position: PositionMarker(
+            geohash: center.hash,
+            geopoint: GeoPoint(store.storeLocLat, store.storeLocLong)),
+        storeId: newStore.storeId,
+      );
 
       Tokens newToken = Tokens(
           tokenId: await FirebaseMessaging.instance.getToken(),
@@ -94,7 +98,9 @@ class FirestoreService {
 
       try {
         await _db.collection('stores').doc(_uuid).set(newStore.toMap());
+
         await _db.collection('markers').doc(_uuid).set(newMarker.toMap());
+
         await _db.collection('tokens').doc(_uuid).set(newToken.toMap());
 
         return 'Bilgileriniz kaydedilmiştir !';
@@ -110,7 +116,6 @@ class FirestoreService {
           storeAddress: store.storeAddress,
           storePhone: store.storePhone,
           storeCategory: store.storeCategory,
-          storeAltCategory: store.storeAltCategory,
           storeLocLat: store.storeLocLat,
           storeLocLong: store.storeLocLong,
           pers1: store.pers1,
@@ -121,19 +126,21 @@ class FirestoreService {
           pers3Phone: store.pers3Phone,
           storePicRef: (downloadUrl != null) ? downloadUrl : store.storePicRef);
 
-      Markers newMarker = Markers(
-          hasCampaign: false,
-          markerLatitude: store.storeLocLat,
-          markerLongtitude: store.storeLocLong,
-          storeCategory: store.storeCategory,
-          storeAltCategory: store.storeAltCategory,
-          storeId: store.storeId,
-          markerId: _uuid,
-          markerTitle: store.storeName);
+      GeoFirePoint center =
+          geo.point(latitude: store.storeLocLat, longitude: store.storeLocLong);
+
+      FirestoreMarkers updMarker = FirestoreMarkers(
+        hasCampaign: false,
+        storeCategory: store.storeCategory,
+        position: PositionMarker(
+            geohash: center.hash,
+            geopoint: GeoPoint(store.storeLocLat, store.storeLocLong)),
+        storeId: store.storeId,
+      );
 
       try {
         await _db.collection('stores').doc(_uuid).set(updStore.toMap());
-        await _db.collection('markers').doc(_uuid).set(newMarker.toMap());
+        await _db.collection('markers').doc(_uuid).set(updMarker.toMap());
 
         return 'Bilgileriniz güncellenmiştir !';
       } catch (e) {
@@ -151,15 +158,6 @@ class FirestoreService {
     return await _db
         .collection('categories')
         .orderBy('storeCatRow', descending: false)
-        .get();
-  }
-
-  Future getStoreAltCat(String catId) async {
-    return await _db
-        .collection('categories')
-        .doc(catId)
-        .collection('alt_categories')
-        .orderBy('storeAltCatRow', descending: false)
         .get();
   }
 

@@ -1,10 +1,10 @@
-import 'package:bulovva_store/Models/product_category_model.dart';
-import 'package:bulovva_store/Models/product_model.dart';
-import 'package:bulovva_store/Products/category.dart';
-import 'package:bulovva_store/Products/product.dart';
-import 'package:bulovva_store/Providers/store_provider.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Models/product_category_model.dart';
+import 'package:bulb/Models/product_model.dart';
+import 'package:bulb/Products/category.dart';
+import 'package:bulb/Products/product.dart';
+import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Services/firestore_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -214,8 +214,9 @@ class _MenuState extends State<Menu> {
                                                         GestureDetector(
                                                           child: Icon(
                                                               Icons.edit,
-                                                              color: Colors
-                                                                  .red[600]),
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .primaryColor),
                                                           onTap: () {
                                                             setState(() {
                                                               _selectedCategory =
@@ -233,10 +234,10 @@ class _MenuState extends State<Menu> {
                                                           child:
                                                               GestureDetector(
                                                             child: Icon(
-                                                              Icons.delete,
-                                                              color: Colors
-                                                                  .red[600],
-                                                            ),
+                                                                Icons.delete,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor),
                                                             onTap: () {
                                                               deleteCatYesNo(
                                                                   context,
@@ -294,8 +295,8 @@ class _MenuState extends State<Menu> {
                                                                               child: Container(
                                                                                 decoration: BoxDecoration(
                                                                                     gradient: LinearGradient(colors: [
-                                                                                  Colors.red[600],
-                                                                                  Colors.purple
+                                                                                  Theme.of(context).accentColor,
+                                                                                  Theme.of(context).primaryColor
                                                                                 ], begin: Alignment.bottomRight, end: Alignment.topLeft)),
                                                                                 child: Padding(
                                                                                   padding: const EdgeInsets.all(15.0),
@@ -474,7 +475,7 @@ class _MenuState extends State<Menu> {
                               )
                         : Center(
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.white,
+                              color: Colors.white,
                             ),
                           );
                   },
@@ -484,7 +485,7 @@ class _MenuState extends State<Menu> {
           )
         : Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.white,
+              color: Colors.white,
             ),
           );
   }

@@ -1,6 +1,6 @@
-import 'package:bulovva_store/Login/login.dart';
-import 'package:bulovva_store/Providers/store_provider.dart';
-import 'package:bulovva_store/Services/authentication_service.dart';
+import 'package:bulb/Login/login.dart';
+import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Services/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +40,9 @@ class MyApp extends StatelessWidget {
           title: 'BULB İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primaryColor: Colors.purple,
+            primaryColor: Colors.amber[900],
             primaryColorDark: Colors.black,
-            accentColor: Colors.red[600],
+            accentColor: Colors.amber,
             hintColor: Colors.grey.shade800,
           ),
           home: Login()),

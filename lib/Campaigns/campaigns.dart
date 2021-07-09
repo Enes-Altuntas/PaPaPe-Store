@@ -1,8 +1,8 @@
-import 'package:bulovva_store/Campaigns/campaign.dart';
-import 'package:bulovva_store/Models/camapign_model.dart';
-import 'package:bulovva_store/Providers/store_provider.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Campaigns/campaign.dart';
+import 'package:bulb/Models/camapign_model.dart';
+import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Services/firestore_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -123,8 +123,10 @@ class _CampaignsState extends State<Campaigns> {
                                                     decoration: BoxDecoration(
                                                         gradient: LinearGradient(
                                                             colors: [
-                                                          Colors.red[600],
-                                                          Colors.purple[500]
+                                                          Theme.of(context)
+                                                              .accentColor,
+                                                          Theme.of(context)
+                                                              .primaryColor
                                                         ],
                                                             begin: Alignment
                                                                 .centerRight,
@@ -145,14 +147,11 @@ class _CampaignsState extends State<Campaigns> {
                                                                 : Center(
                                                                     child:
                                                                         CircularProgressIndicator(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .white,
+                                                                      color: Colors
+                                                                          .white,
                                                                     ),
                                                                   );
-                                                          },
-                                                            fit:
-                                                                BoxFit.fitWidth)
+                                                          }, fit: BoxFit.fill)
                                                         : Center(
                                                             child: Text(
                                                                 'Kampanya Resmi Yok',
@@ -172,10 +171,12 @@ class _CampaignsState extends State<Campaigns> {
                                                         decoration: BoxDecoration(
                                                             gradient: LinearGradient(
                                                                 colors: [
-                                                                  Colors
-                                                                      .red[600],
-                                                                  Colors.purple[
-                                                                      500]
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .accentColor,
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .primaryColor
                                                                 ],
                                                                 begin: Alignment
                                                                     .centerRight,
@@ -326,8 +327,10 @@ class _CampaignsState extends State<Campaigns> {
                                                               50.0),
                                                       gradient: LinearGradient(
                                                           colors: [
-                                                            Colors.red[600],
-                                                            Colors.purple[500]
+                                                            Theme.of(context)
+                                                                .accentColor,
+                                                            Theme.of(context)
+                                                                .primaryColor
                                                           ],
                                                           begin: Alignment
                                                               .centerRight,
@@ -424,7 +427,7 @@ class _CampaignsState extends State<Campaigns> {
                               )
                         : Center(
                             child: CircularProgressIndicator(
-                              backgroundColor: Colors.white,
+                              color: Colors.white,
                             ),
                           );
                   },
@@ -434,7 +437,7 @@ class _CampaignsState extends State<Campaigns> {
           )
         : Center(
             child: CircularProgressIndicator(
-              backgroundColor: Colors.white,
+              color: Colors.white,
             ),
           );
   }

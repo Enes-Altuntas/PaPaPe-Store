@@ -1,5 +1,5 @@
-import 'package:bulovva_store/Models/comment_model.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
+import 'package:bulb/Models/comment_model.dart';
+import 'package:bulb/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -47,8 +47,8 @@ class _ReportsState extends State<Reports> {
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                           colors: [
-                                        Colors.red[600],
-                                        Colors.purple
+                                        Theme.of(context).accentColor,
+                                        Theme.of(context).primaryColor
                                       ],
                                           begin: Alignment.bottomRight,
                                           end: Alignment.topLeft)),
@@ -156,7 +156,7 @@ class _ReportsState extends State<Reports> {
                     )
               : Center(
                   child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
+                  color: Colors.white,
                 ));
         },
       ),

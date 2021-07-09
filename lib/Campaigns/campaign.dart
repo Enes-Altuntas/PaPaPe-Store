@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:bulovva_store/Models/camapign_model.dart';
-import 'package:bulovva_store/Services/firestore_service.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Models/camapign_model.dart';
+import 'package:bulb/Services/firestore_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
@@ -465,23 +465,26 @@ class _CampaignSingleState extends State<CampaignSingle> {
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.red[600], Colors.purple[500]],
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
+              gradient: LinearGradient(colors: [
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColor
+          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
         ),
         elevation: 0,
         centerTitle: true,
         title: Text('bulb',
             style: TextStyle(
-                fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
+                fontSize: 45.0,
+                color: Colors.white,
+                fontFamily: 'Armatic',
+                fontWeight: FontWeight.bold)),
       ),
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.red[600], Colors.purple[500]],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft)),
+            gradient: LinearGradient(colors: [
+          Theme.of(context).accentColor,
+          Theme.of(context).primaryColor
+        ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Container(
@@ -534,8 +537,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                               50.0),
                                                       gradient: LinearGradient(
                                                           colors: [
-                                                            Colors.red[600],
-                                                            Colors.purple[500]
+                                                            Theme.of(context)
+                                                                .accentColor,
+                                                            Theme.of(context)
+                                                                .primaryColor
                                                           ],
                                                           begin: Alignment
                                                               .centerRight,
@@ -563,8 +568,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                               50.0),
                                                       gradient: LinearGradient(
                                                           colors: [
-                                                            Colors.red[600],
-                                                            Colors.purple[500]
+                                                            Theme.of(context)
+                                                                .accentColor,
+                                                            Theme.of(context)
+                                                                .primaryColor
                                                           ],
                                                           begin: Alignment
                                                               .centerRight,
@@ -642,10 +649,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                                         50.0),
                                                             gradient: LinearGradient(
                                                                 colors: [
-                                                                  Colors
-                                                                      .red[600],
-                                                                  Colors.purple[
-                                                                      500]
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .accentColor,
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .primaryColor
                                                                 ],
                                                                 begin: Alignment
                                                                     .centerRight,
@@ -678,10 +687,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                                         50.0),
                                                             gradient: LinearGradient(
                                                                 colors: [
-                                                                  Colors
-                                                                      .red[600],
-                                                                  Colors.purple[
-                                                                      500]
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .accentColor,
+                                                                  Theme.of(
+                                                                          context)
+                                                                      .primaryColor
                                                                 ],
                                                                 begin: Alignment
                                                                     .centerRight,
@@ -719,8 +730,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                   BorderRadius.circular(35.0),
                                               gradient: LinearGradient(
                                                   colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
+                                                    Theme.of(context)
+                                                        .accentColor,
+                                                    Theme.of(context)
+                                                        .primaryColor
                                                   ],
                                                   begin: Alignment.centerRight,
                                                   end: Alignment.centerLeft)),
@@ -881,8 +894,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                   BorderRadius.circular(20.0),
                                               gradient: LinearGradient(
                                                   colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
+                                                    Theme.of(context)
+                                                        .accentColor,
+                                                    Theme.of(context)
+                                                        .primaryColor
                                                   ],
                                                   begin: Alignment.centerRight,
                                                   end: Alignment.centerLeft)),
@@ -921,8 +936,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                   BorderRadius.circular(20.0),
                                               gradient: LinearGradient(
                                                   colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
+                                                    Theme.of(context)
+                                                        .accentColor,
+                                                    Theme.of(context)
+                                                        .primaryColor
                                                   ],
                                                   begin: Alignment.centerRight,
                                                   end: Alignment.centerLeft)),
@@ -964,8 +981,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                     BorderRadius.circular(20.0),
                                                 gradient: LinearGradient(
                                                     colors: [
-                                                      Colors.red[600],
-                                                      Colors.purple[500]
+                                                      Theme.of(context)
+                                                          .accentColor,
+                                                      Theme.of(context)
+                                                          .primaryColor
                                                     ],
                                                     begin:
                                                         Alignment.centerRight,
@@ -1007,8 +1026,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                   BorderRadius.circular(20.0),
                                               gradient: LinearGradient(
                                                   colors: [
-                                                    Colors.red[600],
-                                                    Colors.purple[500]
+                                                    Theme.of(context)
+                                                        .accentColor,
+                                                    Theme.of(context)
+                                                        .primaryColor
                                                   ],
                                                   begin: Alignment.centerRight,
                                                   end: Alignment.centerLeft)),
@@ -1050,8 +1071,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                     BorderRadius.circular(20.0),
                                                 gradient: LinearGradient(
                                                     colors: [
-                                                      Colors.red[600],
-                                                      Colors.purple[500]
+                                                      Theme.of(context)
+                                                          .accentColor,
+                                                      Theme.of(context)
+                                                          .primaryColor
                                                     ],
                                                     begin:
                                                         Alignment.centerRight,
@@ -1087,7 +1110,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                   )
                 : Center(
                     child: CircularProgressIndicator(
-                      backgroundColor: Colors.white,
+                      color: Colors.white,
                     ),
                   ),
           ),

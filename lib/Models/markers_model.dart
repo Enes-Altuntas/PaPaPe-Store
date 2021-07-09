@@ -1,44 +1,30 @@
-class Markers {
+import 'package:bulb/Models/position_model.dart';
+
+class FirestoreMarkers {
   final bool hasCampaign;
   final String storeCategory;
-  final String storeAltCategory;
-  final double markerLatitude;
-  final double markerLongtitude;
-  final String markerTitle;
-  final String markerId;
+  final PositionMarker position;
   final String storeId;
 
-  Markers({
-    this.hasCampaign,
+  FirestoreMarkers({
     this.storeCategory,
-    this.storeAltCategory,
-    this.markerLatitude,
-    this.markerId,
-    this.markerLongtitude,
-    this.markerTitle,
+    this.hasCampaign,
+    this.position,
     this.storeId,
   });
 
-  Markers.fromFirestore(Map<String, dynamic> data)
-      : hasCampaign = data['hasCampaign'],
-        storeCategory = data['storeCategory'],
-        storeAltCategory = data['storeAltCategory'],
-        markerLatitude = data['markerLatitude'],
-        markerLongtitude = data['markerLongtitude'],
-        markerId = data['markerId'],
-        markerTitle = data['markerTitle'],
-        storeId = data['storeId'];
-
   Map<String, dynamic> toMap() {
     return {
-      'hasCampaign': hasCampaign,
       'storeCategory': storeCategory,
-      'storeAltCategory': storeAltCategory,
-      'markerLatitude': markerLatitude,
-      'markerLongtitude': markerLongtitude,
-      'markerId': markerId,
-      'markerTitle': markerTitle,
+      'hasCampaign': hasCampaign,
+      'position': position.toMap(),
       'storeId': storeId,
     };
   }
+
+  FirestoreMarkers.fromFirestore(Map<String, dynamic> firestore)
+      : storeCategory = firestore['storeCategory'],
+        hasCampaign = firestore['hasCampaign'],
+        position = PositionMarker.fromFirestore(firestore['position']),
+        storeId = firestore['storeId'];
 }

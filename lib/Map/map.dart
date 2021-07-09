@@ -1,5 +1,5 @@
-import 'package:bulovva_store/Providers/store_provider.dart';
-import 'package:bulovva_store/Services/toast_service.dart';
+import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,23 +93,26 @@ class _MapsState extends State<Maps> {
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.red[600], Colors.purple[500]],
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft)),
+              gradient: LinearGradient(colors: [
+            Theme.of(context).accentColor,
+            Theme.of(context).primaryColor
+          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
         ),
         elevation: 0,
         centerTitle: true,
         title: Text('bulb',
             style: TextStyle(
-                fontSize: 40.0, color: Colors.white, fontFamily: 'Dancing')),
+                fontSize: 45.0,
+                color: Colors.white,
+                fontFamily: 'Armatic',
+                fontWeight: FontWeight.bold)),
       ),
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.red[600], Colors.purple[500]],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft)),
+            gradient: LinearGradient(colors: [
+          Theme.of(context).accentColor,
+          Theme.of(context).primaryColor
+        ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(
@@ -140,7 +143,10 @@ class _MapsState extends State<Maps> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50.0),
                             gradient: LinearGradient(
-                                colors: [Colors.red[600], Colors.purple[500]],
+                                colors: [
+                                  Theme.of(context).accentColor,
+                                  Theme.of(context).primaryColor
+                                ],
                                 begin: Alignment.centerRight,
                                 end: Alignment.centerLeft)),
                         child: TextButton(
