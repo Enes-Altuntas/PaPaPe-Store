@@ -151,25 +151,45 @@ class _CategorySingleState extends State<CategorySingle> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 30.0),
+                                  padding: const EdgeInsets.only(top: 40.0),
+                                  child: Text(
+                                    " * Başlık sırası örnek olarak 'Çorbalar' başlığının kaçıncı sırada olacağını belirler.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 16.0),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: TextFormField(
                                     controller: _categoryRow,
                                     maxLength: 3,
                                     validator: _validateCatRow,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
-                                        labelText: 'Kategori Sırası',
+                                        labelText: 'Başlık Sırası',
                                         border: OutlineInputBorder()),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    " * Başlık adı örnek 'Çorbalar', 'Bileklikler', 'Elbiseler'",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 16.0),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: TextFormField(
                                     validator: _validateCatName,
                                     controller: _categoryName,
                                     maxLength: 50,
                                     decoration: InputDecoration(
-                                        labelText: 'Kategori Adı',
+                                        labelText: 'Başlık Adı',
                                         border: OutlineInputBorder()),
                                   ),
                                 ),
@@ -206,9 +226,9 @@ class _CategorySingleState extends State<CategorySingle> {
                                             ),
                                             Text(
                                                 (widget.categoryData == null)
-                                                    ? "Kategori Oluştur"
+                                                    ? "Başlık Oluştur"
                                                         .toUpperCase()
-                                                    : "Kategori Düzenle"
+                                                    : "Başlığı Düzenle"
                                                         .toUpperCase(),
                                                 style: TextStyle(
                                                     fontSize: 17,

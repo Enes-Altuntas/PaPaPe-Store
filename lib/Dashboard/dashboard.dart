@@ -7,6 +7,7 @@ import 'package:bulb/Models/store_model.dart';
 import 'package:bulb/Products/products.dart';
 import 'package:bulb/Profile/profile.dart';
 import 'package:bulb/Providers/store_provider.dart';
+import 'package:bulb/Reservations/reservations.dart';
 import 'package:bulb/Services/authentication_service.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -87,7 +88,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -130,6 +131,9 @@ class _DashboardState extends State<Dashboard> {
               Tab(text: 'Ürünler'),
               Tab(
                 text: 'Dilek & Şikayet',
+              ),
+              Tab(
+                text: 'Rezervasyonlar',
               ),
             ],
           ),
@@ -185,6 +189,7 @@ class _DashboardState extends State<Dashboard> {
                                           Campaigns(),
                                           Menu(),
                                           Reports(),
+                                          Reservation()
                                         ],
                                       )),
                                 ),

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:bulb/Models/product_category_model.dart';
 import 'package:bulb/Models/product_model.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:bulb/Services/toast_service.dart';
@@ -13,11 +12,9 @@ import 'package:uuid/uuid.dart';
 
 class ProductSingle extends StatefulWidget {
   final Product productData;
-  final String selectedCategory;
-  final List<ProductCategory> category;
+  final String selectedCategoryId;
 
-  ProductSingle(
-      {Key key, this.productData, this.selectedCategory, this.category})
+  ProductSingle({Key key, this.productData, this.selectedCategoryId})
       : super(key: key);
 
   @override
@@ -29,8 +26,6 @@ class _ProductSingleState extends State<ProductSingle> {
   final TextEditingController _productName = TextEditingController();
   final TextEditingController _productDesc = TextEditingController();
   final TextEditingController _productPrice = TextEditingController();
-  String _selectedCat;
-  String _selectedCatId;
   bool isLoading = false;
   bool isInit = true;
   bool picBtn = false;
@@ -40,18 +35,13 @@ class _ProductSingleState extends State<ProductSingle> {
   bool picDeleted = false;
 
   saveProduct() {
-    if (_selectedCatId == null) {
-      ToastService()
-          .showInfo('Ürün eklerken kategori seçilmesi zorunludur', context);
-      return;
-    }
     if (formKeyProd.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
       Product product = Product(
           productId: Uuid().v4(),
-          productCatId: _selectedCatId,
+          productCatId: widget.selectedCategoryId,
           productDesc: _productDesc.text,
           productName: _productName.text,
           productLocalImage: productPic,
@@ -68,20 +58,13 @@ class _ProductSingleState extends State<ProductSingle> {
   }
 
   updateProduct() {
-    if (_selectedCat == null) {
-      ToastService()
-          .showInfo('Ürün eklerken kategori seçilmesi zorunludur', context);
-      return;
-    }
     if (formKeyProd.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
       Product product = Product(
           productId: widget.productData.productId,
-          productCatId: (_selectedCatId != null)
-              ? _selectedCatId
-              : widget.productData.productCatId,
+          productCatId: widget.selectedCategoryId,
           productDesc: _productDesc.text,
           productLocalImage: productPic,
           productPicRef: (picDeleted) ? null : widget.productData.productPicRef,
@@ -249,11 +232,9 @@ class _ProductSingleState extends State<ProductSingle> {
     if (isInit) {
       if (widget.productData != null) {
         setState(() {
-          _selectedCat = widget.selectedCategory;
           _productDesc.text = widget.productData.productDesc;
           _productName.text = widget.productData.productName;
           _productPrice.text = widget.productData.productPrice.toString();
-          _selectedCatId = widget.productData.productCatId;
           isInit = false;
           editBtn = true;
           saveBtn = false;
@@ -589,33 +570,6 @@ class _ProductSingleState extends State<ProductSingle> {
                             child: Column(
                               children: [
                                 Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: DropdownButton(
-                                          isExpanded: true,
-                                          value: _selectedCat,
-                                          hint: Text(
-                                              "Ürün için kategori seçiniz !"),
-                                          items: widget.category
-                                              .map((ProductCategory category) {
-                                            return new DropdownMenuItem<String>(
-                                              value: category.categoryName,
-                                              onTap: () {
-                                                _selectedCatId =
-                                                    category.categoryId;
-                                              },
-                                              child: new Text(
-                                                  category.categoryName),
-                                            );
-                                          }).toList(),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _selectedCat = value;
-                                            });
-                                          }),
-                                    )),
-                                Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
                                   child: TextFormField(
                                     controller: _productName,
@@ -733,7 +687,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                                     ),
                                                   ),
                                                   Text(
-                                                      "Ürün Düzenle"
+                                                      "Ürünü Güncelle"
                                                           .toUpperCase(),
                                                       style: TextStyle(
                                                           fontSize: 17,

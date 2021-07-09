@@ -6,6 +6,7 @@ import 'package:bulb/Models/markers_model.dart';
 import 'package:bulb/Models/position_model.dart';
 import 'package:bulb/Models/product_category_model.dart';
 import 'package:bulb/Models/product_model.dart';
+import 'package:bulb/Models/reservations_model.dart';
 import 'package:bulb/Models/store_model.dart';
 import 'package:bulb/Models/token_model.dart';
 import 'package:bulb/Services/authentication_service.dart';
@@ -512,4 +513,23 @@ class FirestoreService {
 
 // *******************************************************************************
 // Şikayetler ile ilgili backend işlemleri
+
+// Rezervasyon ile ilgili backend işlemleri
+// *******************************************************************************
+
+  Stream<List<Reservations>> getReservations() {
+    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+    return _db
+        .collection('stores')
+        .doc(_userId)
+        .collection('reservations')
+        .orderBy('reservationTime', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Reservations.fromFirestore(doc.data()))
+            .toList());
+  }
+
+// *******************************************************************************
+// Rezarvasyon ile ilgili backend işlemleri
 }
