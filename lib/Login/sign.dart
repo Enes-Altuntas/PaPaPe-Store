@@ -124,7 +124,8 @@ class _SignState extends State<Sign> {
                                     fontSize:
                                         MediaQuery.of(context).size.height /
                                             10)),
-                            Text('" Bulunduğun lokasyona bak ! "',
+                            Text(
+                                '" Bulunduğun lokasyona bak ! Fırsatları kaçırma ! "',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,

@@ -78,17 +78,7 @@ class _ReportsState extends State<Reports> {
                                             padding: const EdgeInsets.only(
                                                 top: 10.0),
                                             child: Text(
-                                                'Puan: ${snapshot.data[index].reportScore.toString()}',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15.0)),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0),
-                                            child: Text(
-                                                'Yorum Saati: ${formatDate(snapshot.data[index].createdAt)}',
+                                                'Oluşturulma Saati: ${formatDate(snapshot.data[index].createdAt)}',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
@@ -118,7 +108,7 @@ class _ReportsState extends State<Reports> {
                                   width:
                                       MediaQuery.of(context).size.width * 0.8,
                                   child: Text(
-                                    'Henüz işletmeniz adına yapılmış bir yorum bulunmamaktadır !',
+                                    'Henüz işletmeniz adına hazırlanmış dilek veya şikayet bulunmamaktadır !',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 25.0,
@@ -143,7 +133,7 @@ class _ReportsState extends State<Reports> {
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: Text(
-                                'Henüz işletmeniz adına yapılmış bir yorum bulunmamaktadır !',
+                                'Henüz işletmeniz adına hazırlanmış dilek veya şikayet bulunmamaktadır !',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 25.0,

@@ -122,9 +122,6 @@ class _LoginState extends State<Login> {
   Future<void> didChangeDependencies() async {
     super.didChangeDependencies();
     if (isInit) {
-      if (FirebaseAuth.instance.currentUser != null) {
-        await FirebaseAuth.instance.currentUser.reload();
-      }
       setState(() {
         isInit = false;
       });
@@ -145,8 +142,8 @@ class _LoginState extends State<Login> {
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                             colors: [
-                          Theme.of(context).primaryColor,
-                          Theme.of(context).accentColor
+                          Theme.of(context).accentColor,
+                          Theme.of(context).primaryColor
                         ],
                             begin: Alignment.centerRight,
                             end: Alignment.centerLeft)),
@@ -170,7 +167,8 @@ class _LoginState extends State<Login> {
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               10)),
-                              Text('" Bulunduğun lokasyona bak ! "',
+                              Text(
+                                  '" Bulunduğun lokasyona bak ! Fırsatları kaçırma ! "',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -269,9 +267,8 @@ class _LoginState extends State<Login> {
                                                 BorderRadius.circular(50.0),
                                             gradient: LinearGradient(
                                                 colors: [
-                                                  Theme.of(context)
-                                                      .primaryColor,
-                                                  Theme.of(context).accentColor
+                                                  Theme.of(context).accentColor,
+                                                  Theme.of(context).primaryColor
                                                 ],
                                                 begin: Alignment.centerRight,
                                                 end: Alignment.centerLeft)),
@@ -310,9 +307,8 @@ class _LoginState extends State<Login> {
                                                 BorderRadius.circular(20.0),
                                             gradient: LinearGradient(
                                                 colors: [
-                                                  Theme.of(context)
-                                                      .primaryColor,
-                                                  Theme.of(context).accentColor
+                                                  Theme.of(context).accentColor,
+                                                  Theme.of(context).primaryColor
                                                 ],
                                                 begin: Alignment.centerRight,
                                                 end: Alignment.centerLeft)),
@@ -359,9 +355,8 @@ class _LoginState extends State<Login> {
                                                 BorderRadius.circular(20.0),
                                             gradient: LinearGradient(
                                                 colors: [
-                                                  Theme.of(context)
-                                                      .primaryColor,
-                                                  Theme.of(context).accentColor
+                                                  Theme.of(context).accentColor,
+                                                  Theme.of(context).primaryColor
                                                 ],
                                                 begin: Alignment.centerRight,
                                                 end: Alignment.centerLeft)),

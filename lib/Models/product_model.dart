@@ -5,7 +5,6 @@ class Product {
   final String productName;
   final int productPrice;
   final String productId;
-  final String currency;
   final String productCatId;
   String productPicRef;
   File productLocalImage;
@@ -15,7 +14,6 @@ class Product {
       this.productName,
       this.productPrice,
       this.productId,
-      this.currency,
       this.productCatId,
       this.productPicRef,
       this.productLocalImage});
@@ -25,7 +23,6 @@ class Product {
         productName = data['productName'],
         productPrice = data['productPrice'],
         productId = data['productId'],
-        currency = data['currency'],
         productCatId = data['productCatId'],
         productPicRef = data['productPicRef'];
 
@@ -35,7 +32,6 @@ class Product {
       'productName': productName,
       'productPrice': productPrice,
       'productId': productId,
-      'currency': currency,
       'productCatId': productCatId,
       'productPicRef': productPicRef,
     };

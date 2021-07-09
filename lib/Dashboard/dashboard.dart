@@ -118,7 +118,10 @@ class _DashboardState extends State<Dashboard> {
           centerTitle: true,
           bottom: TabBar(
             labelColor: Colors.white,
-            labelStyle: TextStyle(fontFamily: 'Bebas', fontSize: 18.0),
+            labelStyle: TextStyle(
+              fontFamily: 'Bebas',
+              fontSize: 18.0,
+            ),
             indicatorColor: Colors.transparent,
             tabs: [
               Tab(
@@ -126,7 +129,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               Tab(text: 'Ürünler'),
               Tab(
-                text: 'Yorumlar',
+                text: 'Dilek & Şikayet',
               ),
             ],
           ),

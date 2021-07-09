@@ -338,7 +338,7 @@ class _MenuState extends State<Menu> {
                                                                                           Padding(
                                                                                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                                                                                             child: Text(
-                                                                                              'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} ${snapshotProduct.data[indexDishes].currency}',
+                                                                                              'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} TRY',
                                                                                               style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0),
                                                                                             ),
                                                                                           ),

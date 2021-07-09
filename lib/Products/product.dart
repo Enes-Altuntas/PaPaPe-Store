@@ -29,7 +29,6 @@ class _ProductSingleState extends State<ProductSingle> {
   final TextEditingController _productName = TextEditingController();
   final TextEditingController _productDesc = TextEditingController();
   final TextEditingController _productPrice = TextEditingController();
-  String _selectedCur;
   String _selectedCat;
   String _selectedCatId;
   bool isLoading = false;
@@ -41,11 +40,6 @@ class _ProductSingleState extends State<ProductSingle> {
   bool picDeleted = false;
 
   saveProduct() {
-    if (_selectedCur == null) {
-      ToastService()
-          .showInfo('Ürün eklerken para birimi seçilmesi zorunludur', context);
-      return;
-    }
     if (_selectedCatId == null) {
       ToastService()
           .showInfo('Ürün eklerken kategori seçilmesi zorunludur', context);
@@ -57,7 +51,6 @@ class _ProductSingleState extends State<ProductSingle> {
       });
       Product product = Product(
           productId: Uuid().v4(),
-          currency: _selectedCur,
           productCatId: _selectedCatId,
           productDesc: _productDesc.text,
           productName: _productName.text,
@@ -71,23 +64,10 @@ class _ProductSingleState extends State<ProductSingle> {
           .whenComplete(() => setState(() {
                 isLoading = false;
               }));
-      setState(() {
-        _productDesc.text = '';
-        _productName.text = '';
-        _productPrice.text = '';
-        productPic = null;
-        _selectedCatId = null;
-        _selectedCur = null;
-      });
     }
   }
 
   updateProduct() {
-    if (_selectedCur == null) {
-      ToastService()
-          .showInfo('Ürün eklerken para birimi seçilmesi zorunludur', context);
-      return;
-    }
     if (_selectedCat == null) {
       ToastService()
           .showInfo('Ürün eklerken kategori seçilmesi zorunludur', context);
@@ -99,7 +79,6 @@ class _ProductSingleState extends State<ProductSingle> {
       });
       Product product = Product(
           productId: widget.productData.productId,
-          currency: _selectedCur,
           productCatId: (_selectedCatId != null)
               ? _selectedCatId
               : widget.productData.productCatId,
@@ -274,7 +253,6 @@ class _ProductSingleState extends State<ProductSingle> {
           _productDesc.text = widget.productData.productDesc;
           _productName.text = widget.productData.productName;
           _productPrice.text = widget.productData.productPrice.toString();
-          _selectedCur = widget.productData.currency;
           _selectedCatId = widget.productData.productCatId;
           isInit = false;
           editBtn = true;
@@ -672,27 +650,6 @@ class _ProductSingleState extends State<ProductSingle> {
                                         border: OutlineInputBorder()),
                                   ),
                                 ),
-                                Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: DropdownButton(
-                                          isExpanded: true,
-                                          value: _selectedCur,
-                                          hint: Text("Para Birimi Seçiniz !"),
-                                          items: <String>['TRY', 'USD', 'EUR']
-                                              .map((String value) {
-                                            return new DropdownMenuItem<String>(
-                                              value: value,
-                                              child: new Text(value),
-                                            );
-                                          }).toList(),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _selectedCur = value;
-                                            });
-                                          }),
-                                    )),
                                 Visibility(
                                   visible: saveBtn,
                                   child: Padding(
