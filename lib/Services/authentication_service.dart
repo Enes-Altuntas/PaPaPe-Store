@@ -69,6 +69,8 @@ class AuthService {
         throw 'Kayıt olmak için geçersiz bir e-mail adresi girdiniz !';
       } else if (e.code == 'emaıl-already-ın-use') {
         throw 'Sistemde kayıtlı olan bir e-mail adresi girdiniz, eğer size ait ise "Şifremi Unuttum" seçeneğini deneyebilirsiniz !';
+      } else if (e.code == 'weak-password') {
+        throw 'Daha güçlü bir şifre girmelisiniz ! ';
       } else {
         throw 'Sistemde bir hata meydana geldi !';
       }

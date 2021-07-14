@@ -167,22 +167,25 @@ class _LoginState extends State<Login> {
                                       fontSize:
                                           MediaQuery.of(context).size.height /
                                               10)),
-                              Text(
-                                  '" Bulunduğun lokasyona bak ! Fırsatları kaçırma ! "',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      shadows: <Shadow>[
-                                        Shadow(
-                                            color: Colors.black87,
-                                            blurRadius: 20,
-                                            offset: Offset(5.0, 5.0))
-                                      ],
-                                      fontFamily: 'Armatic',
-                                      fontWeight: FontWeight.bold,
-                                      fontSize:
-                                          MediaQuery.of(context).size.height /
-                                              30)),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    '" Bulunduğun lokasyona bak ! Fırsatları kaçırma ! "',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        shadows: <Shadow>[
+                                          Shadow(
+                                              color: Colors.black87,
+                                              blurRadius: 20,
+                                              offset: Offset(5.0, 5.0))
+                                        ],
+                                        fontFamily: 'Armatic',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize:
+                                            MediaQuery.of(context).size.height /
+                                                30)),
+                              ),
                             ],
                           ),
                           Padding(

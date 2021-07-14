@@ -19,6 +19,7 @@ import 'package:uuid/uuid.dart';
 
 class FirestoreService {
   FirebaseFirestore _db = FirebaseFirestore.instance;
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   Geoflutterfire geo = Geoflutterfire();
   String downloadUrl;
   TaskSnapshot snapshot;
@@ -36,6 +37,15 @@ class FirestoreService {
     }
   }
 
+  Future deletePicture(String id) async {
+    try {
+      Reference pictureRef = _storage.ref().child(id);
+      await pictureRef.delete();
+    } catch (e) {
+      throw 'Seçtiğiniz resim silinirken bir hata meydana geldi! Lütfen daha sonra tekrar deneyiniz.';
+    }
+  }
+
   Future<String> deleteUser() async {
     try {
       String _uuid = AuthService(FirebaseAuth.instance).getUserId();
@@ -43,6 +53,7 @@ class FirestoreService {
       await _db.collection('stores').doc(_uuid).delete();
       await _db.collection('markers').doc(_uuid).delete();
       await _db.collection('tokens').doc(_uuid).delete();
+      await deletePicture(_uuid);
 
       return 'Kullanıcı bilgileriniz tamamıyla sistemden silinmiştir !';
     } catch (e) {
@@ -152,7 +163,9 @@ class FirestoreService {
 
   Future getStore() async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
-    return await _db.collection('stores').doc(_userId).get();
+    if (_userId != null) {
+      return await _db.collection('stores').doc(_userId).get();
+    }
   }
 
   Future getStoreCat() async {
@@ -328,6 +341,8 @@ class FirestoreService {
           .doc(_userId)
           .update({'hasCampaign': false});
 
+      await deletePicture(campaignId);
+
       return 'Kampanyanız başarıyla silinmiştir !';
     } catch (e) {
       throw 'Kampanyanız silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
@@ -396,6 +411,8 @@ class FirestoreService {
           .doc(categoryId)
           .delete();
 
+      await deletePicture(categoryId);
+
       return 'Ürün kategoriniz başarıyla silinmiştir !';
     } catch (e) {
       throw 'Ürün kategoriniz silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
@@ -423,7 +440,7 @@ class FirestoreService {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
     if (product.productLocalImage != null) {
-      await savePicture(product.productLocalImage, product.productCatId)
+      await savePicture(product.productLocalImage, product.productId)
           .onError((error, stackTrace) => throw error)
           .whenComplete(() {
         product.productPicRef = downloadUrl;
@@ -450,7 +467,7 @@ class FirestoreService {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
     if (product.productLocalImage != null) {
-      await savePicture(product.productLocalImage, product.productCatId)
+      await savePicture(product.productLocalImage, product.productId)
           .onError((error, stackTrace) => throw error)
           .whenComplete(() {
         product.productPicRef = downloadUrl;
@@ -486,6 +503,8 @@ class FirestoreService {
           .doc(productId)
           .delete();
 
+      await deletePicture(productId);
+
       return 'Ürününüz başarıyla silinmiştir !';
     } catch (e) {
       throw 'Ürününüz silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
@@ -519,6 +538,7 @@ class FirestoreService {
 
   Stream<List<Reservations>> getReservations() {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
     return _db
         .collection('stores')
         .doc(_userId)
@@ -528,6 +548,64 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs
             .map((doc) => Reservations.fromFirestore(doc.data()))
             .toList());
+  }
+
+  Future<String> approveReservation(Reservations reservation) async {
+    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
+    try {
+      await _db
+          .collection('stores')
+          .doc(_userId)
+          .collection('reservations')
+          .doc(reservation.reservationId)
+          .update({'reservationStatus': 'approved'});
+
+      Tokens token = await _db
+          .collection('tokens')
+          .doc(reservation.user)
+          .get()
+          .then((value) => Tokens.fromFirestore(value.data()));
+
+      firebaseMessaging.sendMessage(to: token.tokenId, data: {
+        'title': "Rezervasyon Talebi",
+        'body': 'Rezervasyon talebiniz onaylanmıştır !',
+        'sound': 'bulb.mp3'
+      });
+
+      return 'Rezervasyonunuz başarıyla onaylanmıştır !';
+    } catch (e) {
+      throw 'Rezervasyonunuz onaylanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
+    }
+  }
+
+  Future<String> rejectReservation(Reservations reservation) async {
+    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
+    try {
+      await _db
+          .collection('stores')
+          .doc(_userId)
+          .collection('reservations')
+          .doc(reservation.reservationId)
+          .update({'reservationStatus': 'rejected'});
+
+      Tokens token = await _db
+          .collection('tokens')
+          .doc(reservation.user)
+          .get()
+          .then((value) => Tokens.fromFirestore(value.data()));
+
+      firebaseMessaging.sendMessage(to: token.tokenId, data: {
+        'title': "Rezervasyon Talebi",
+        'body': 'Rezervasyon talebiniz reddedilmiştir !',
+        'sound': 'bulb.mp3'
+      });
+
+      return 'Rezervasyonunuz başarıyla reddedilmiştir !';
+    } catch (e) {
+      throw 'Rezervasyonunuz reddedilirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
+    }
   }
 
 // *******************************************************************************

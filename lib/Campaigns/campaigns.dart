@@ -54,6 +54,17 @@ class _CampaignsState extends State<Campaigns> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Text(
+                  'Kampanyalar',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 30.0,
+                      fontFamily: 'Armatic',
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: TextButton(

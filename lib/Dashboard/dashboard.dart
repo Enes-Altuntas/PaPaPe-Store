@@ -10,7 +10,9 @@ import 'package:bulb/Providers/store_provider.dart';
 import 'package:bulb/Reservations/reservations.dart';
 import 'package:bulb/Services/authentication_service.dart';
 import 'package:bulb/Services/firestore_service.dart';
+import 'package:bulb/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -75,6 +77,8 @@ class _DashboardState extends State<Dashboard> {
               if (value != null && value.data() != null)
                 {_store = Store.fromFirestore(value.data())}
             })
+        .onError(
+            (error, stackTrace) => ToastService().showError(error, context))
         .whenComplete(() => setState(() {
               isLoading = false;
             }));
@@ -121,19 +125,21 @@ class _DashboardState extends State<Dashboard> {
             labelColor: Colors.white,
             labelStyle: TextStyle(
               fontFamily: 'Bebas',
-              fontSize: 18.0,
+              fontSize: 15.0,
             ),
             indicatorColor: Colors.transparent,
             tabs: [
               Tab(
-                text: 'Kampanyalar',
-              ),
-              Tab(text: 'Ürünler'),
-              Tab(
-                text: 'Dilek & Şikayet',
+                icon: FaIcon(FontAwesomeIcons.tags),
               ),
               Tab(
-                text: 'Rezervasyonlar',
+                icon: FaIcon(FontAwesomeIcons.bookOpen),
+              ),
+              Tab(
+                icon: FaIcon(FontAwesomeIcons.bullhorn),
+              ),
+              Tab(
+                icon: FaIcon(FontAwesomeIcons.bell),
               ),
             ],
           ),

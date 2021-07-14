@@ -118,8 +118,21 @@ exports.commentCreate = functions.firestore.document('stores/{storeId}/reports/{
     await db.doc('tokens/' + storeId).get().then(async (token) => {
         await admin.messaging().sendToDevice(token.data().tokenId, {
             notification: {
-                title: "Yeni Yorum Geldi !",
+                title: "Yeni Dilek & Şikayet Geldi !",
                 body: 'Sanırım birileri size bir şey söylemek istiyor.',
+                sound: 'bulb.mp3'
+            }
+        })
+    })
+});
+
+exports.reservationCreate = functions.firestore.document('stores/{storeId}/reservations/{reservationId}').onCreate(async (snapshot, context) => {
+    const { storeId } = context.params;
+    await db.doc('tokens/' + storeId).get().then(async (token) => {
+        await admin.messaging().sendToDevice(token.data().tokenId, {
+            notification: {
+                title: "Yeni Rezervasyon Talebi Geldi !",
+                body: 'Rezervasyon talebini onaylamanız veya reddetmeniz sizler için çok önemli !',
                 sound: 'bulb.mp3'
             }
         })

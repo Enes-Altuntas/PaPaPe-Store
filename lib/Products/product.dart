@@ -153,7 +153,7 @@ class _ProductSingleState extends State<ProductSingle> {
         },
         onConfirmBtnTap: () {
           Navigator.of(context).pop();
-          saveProduct()();
+          saveProduct();
         },
         barrierDismissible: false,
         confirmBtnText: 'Evet');
