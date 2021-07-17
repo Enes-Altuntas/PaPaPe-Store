@@ -30,7 +30,7 @@ class _MenuState extends State<Menu> {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
       ToastService().showInfo(
-          'Kategori eklemeden önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
+          'Yeni başlık eklemeden önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
           context);
       return;
     }
@@ -71,7 +71,7 @@ class _MenuState extends State<Menu> {
         context: _context,
         type: CoolAlertType.warning,
         title: '',
-        text: 'Kategoriyi silmek istediğinize emin misiniz ?',
+        text: 'Başlığı silmek istediğinize emin misiniz ?',
         showCancelBtn: true,
         backgroundColor: Theme.of(context).primaryColor,
         confirmBtnColor: Theme.of(context).primaryColor,

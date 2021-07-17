@@ -379,9 +379,9 @@ class FirestoreService {
           .collection('products')
           .doc(category.categoryId)
           .set(category.toMap());
-      return 'Yeni ürün kategoriniz başarıyla oluşturulmuştur !';
+      return 'Yeni başlığınız başarıyla oluşturulmuştur !';
     } catch (e) {
-      throw 'Ürün kategoriniz oluşturulurken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
+      throw 'Başlığınız oluşturulurken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
     }
   }
 
@@ -395,9 +395,9 @@ class FirestoreService {
           .collection('products')
           .doc(category.categoryId)
           .set(category.toMap());
-      return 'Ürün kategoriniz başarıyla güncellenmiştir !';
+      return 'Başlığınız başarıyla güncellenmiştir !';
     } catch (e) {
-      throw 'Ürün kategoriniz güncelleştirilirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
+      throw 'Başlığınız güncelleştirilirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
     }
   }
 
@@ -414,9 +414,9 @@ class FirestoreService {
 
       await deletePicture(categoryId);
 
-      return 'Ürün kategoriniz başarıyla silinmiştir !';
+      return 'Başlığınız başarıyla silinmiştir !';
     } catch (e) {
-      throw 'Ürün kategoriniz silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
+      throw 'Başlığınız silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
     }
   }
 

@@ -53,6 +53,10 @@ class _ProductSingleState extends State<ProductSingle> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 isLoading = false;
+                _productDesc.text = '';
+                _productName.text = '';
+                _productPrice.text = '';
+                productPic = null;
               }));
     }
   }
@@ -571,6 +575,17 @@ class _ProductSingleState extends State<ProductSingle> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün adıdır. Örnek olarak 'Ezogelin', 'Çay', 'Piercing'.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16.0),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: TextFormField(
                                     controller: _productName,
                                     maxLength: 50,
@@ -582,6 +597,17 @@ class _ProductSingleState extends State<ProductSingle> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün tanımıdır. Ürününüzü açıklamanız faydalı olacaktır.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16.0),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: TextFormField(
                                     controller: _productDesc,
                                     keyboardType: TextInputType.text,
@@ -595,6 +621,17 @@ class _ProductSingleState extends State<ProductSingle> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün fiyatıdır. İşletmenizde kullandığınız menü veya katalogdaki fiyatların aynılarını girmeniz, işletmeniz adına yarar sağlayacaktır.",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16.0),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: TextFormField(
                                     controller: _productPrice,
                                     validator: _validateProdPrice,
@@ -608,7 +645,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                   visible: saveBtn,
                                   child: Padding(
                                     padding: const EdgeInsets.only(
-                                        top: 20.0, bottom: 20.0),
+                                        top: 20.0, bottom: 60.0),
                                     child: Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.7,

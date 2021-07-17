@@ -197,7 +197,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 20.0, bottom: 20.0),
+                                      top: 20.0, bottom: 60.0),
                                   child: Container(
                                     width:
                                         MediaQuery.of(context).size.width * 0.7,
