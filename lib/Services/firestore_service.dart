@@ -75,7 +75,7 @@ class FirestoreService {
 
     if (store.storeId == null) {
       Store newStore = Store(
-          storeId: Uuid().v4(),
+          storeId: _uuid,
           storeName: store.storeName,
           storeTaxNo: store.storeTaxNo,
           storeTaxLoc: store.storeTaxLoc,
@@ -152,6 +152,7 @@ class FirestoreService {
 
       try {
         await _db.collection('stores').doc(_uuid).set(updStore.toMap());
+
         await _db.collection('markers').doc(_uuid).set(updMarker.toMap());
 
         return 'Bilgileriniz güncellenmiştir !';
