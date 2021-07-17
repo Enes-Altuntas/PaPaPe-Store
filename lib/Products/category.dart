@@ -157,6 +157,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
+                                        fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),
                                 ),
@@ -179,6 +180,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor,
+                                        fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),
                                 ),

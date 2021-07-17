@@ -776,6 +776,7 @@ class _ProfileState extends State<Profile> {
                                               validateTaxNo(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.number,
@@ -799,6 +800,7 @@ class _ProfileState extends State<Profile> {
                                             },
                                             maxLength: 25,
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             decoration: InputDecoration(
@@ -820,6 +822,7 @@ class _ProfileState extends State<Profile> {
                                                   .changeStoreName(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             decoration: InputDecoration(
@@ -844,6 +847,7 @@ class _ProfileState extends State<Profile> {
                                             maxLines: 3,
                                             keyboardType: TextInputType.text,
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             decoration: InputDecoration(
@@ -864,6 +868,7 @@ class _ProfileState extends State<Profile> {
                                                   .changeStorePhone(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.phone,
@@ -886,6 +891,7 @@ class _ProfileState extends State<Profile> {
                                               _storeProvider.changePers1(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.text,
@@ -909,6 +915,7 @@ class _ProfileState extends State<Profile> {
                                                   .changePers1Phone(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.phone,
@@ -930,6 +937,7 @@ class _ProfileState extends State<Profile> {
                                               _storeProvider.changePers2(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.text,
@@ -952,6 +960,7 @@ class _ProfileState extends State<Profile> {
                                                   .changePers2Phone(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.phone,
@@ -973,6 +982,7 @@ class _ProfileState extends State<Profile> {
                                               _storeProvider.changePers3(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.text,
@@ -995,6 +1005,7 @@ class _ProfileState extends State<Profile> {
                                                   .changePers3Phone(value);
                                             },
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 color: Theme.of(context)
                                                     .hintColor),
                                             keyboardType: TextInputType.phone,

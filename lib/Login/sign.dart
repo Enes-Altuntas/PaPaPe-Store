@@ -256,6 +256,7 @@ class _SignState extends State<Sign> {
                                                     left: 10.0),
                                                 child: Text('Kayıt Ol',
                                                     style: TextStyle(
+                                                        fontFamily: 'Roboto',
                                                         color: Colors.white)),
                                               ),
                                             ],

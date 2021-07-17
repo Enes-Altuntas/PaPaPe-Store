@@ -254,6 +254,7 @@ class _LoginState extends State<Login> {
                                             child: Text(
                                               'Parolamı Unuttum !',
                                               style: TextStyle(
+                                                  fontFamily: 'Roboto',
                                                   color: Theme.of(context)
                                                       .hintColor),
                                             )),
@@ -291,6 +292,7 @@ class _LoginState extends State<Login> {
                                                 child: Text(
                                                   'Giriş Yap',
                                                   style: TextStyle(
+                                                      fontFamily: 'Roboto',
                                                       color: Colors.white),
                                                 ),
                                               ),
@@ -331,6 +333,7 @@ class _LoginState extends State<Login> {
                                                 child: Text(
                                                     'Google İle Giriş Yap',
                                                     style: TextStyle(
+                                                        fontFamily: 'Roboto',
                                                         color: Colors.white)),
                                               ),
                                             ],
@@ -343,6 +346,7 @@ class _LoginState extends State<Login> {
                                       child: Text(
                                         'Henüz hesabın yok mu ?',
                                         style: TextStyle(
+                                            fontFamily: 'Roboto',
                                             color: Theme.of(context).hintColor,
                                             fontWeight: FontWeight.w500),
                                       ),
@@ -376,6 +380,7 @@ class _LoginState extends State<Login> {
                                                     left: 10.0),
                                                 child: Text('Kayıt Ol',
                                                     style: TextStyle(
+                                                        fontFamily: 'Roboto',
                                                         color: Colors.white)),
                                               ),
                                             ],

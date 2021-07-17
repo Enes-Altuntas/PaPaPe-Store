@@ -69,7 +69,7 @@ class _CampaignsState extends State<Campaigns> {
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: TextButton(
                       child: Text("Kampanya Yayınla".toUpperCase(),
-                          style: TextStyle(fontSize: 14)),
+                          style: TextStyle(fontSize: 14, fontFamily: 'Roboto')),
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               EdgeInsets.all(15)),
@@ -224,6 +224,8 @@ class _CampaignsState extends State<Campaigns> {
                                                                     style: TextStyle(
                                                                         color: Colors
                                                                             .white,
+                                                                        fontFamily:
+                                                                            'Roboto',
                                                                         fontSize:
                                                                             20)),
                                                               ),
@@ -310,6 +312,7 @@ class _CampaignsState extends State<Campaigns> {
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 18.0,
+                                                        fontFamily: 'Roboto',
                                                         color: Theme.of(context)
                                                             .primaryColor,
                                                         fontWeight:
@@ -321,6 +324,8 @@ class _CampaignsState extends State<Campaigns> {
                                                 child: Text(
                                                     snapshot.data[index]
                                                         .campaignDesc,
+                                                    style: TextStyle(
+                                                        fontFamily: 'Roboto'),
                                                     textAlign:
                                                         TextAlign.center),
                                               ),
@@ -363,6 +368,8 @@ class _CampaignsState extends State<Campaigns> {
                                                                 fontSize: 14.0,
                                                                 color: Colors
                                                                     .white,
+                                                                fontFamily:
+                                                                    'Roboto',
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold)),
@@ -377,6 +384,8 @@ class _CampaignsState extends State<Campaigns> {
                                                                 .center,
                                                             style: TextStyle(
                                                                 fontSize: 14.0,
+                                                                fontFamily:
+                                                                    'Roboto',
                                                                 color: Colors
                                                                     .white,
                                                                 fontWeight:
@@ -395,6 +404,8 @@ class _CampaignsState extends State<Campaigns> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
+                                                                fontFamily:
+                                                                    'Roboto',
                                                                 fontSize: 18.0,
                                                                 color: Colors
                                                                     .white)),
@@ -427,6 +438,7 @@ class _CampaignsState extends State<Campaigns> {
                                           'Henüz yayınlamış olduğunuz herhangi bir kampanya bulunmamaktadır !',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
+                                              fontFamily: 'Bebas',
                                               fontSize: 25.0,
                                               color: Theme.of(context)
                                                   .primaryColor),

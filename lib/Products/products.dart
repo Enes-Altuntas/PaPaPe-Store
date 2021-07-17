@@ -123,7 +123,7 @@ class _MenuState extends State<Menu> {
                   width: MediaQuery.of(context).size.width * 0.7,
                   child: TextButton(
                       child: Text("Yeni Başlık Ekle".toUpperCase(),
-                          style: TextStyle(fontSize: 14)),
+                          style: TextStyle(fontSize: 14, fontFamily: 'Roboto')),
                       style: ButtonStyle(
                           padding: MaterialStateProperty.all<EdgeInsets>(
                               EdgeInsets.all(15)),
@@ -277,6 +277,8 @@ class _MenuState extends State<Menu> {
                                                                         textAlign:
                                                                             TextAlign.center,
                                                                         style: TextStyle(
+                                                                            fontFamily:
+                                                                                'Roboto',
                                                                             fontSize:
                                                                                 18.0,
                                                                             color:
@@ -320,7 +322,7 @@ class _MenuState extends State<Menu> {
                                                                                         Flexible(
                                                                                           child: Text(
                                                                                             snapshotProduct.data[indexDishes].productName,
-                                                                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0),
+                                                                                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16.0, fontFamily: 'Roboto'),
                                                                                           ),
                                                                                         ),
                                                                                       ],
@@ -342,12 +344,12 @@ class _MenuState extends State<Menu> {
                                                                                       child: Column(
                                                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                                                         children: [
-                                                                                          Text(snapshotProduct.data[indexDishes].productDesc, style: TextStyle(color: Colors.white)),
+                                                                                          Text(snapshotProduct.data[indexDishes].productDesc, style: TextStyle(color: Colors.white, fontFamily: 'Roboto')),
                                                                                           Padding(
                                                                                             padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                                                                                             child: Text(
                                                                                               'Fiyat: ${snapshotProduct.data[indexDishes].productPrice} TRY',
-                                                                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0),
+                                                                                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15.0, fontFamily: 'Roboto'),
                                                                                             ),
                                                                                           ),
                                                                                         ],
@@ -394,6 +396,8 @@ class _MenuState extends State<Menu> {
                                                                         textAlign:
                                                                             TextAlign.center,
                                                                         style: TextStyle(
+                                                                            fontFamily:
+                                                                                'Roboto',
                                                                             fontSize:
                                                                                 18.0,
                                                                             color:
@@ -433,6 +437,7 @@ class _MenuState extends State<Menu> {
                                             'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
+                                                fontFamily: 'Roboto',
                                                 fontSize: 25.0,
                                                 color: Theme.of(context)
                                                     .primaryColor),
@@ -456,6 +461,7 @@ class _MenuState extends State<Menu> {
                                         'Henüz kaydedilmiş bir kategoriniz bulunmamaktadır !',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
+                                            fontFamily: 'Roboto',
                                             color:
                                                 Theme.of(context).primaryColor,
                                             fontSize: 25.0),

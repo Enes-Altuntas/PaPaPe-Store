@@ -76,6 +76,7 @@ class _ReportsState extends State<Reports> {
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Roboto',
                                                   fontSize: 17.0),
                                               textAlign: TextAlign.center,
                                             ),
@@ -89,6 +90,7 @@ class _ReportsState extends State<Reports> {
                                                       .data[index].reportDesc,
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
+                                                      fontFamily: 'Roboto',
                                                       color: Colors.white),
                                                 ),
                                                 Padding(
@@ -99,6 +101,7 @@ class _ReportsState extends State<Reports> {
                                                       'Oluşturulma Saati: ${formatDate(snapshot.data[index].createdAt)}',
                                                       style: TextStyle(
                                                           color: Colors.white,
+                                                          fontFamily: 'Roboto',
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 15.0)),
@@ -132,6 +135,7 @@ class _ReportsState extends State<Reports> {
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 25.0,
+                                              fontFamily: 'Roboto',
                                               color: Theme.of(context)
                                                   .primaryColor),
                                         ),
@@ -159,6 +163,7 @@ class _ReportsState extends State<Reports> {
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 25.0,
+                                          fontFamily: 'Roboto',
                                           color:
                                               Theme.of(context).primaryColor),
                                     ),
