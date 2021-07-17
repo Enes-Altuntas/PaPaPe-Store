@@ -15,7 +15,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
-import 'package:uuid/uuid.dart';
 
 class FirestoreService {
   FirebaseFirestore _db = FirebaseFirestore.instance;
