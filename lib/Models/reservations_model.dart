@@ -7,7 +7,7 @@ class Reservations {
   final String reservationName;
   final String reservationPhone;
   final int reservationCount;
-  final String user;
+  final String reservationUser;
   final Timestamp reservationTime;
 
   Reservations({
@@ -17,7 +17,7 @@ class Reservations {
     this.reservationName,
     this.reservationPhone,
     this.reservationId,
-    this.user,
+    this.reservationUser,
     this.reservationTime,
   });
 
@@ -28,7 +28,7 @@ class Reservations {
         reservationName = data['reservationName'],
         reservationPhone = data['reservationPhone'],
         reservationId = data['reservationId'],
-        user = data['user'],
+        reservationUser = data['reservationUser'],
         reservationTime = data['reservationTime'];
 
   Map<String, dynamic> toMap() {
@@ -39,7 +39,7 @@ class Reservations {
       'reservationName': reservationName,
       'reservationPhone': reservationPhone,
       'reservationId': reservationId,
-      'user': user,
+      'reservationUser': reservationUser,
       'reservationTime': reservationTime,
     };
   }
