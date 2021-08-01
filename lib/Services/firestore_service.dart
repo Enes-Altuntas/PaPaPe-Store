@@ -8,7 +8,7 @@ import 'package:bulb/Models/product_category_model.dart';
 import 'package:bulb/Models/product_model.dart';
 import 'package:bulb/Models/reservations_model.dart';
 import 'package:bulb/Models/store_model.dart';
-import 'package:bulb/Models/token_model.dart';
+import 'package:bulb/Models/user_model.dart';
 import 'package:bulb/Services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -45,25 +45,6 @@ class FirestoreService {
     }
   }
 
-  Future<String> deleteUser() async {
-    try {
-      String _uuid = AuthService(FirebaseAuth.instance).getUserId();
-      await FirebaseAuth.instance.currentUser.delete();
-      await _db.collection('stores').doc(_uuid).delete();
-      await _db.collection('markers').doc(_uuid).delete();
-      await _db.collection('tokens').doc(_uuid).delete();
-      await deletePicture(_uuid);
-
-      return 'Kullanıcı bilgileriniz tamamıyla sistemden silinmiştir !';
-    } catch (e) {
-      if (e.code == 'requires-recent-login') {
-        throw 'login';
-      } else {
-        throw 'Sistemde bir hata meydana geldi !';
-      }
-    }
-  }
-
   Future<String> saveStore(Store store) async {
     String _uuid = AuthService(FirebaseAuth.instance).getUserId();
 
@@ -94,25 +75,18 @@ class FirestoreService {
       GeoFirePoint center =
           geo.point(latitude: store.storeLocLat, longitude: store.storeLocLong);
 
-      FirestoreMarkers newMarker = FirestoreMarkers(
-        hasCampaign: false,
+      MarkerModel newMarker = MarkerModel(
+        campaignStatus: 'none',
         storeCategory: store.storeCategory,
-        position: PositionMarker(
+        position: PositionModel(
             geohash: center.hash,
             geopoint: GeoPoint(store.storeLocLat, store.storeLocLong)),
         storeId: newStore.storeId,
       );
 
-      Tokens newToken = Tokens(
-          tokenId: await FirebaseMessaging.instance.getToken(),
-          tokenUser: _uuid);
-
       try {
         await _db.collection('stores').doc(_uuid).set(newStore.toMap());
-
         await _db.collection('markers').doc(_uuid).set(newMarker.toMap());
-
-        await _db.collection('tokens').doc(_uuid).set(newToken.toMap());
 
         return 'Bilgileriniz kaydedilmiştir !';
       } catch (e) {
@@ -140,19 +114,15 @@ class FirestoreService {
       GeoFirePoint center =
           geo.point(latitude: store.storeLocLat, longitude: store.storeLocLong);
 
-      FirestoreMarkers updMarker = FirestoreMarkers(
-        hasCampaign: false,
-        storeCategory: store.storeCategory,
-        position: PositionMarker(
-            geohash: center.hash,
-            geopoint: GeoPoint(store.storeLocLat, store.storeLocLong)),
-        storeId: store.storeId,
-      );
-
       try {
         await _db.collection('stores').doc(_uuid).set(updStore.toMap());
-
-        await _db.collection('markers').doc(_uuid).set(updMarker.toMap());
+        await _db.collection('markers').doc(_uuid).update({
+          'storeCategory': store.storeCategory,
+          'position': PositionModel(
+                  geohash: center.hash,
+                  geopoint: GeoPoint(store.storeLocLat, store.storeLocLong))
+              .toMap()
+        });
 
         return 'Bilgileriniz güncellenmiştir !';
       } catch (e) {
@@ -411,8 +381,6 @@ class FirestoreService {
           .doc(categoryId)
           .delete();
 
-      await deletePicture(categoryId);
-
       return 'Başlığınız başarıyla silinmiştir !';
     } catch (e) {
       throw 'Başlığınız silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
@@ -561,18 +529,6 @@ class FirestoreService {
           .doc(reservation.reservationId)
           .update({'reservationStatus': 'approved'});
 
-      Tokens token = await _db
-          .collection('tokens')
-          .doc(reservation.user)
-          .get()
-          .then((value) => Tokens.fromFirestore(value.data()));
-
-      firebaseMessaging.sendMessage(to: token.tokenId, data: {
-        'title': "Rezervasyon Talebi",
-        'body': 'Rezervasyon talebiniz onaylanmıştır !',
-        'sound': 'bulb.mp3'
-      });
-
       return 'Rezervasyonunuz başarıyla onaylanmıştır !';
     } catch (e) {
       throw 'Rezervasyonunuz onaylanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyeniz.';
@@ -589,18 +545,6 @@ class FirestoreService {
           .collection('reservations')
           .doc(reservation.reservationId)
           .update({'reservationStatus': 'rejected'});
-
-      Tokens token = await _db
-          .collection('tokens')
-          .doc(reservation.user)
-          .get()
-          .then((value) => Tokens.fromFirestore(value.data()));
-
-      firebaseMessaging.sendMessage(to: token.tokenId, data: {
-        'title': "Rezervasyon Talebi",
-        'body': 'Rezervasyon talebiniz reddedilmiştir !',
-        'sound': 'bulb.mp3'
-      });
 
       return 'Rezervasyonunuz başarıyla reddedilmiştir !';
     } catch (e) {

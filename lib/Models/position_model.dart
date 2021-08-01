@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class PositionMarker {
+class PositionModel {
   final String geohash;
   final GeoPoint geopoint;
 
-  PositionMarker({
+  PositionModel({
     this.geohash,
     this.geopoint,
   });
@@ -16,7 +16,7 @@ class PositionMarker {
     };
   }
 
-  PositionMarker.fromFirestore(Map<String, dynamic> firestore)
+  PositionModel.fromFirestore(Map<String, dynamic> firestore)
       : geohash = firestore['geohash'],
         geopoint = firestore['geopoint'];
 }
