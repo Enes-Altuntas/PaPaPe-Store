@@ -33,8 +33,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => StoreProvider()),
         Provider<AuthService>(
             create: (context) => AuthService(FirebaseAuth.instance)),
-        StreamProvider(
-            create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
           title: 'BULB İşletme',

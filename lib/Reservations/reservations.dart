@@ -190,7 +190,7 @@ class _ReservationState extends State<Reservation> {
                                               padding: const EdgeInsets.only(
                                                   top: 8.0),
                                               child: Text(
-                                                'Başvuru Durumu: ${(snapshot.data[index].reservationStatus == 'waiting') ? 'Beklemede' : (snapshot.data[index].reservationStatus == 'approved') ? 'Onaylanmış' : 'Reddedilmiş'}',
+                                                'Başvuru Durumu: ${(snapshot.data[index].reservationStatus == 'waiting') ? 'Beklemede' : (snapshot.data[index].reservationStatus == 'approved') ? 'Onaylanmış' : (snapshot.data[index].reservationStatus == 'canceled') ? 'İptal edilmiş' : 'Reddedilmiş'}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     color: Colors.white),
@@ -239,115 +239,115 @@ class _ReservationState extends State<Reservation> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 20.0),
-                                              child: Visibility(
-                                                  visible: snapshot.data[index]
-                                                              .reservationStatus ==
-                                                          'waiting'
-                                                      ? true
-                                                      : false,
-                                                  child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceAround,
-                                                      children: [
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                              color:
-                                                                  Colors.green,
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          50.0))),
-                                                          child: TextButton(
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  selectedReservation =
-                                                                      snapshot.data[
-                                                                          index];
-                                                                });
-                                                                approveReservationYesNo();
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10.0),
-                                                                    child: FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .thumbsUp,
+                                            Visibility(
+                                              visible: snapshot.data[index]
+                                                          .reservationStatus ==
+                                                      'waiting'
+                                                  ? true
+                                                  : false,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.0),
+                                                child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.green,
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        50.0))),
+                                                        child: TextButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                selectedReservation =
+                                                                    snapshot.data[
+                                                                        index];
+                                                              });
+                                                              approveReservationYesNo();
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          10.0),
+                                                                  child: FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .thumbsUp,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          10.0,
+                                                                      right:
+                                                                          10.0),
+                                                                  child: Text(
+                                                                    'Onayla',
+                                                                    style: TextStyle(
                                                                         color: Colors
                                                                             .white),
                                                                   ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10.0,
-                                                                        right:
-                                                                            10.0),
-                                                                    child: Text(
-                                                                      'Onayla',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              )),
-                                                        ),
-                                                        Container(
-                                                          decoration: BoxDecoration(
-                                                              color: Colors
-                                                                  .red[400],
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          50.0))),
-                                                          child: TextButton(
-                                                              onPressed: () {
-                                                                setState(() {
-                                                                  selectedReservation =
-                                                                      snapshot.data[
-                                                                          index];
-                                                                });
-                                                                rejectReservationYesNo();
-                                                              },
-                                                              child: Row(
-                                                                children: [
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10.0),
-                                                                    child: FaIcon(
-                                                                        FontAwesomeIcons
-                                                                            .thumbsDown,
+                                                                )
+                                                              ],
+                                                            )),
+                                                      ),
+                                                      Container(
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                Colors.red[400],
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        50.0))),
+                                                        child: TextButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                selectedReservation =
+                                                                    snapshot.data[
+                                                                        index];
+                                                              });
+                                                              rejectReservationYesNo();
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          10.0),
+                                                                  child: FaIcon(
+                                                                      FontAwesomeIcons
+                                                                          .thumbsDown,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          10.0,
+                                                                      right:
+                                                                          10.0),
+                                                                  child: Text(
+                                                                    'Reddet',
+                                                                    style: TextStyle(
                                                                         color: Colors
                                                                             .white),
                                                                   ),
-                                                                  Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            10.0,
-                                                                        right:
-                                                                            10.0),
-                                                                    child: Text(
-                                                                      'Reddet',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.white),
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              )),
-                                                        )
-                                                      ])),
+                                                                )
+                                                              ],
+                                                            )),
+                                                      )
+                                                    ]),
+                                              ),
                                             )
                                           ],
                                         ),

@@ -1,14 +1,11 @@
 import 'dart:io';
-import 'package:bulb/Login/login.dart';
 import 'package:bulb/Map/map.dart';
 import 'package:bulb/Models/store_category.dart';
 import 'package:bulb/Models/store_model.dart';
 import 'package:bulb/Providers/store_provider.dart';
-import 'package:bulb/Services/authentication_service.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:bulb/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -27,11 +24,11 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   StoreProvider _storeProvider;
   List<StoreCategory> storeCats = [];
-  String _selectedCat;
   Future getUserInfo;
   bool isInit = true;
   bool isLoading = false;
   bool picBtn = false;
+  bool checkBox = false;
   final TextEditingController taxNo = TextEditingController();
   final TextEditingController taxLoc = TextEditingController();
   final TextEditingController name = TextEditingController();
@@ -80,7 +77,6 @@ class _ProfileState extends State<Profile> {
     });
 
     if (_storeProvider != null) {
-      _selectedCat = _storeProvider.storeCategory;
       taxNo.text = _storeProvider.storeTaxNo;
       taxLoc.text = _storeProvider.storeTaxLoc;
       name.text = _storeProvider.storeName;
@@ -155,88 +151,6 @@ class _ProfileState extends State<Profile> {
             isLoading = false;
           });
         });
-  }
-
-  deleteYesNo() {
-    CoolAlert.show(
-        context: context,
-        type: CoolAlertType.warning,
-        title: '',
-        text:
-            'Hesabınızı tamamen kalıcı olarak silmek istediğinize emin misiniz ?',
-        showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
-        cancelBtnText: 'Hayır',
-        onCancelBtnTap: () {
-          Navigator.of(context).pop();
-        },
-        onConfirmBtnTap: () {
-          Navigator.of(context).pop();
-          deleteUser();
-        },
-        barrierDismissible: false,
-        confirmBtnText: 'Evet');
-  }
-
-  Future deleteUser() async {
-    setState(() {
-      isLoading = true;
-    });
-    await FirestoreService().deleteUser().then((value) {
-      CoolAlert.show(
-          context: context,
-          type: CoolAlertType.warning,
-          title: '',
-          text: value,
-          showCancelBtn: false,
-          backgroundColor: Theme.of(context).primaryColor,
-          confirmBtnColor: Theme.of(context).primaryColor,
-          cancelBtnText: 'Vazgeç',
-          onCancelBtnTap: () {
-            Navigator.of(context).pop();
-          },
-          onConfirmBtnTap: () {
-            Navigator.of(context).pop();
-            context.read<AuthService>().signOut().then((value) {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => Login()));
-            });
-          },
-          barrierDismissible: false,
-          confirmBtnText: 'Tamam');
-    }).onError((error, stackTrace) {
-      if (error == 'login') {
-        CoolAlert.show(
-            context: context,
-            type: CoolAlertType.warning,
-            title: '',
-            text:
-                'Hesabınızı silebilmek için güvenlik amaçlı uygulamaya tekrar giriş yapmalısınız !',
-            showCancelBtn: true,
-            backgroundColor: Theme.of(context).primaryColor,
-            confirmBtnColor: Theme.of(context).primaryColor,
-            cancelBtnText: 'Vazgeç',
-            onCancelBtnTap: () {
-              Navigator.of(context).pop();
-            },
-            onConfirmBtnTap: () {
-              Navigator.of(context).pop();
-              context.read<AuthService>().signOut().then((value) {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Login()));
-              });
-            },
-            barrierDismissible: false,
-            confirmBtnText: 'Çıkış Yap');
-      } else {
-        ToastService().showError(error, context);
-      }
-    }).whenComplete(() {
-      setState(() {
-        isLoading = false;
-      });
-    });
   }
 
   getImageAndUpload() async {
@@ -393,6 +307,22 @@ class _ProfileState extends State<Profile> {
     }
 
     return null;
+  }
+
+  selectCategory() {
+    storeCats.forEach((element) {
+      if (_storeProvider.storeCategory.contains(element.storeCatName)) {
+        element.checked = true;
+      } else {
+        element.checked = false;
+      }
+    });
+    showDialog(
+        context: context,
+        builder: (context) {
+          return CategoryDialog(
+              storeCats: storeCats, selectedCats: _storeProvider.storeCategory);
+        });
   }
 
   @override
@@ -676,7 +606,8 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 7.0, bottom: 7.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                         borderRadius:
@@ -691,29 +622,32 @@ class _ProfileState extends State<Profile> {
                                     width:
                                         MediaQuery.of(context).size.width * 0.9,
                                     child: TextButton(
-                                        onPressed: () {
-                                          deleteUser();
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Icon(Icons.delete_forever,
-                                                  color: Colors.white),
+                                      onPressed: () {
+                                        selectCategory();
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Icon(
+                                              Icons.add,
+                                              color: Colors.white,
                                             ),
-                                            Text(
-                                              'Hesabı Sil',
-                                              style: TextStyle(
-                                                fontFamily: 'Bebas',
-                                                color: Colors.white,
-                                                fontSize: 17,
-                                              ),
+                                          ),
+                                          Text(
+                                            'Kategori Ekle',
+                                            style: TextStyle(
+                                              fontFamily: 'Bebas',
+                                              color: Colors.white,
+                                              fontSize: 17,
                                             ),
-                                          ],
-                                        )),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 Form(
@@ -725,45 +659,6 @@ class _ProfileState extends State<Profile> {
                                         MediaQuery.of(context).size.width * 0.9,
                                     child: Column(
                                       children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Container(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            child: DropdownButton(
-                                                value: _selectedCat,
-                                                isExpanded: true,
-                                                underline: SizedBox(),
-                                                hint: Text(
-                                                    "İşletme için kategori seçiniz !"),
-                                                items: storeCats.map(
-                                                    (StoreCategory storeCat) {
-                                                  return new DropdownMenuItem<
-                                                      String>(
-                                                    value:
-                                                        storeCat.storeCatName,
-                                                    onTap: () {
-                                                      _selectedCat =
-                                                          storeCat.storeCatName;
-                                                    },
-                                                    child: new Text(
-                                                      storeCat.storeCatName,
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (value) {
-                                                  _storeProvider
-                                                      .changeStoreCategory(
-                                                          value);
-                                                }),
-                                          ),
-                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 20.0),
@@ -1036,5 +931,53 @@ class _ProfileState extends State<Profile> {
             ),
           ),
         ));
+  }
+}
+
+class CategoryDialog extends StatefulWidget {
+  final List<StoreCategory> storeCats;
+  final List selectedCats;
+
+  CategoryDialog({Key key, this.storeCats, this.selectedCats})
+      : super(key: key);
+
+  @override
+  _CategoryDialogState createState() => _CategoryDialogState();
+}
+
+class _CategoryDialogState extends State<CategoryDialog> {
+  StoreProvider _storeProvider;
+
+  @override
+  Widget build(BuildContext context) {
+    _storeProvider = Provider.of<StoreProvider>(context);
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 2,
+        child: ListView.builder(
+            itemCount: widget.storeCats.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                leading: Checkbox(
+                  value: widget.storeCats[index].checked,
+                  onChanged: (value) {
+                    setState(() {
+                      widget.storeCats[index].checked = value;
+                    });
+                    if (value == true) {
+                      _storeProvider.storeCategory
+                          .add(widget.storeCats[index].storeCatName);
+                    } else {
+                      _storeProvider.storeCategory.removeWhere((element) =>
+                          element == widget.storeCats[index].storeCatName);
+                    }
+                  },
+                ),
+                title: Text(widget.storeCats[index].storeCatName),
+              );
+            }),
+      ),
+    );
   }
 }
