@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:bulb/Components/gradient_button.dart';
+import 'package:bulb/Components/image_container.dart';
 import 'package:bulb/Map/map.dart';
 import 'package:bulb/Models/store_category.dart';
 import 'package:bulb/Models/store_model.dart';
@@ -44,6 +46,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Future<void> didChangeDependencies() async {
+    super.didChangeDependencies();
     if (isInit) {
       _storeProvider = Provider.of<StoreProvider>(context);
       getUserInfo = _getStoreInfo();
@@ -62,7 +65,6 @@ class _ProfileState extends State<Profile> {
         picBtn = false;
       });
     }
-    super.didChangeDependencies();
   }
 
   Future _getStoreInfo() async {
@@ -389,267 +391,46 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Stack(
-                                      alignment:
-                                          AlignmentDirectional.bottomCenter,
-                                      children: [
-                                        InkWell(
-                                          onTap: getImageAndUpload,
-                                          child: Container(
-                                              clipBehavior: Clip.antiAlias,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  3.5,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50.0),
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Theme.of(context)
-                                                            .accentColor,
-                                                        Theme.of(context)
-                                                            .primaryColor
-                                                      ],
-                                                      begin:
-                                                          Alignment.centerRight,
-                                                      end: Alignment
-                                                          .centerLeft)),
-                                              child: (_storeProvider
-                                                          .storeLocalImagePath !=
-                                                      null)
-                                                  ? Image.file(
-                                                      _storeProvider
-                                                          .storeLocalImagePath,
-                                                      fit: BoxFit.fitWidth)
-                                                  : (_storeProvider
-                                                              .storePicRef !=
-                                                          null)
-                                                      ? Image.network(
-                                                          _storeProvider
-                                                              .storePicRef,
-                                                          fit: BoxFit.fill,
-                                                          loadingBuilder: (context,
-                                                              child,
-                                                              loadingProgress) {
-                                                            return loadingProgress ==
-                                                                    null
-                                                                ? child
-                                                                : Center(
-                                                                    child:
-                                                                        CircularProgressIndicator(
-                                                                      color: Colors
-                                                                          .white,
-                                                                    ),
-                                                                  );
-                                                          },
-                                                        )
-                                                      : Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      bottom:
-                                                                          20.0),
-                                                              child: Icon(
-                                                                Icons
-                                                                    .upload_file,
-                                                                color: Colors
-                                                                    .white,
-                                                                size: 50.0,
-                                                              ),
-                                                            ),
-                                                            Text(
-                                                              'Resim Ekle',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontFamily:
-                                                                      'Bebas',
-                                                                  fontSize:
-                                                                      20.0),
-                                                            ),
-                                                          ],
-                                                        )),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Visibility(
-                                              visible: picBtn,
-                                              child: TextButton(
-                                                  onPressed: () {
-                                                    getImageAndUpload();
-                                                  },
-                                                  child: Container(
-                                                      height: 50.0,
-                                                      width: 50.0,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.0),
-                                                          gradient: LinearGradient(
-                                                              colors: [
-                                                                Theme.of(
-                                                                        context)
-                                                                    .accentColor,
-                                                                Theme.of(
-                                                                        context)
-                                                                    .primaryColor
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerRight,
-                                                              end: Alignment
-                                                                  .centerLeft)),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(Icons.edit,
-                                                              color:
-                                                                  Colors.white),
-                                                        ],
-                                                      ))),
-                                            ),
-                                            Visibility(
-                                              visible: picBtn,
-                                              child: TextButton(
-                                                  onPressed: () {
-                                                    deleteImage();
-                                                  },
-                                                  child: Container(
-                                                      height: 50.0,
-                                                      width: 50.0,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.0),
-                                                          gradient: LinearGradient(
-                                                              colors: [
-                                                                Theme.of(
-                                                                        context)
-                                                                    .accentColor,
-                                                                Theme.of(
-                                                                        context)
-                                                                    .primaryColor
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerRight,
-                                                              end: Alignment
-                                                                  .centerLeft)),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(Icons.delete,
-                                                              color:
-                                                                  Colors.white),
-                                                        ],
-                                                      ))),
-                                            ),
-                                          ],
-                                        )
-                                      ]),
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      gradient: LinearGradient(
-                                          colors: [
-                                            Theme.of(context).accentColor,
-                                            Theme.of(context).primaryColor
-                                          ],
-                                          begin: Alignment.centerRight,
-                                          end: Alignment.centerLeft)),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  child: TextButton(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: CustomImageContainer(
+                                      addText: 'Resim Ekle',
+                                      addable: true,
+                                      buttonVis: picBtn,
+                                      localImage:
+                                          _storeProvider.storeLocalImagePath,
+                                      urlImage: _storeProvider.storePicRef,
+                                      onPressedAdd: () {
+                                        getImageAndUpload();
+                                      },
+                                      onPressedDelete: () {
+                                        deleteImage();
+                                      },
+                                      onPressedEdit: () {
+                                        getImageAndUpload();
+                                      },
+                                    )),
+                                GradientButton(
+                                    buttonText: 'Konum Al',
+                                    icon: Icons.add_location_alt_outlined,
+                                    widthMultiplier: 0.9,
+                                    fontFamily: 'Roboto',
+                                    fontSize: 15,
                                     onPressed: () {
                                       getLocation();
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Icon(
-                                            Icons.add_location_alt_outlined,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Konum Al',
-                                          style: TextStyle(
-                                            fontFamily: 'Bebas',
-                                            color: Colors.white,
-                                            fontSize: 17,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                    }),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 7.0, bottom: 7.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(50.0),
-                                        gradient: LinearGradient(
-                                            colors: [
-                                              Theme.of(context).accentColor,
-                                              Theme.of(context).primaryColor
-                                            ],
-                                            begin: Alignment.centerRight,
-                                            end: Alignment.centerLeft)),
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.9,
-                                    child: TextButton(
+                                    padding: const EdgeInsets.only(
+                                        top: 7.0, bottom: 7.0),
+                                    child: GradientButton(
+                                      buttonText: 'Kategori Ekle',
+                                      fontFamily: 'Roboto',
+                                      fontSize: 15,
+                                      icon: Icons.add,
                                       onPressed: () {
                                         selectCategory();
                                       },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Icon(
-                                              Icons.add,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Kategori Ekle',
-                                            style: TextStyle(
-                                              fontFamily: 'Bebas',
-                                              color: Colors.white,
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                      widthMultiplier: 0.9,
+                                    )),
                                 Form(
                                   key: formkey,
                                   autovalidateMode:

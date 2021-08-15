@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:bulb/Components/gradient_button.dart';
+import 'package:bulb/Components/image_container.dart';
 import 'package:bulb/Models/product_model.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:bulb/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -300,272 +303,27 @@ class _ProductSingleState extends State<ProductSingle> {
                     child: SingleChildScrollView(
                         child: Column(
                       children: [
-                        (productPic != null)
-                            ? Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Stack(
-                                  alignment: AlignmentDirectional.bottomCenter,
-                                  children: [
-                                    Container(
-                                      clipBehavior: Clip.antiAlias,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              3.5,
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(35.0),
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                Theme.of(context).accentColor,
-                                                Theme.of(context).primaryColor
-                                              ],
-                                              begin: Alignment.centerRight,
-                                              end: Alignment.centerLeft)),
-                                      child: Image.file(productPic,
-                                          fit: BoxFit.fill),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        TextButton(
-                                            onPressed: () {
-                                              getImage();
-                                            },
-                                            child: Container(
-                                                height: 50.0,
-                                                width: 50.0,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50.0),
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Theme.of(context)
-                                                              .accentColor,
-                                                          Theme.of(context)
-                                                              .primaryColor
-                                                        ],
-                                                        begin: Alignment
-                                                            .centerRight,
-                                                        end: Alignment
-                                                            .centerLeft)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.edit,
-                                                        color: Colors.white),
-                                                  ],
-                                                ))),
-                                        TextButton(
-                                            onPressed: () {
-                                              deleteImage();
-                                            },
-                                            child: Container(
-                                                height: 50.0,
-                                                width: 50.0,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50.0),
-                                                    gradient: LinearGradient(
-                                                        colors: [
-                                                          Theme.of(context)
-                                                              .accentColor,
-                                                          Theme.of(context)
-                                                              .primaryColor
-                                                        ],
-                                                        begin: Alignment
-                                                            .centerRight,
-                                                        end: Alignment
-                                                            .centerLeft)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Icon(Icons.delete,
-                                                        color: Colors.white),
-                                                  ],
-                                                ))),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              )
-                            : (widget.productData != null &&
-                                    widget.productData.productPicRef != null)
-                                ? Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: Stack(
-                                      alignment:
-                                          AlignmentDirectional.bottomCenter,
-                                      children: [
-                                        Container(
-                                          clipBehavior: Clip.antiAlias,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              3.5,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(35.0),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Theme.of(context)
-                                                        .accentColor,
-                                                    Theme.of(context)
-                                                        .primaryColor
-                                                  ],
-                                                  begin: Alignment.centerRight,
-                                                  end: Alignment.centerLeft)),
-                                          child: Image.network(
-                                              widget.productData.productPicRef,
-                                              loadingBuilder: (context, child,
-                                                  loadingProgress) {
-                                            return loadingProgress == null
-                                                ? child
-                                                : Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      color: Colors.white,
-                                                    ),
-                                                  );
-                                          }, fit: BoxFit.fill),
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Visibility(
-                                              visible: picBtn,
-                                              child: TextButton(
-                                                  onPressed: () {
-                                                    getImage();
-                                                  },
-                                                  child: Container(
-                                                      height: 50.0,
-                                                      width: 50.0,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.0),
-                                                          gradient: LinearGradient(
-                                                              colors: [
-                                                                Theme.of(
-                                                                        context)
-                                                                    .accentColor,
-                                                                Theme.of(
-                                                                        context)
-                                                                    .primaryColor
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerRight,
-                                                              end: Alignment
-                                                                  .centerLeft)),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(Icons.edit,
-                                                              color:
-                                                                  Colors.white),
-                                                        ],
-                                                      ))),
-                                            ),
-                                            Visibility(
-                                              visible: picBtn,
-                                              child: TextButton(
-                                                  onPressed: () {
-                                                    deleteImage();
-                                                  },
-                                                  child: Container(
-                                                      height: 50.0,
-                                                      width: 50.0,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      50.0),
-                                                          gradient: LinearGradient(
-                                                              colors: [
-                                                                Theme.of(
-                                                                        context)
-                                                                    .accentColor,
-                                                                Theme.of(
-                                                                        context)
-                                                                    .primaryColor
-                                                              ],
-                                                              begin: Alignment
-                                                                  .centerRight,
-                                                              end: Alignment
-                                                                  .centerLeft)),
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(Icons.delete,
-                                                              color:
-                                                                  Colors.white),
-                                                        ],
-                                                      ))),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(15.0),
-                                    child: InkWell(
-                                      onTap: getImage,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                3.5,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(35.0),
-                                            gradient: LinearGradient(
-                                                colors: [
-                                                  Theme.of(context).accentColor,
-                                                  Theme.of(context).primaryColor
-                                                ],
-                                                begin: Alignment.centerRight,
-                                                end: Alignment.centerLeft)),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 20.0),
-                                              child: Icon(
-                                                Icons.upload_file,
-                                                color: Colors.white,
-                                                size: 50.0,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Resim Ekle',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: 'Bebas',
-                                                  fontSize: 20.0),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: CustomImageContainer(
+                            addText: 'Resim Ekle',
+                            addable: true,
+                            buttonVis: picBtn,
+                            localImage: productPic,
+                            onPressedAdd: () {
+                              getImage();
+                            },
+                            onPressedDelete: () {
+                              deleteImage();
+                            },
+                            onPressedEdit: () {
+                              getImage();
+                            },
+                            urlImage: (widget.productData != null)
+                                ? widget.productData.productPicRef
+                                : null,
+                          ),
+                        ),
                         Form(
                           key: formKeyProd,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -644,146 +402,49 @@ class _ProductSingleState extends State<ProductSingle> {
                                 Visibility(
                                   visible: saveBtn,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 20.0, bottom: 60.0),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.7,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                          gradient: LinearGradient(
-                                              colors: [
-                                                Theme.of(context).accentColor,
-                                                Theme.of(context).primaryColor
-                                              ],
-                                              begin: Alignment.centerRight,
-                                              end: Alignment.centerLeft)),
-                                      child: TextButton(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0),
-                                                child: Icon(
-                                                  Icons.save,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              Text("Ürün Oluştur".toUpperCase(),
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      color: Colors.white,
-                                                      fontFamily: 'Bebas')),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            saveYesNo();
-                                          }),
-                                    ),
-                                  ),
+                                      padding: const EdgeInsets.only(
+                                          top: 20.0, bottom: 60.0),
+                                      child: GradientButton(
+                                        buttonText: 'Ürün Oluştur',
+                                        icon: FontAwesomeIcons.save,
+                                        fontFamily: 'Roboto',
+                                        fontSize: 15,
+                                        onPressed: () {
+                                          saveYesNo();
+                                        },
+                                        widthMultiplier: 0.9,
+                                      )),
                                 ),
                                 Visibility(
                                   visible: editBtn,
                                   child: Column(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 20.0, bottom: 5.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.7,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Theme.of(context)
-                                                        .accentColor,
-                                                    Theme.of(context)
-                                                        .primaryColor
-                                                  ],
-                                                  begin: Alignment.centerRight,
-                                                  end: Alignment.centerLeft)),
-                                          child: TextButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10.0),
-                                                    child: Icon(
-                                                      Icons.edit,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                      "Ürünü Güncelle"
-                                                          .toUpperCase(),
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          color: Colors.white,
-                                                          fontFamily: 'Bebas')),
-                                                ],
-                                              ),
-                                              onPressed: () {
-                                                updateYesNo();
-                                              }),
-                                        ),
-                                      ),
+                                          padding: const EdgeInsets.only(
+                                              top: 20.0, bottom: 5.0),
+                                          child: GradientButton(
+                                            buttonText: 'Ürünü Güncelle',
+                                            fontFamily: 'Roboto',
+                                            fontSize: 15,
+                                            icon: FontAwesomeIcons.save,
+                                            onPressed: () {
+                                              updateYesNo();
+                                            },
+                                            widthMultiplier: 0.9,
+                                          )),
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 5.0, bottom: 20.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.7,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50.0),
-                                              gradient: LinearGradient(
-                                                  colors: [
-                                                    Theme.of(context)
-                                                        .accentColor,
-                                                    Theme.of(context)
-                                                        .primaryColor
-                                                  ],
-                                                  begin: Alignment.centerRight,
-                                                  end: Alignment.centerLeft)),
-                                          child: TextButton(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 10.0),
-                                                    child: Icon(
-                                                      Icons.delete,
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                      "Ürünü Sil".toUpperCase(),
-                                                      style: TextStyle(
-                                                          fontSize: 17,
-                                                          color: Colors.white,
-                                                          fontFamily: 'Bebas')),
-                                                ],
-                                              ),
-                                              onPressed: () {
-                                                deleteProdYesNo();
-                                              }),
-                                        ),
-                                      ),
+                                          padding: const EdgeInsets.only(
+                                              top: 5.0, bottom: 20.0),
+                                          child: GradientButton(
+                                            buttonText: 'Ürünü Sil',
+                                            fontFamily: 'Roboto',
+                                            fontSize: 15,
+                                            icon: FontAwesomeIcons.trash,
+                                            onPressed: () {
+                                              deleteProdYesNo();
+                                            },
+                                            widthMultiplier: 0.9,
+                                          )),
                                     ],
                                   ),
                                 ),

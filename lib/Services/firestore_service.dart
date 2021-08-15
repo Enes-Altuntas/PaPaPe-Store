@@ -8,7 +8,6 @@ import 'package:bulb/Models/product_category_model.dart';
 import 'package:bulb/Models/product_model.dart';
 import 'package:bulb/Models/reservations_model.dart';
 import 'package:bulb/Models/store_model.dart';
-import 'package:bulb/Models/user_model.dart';
 import 'package:bulb/Services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
