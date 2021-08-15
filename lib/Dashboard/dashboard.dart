@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:bulb/Campaigns/campaigns.dart';
-import 'package:bulb/Comments/comments.dart';
+import 'package:bulb/Wishes/wishes.dart';
 import 'package:bulb/Login/login.dart';
 import 'package:bulb/Models/store_model.dart';
 import 'package:bulb/Products/products.dart';

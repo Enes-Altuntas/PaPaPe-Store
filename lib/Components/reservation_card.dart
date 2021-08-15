@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 class ReservationCard extends StatefulWidget {
-  final Reservations reservation;
+  final ReservationsModel reservation;
   final Function onPressedCall;
   final Function onPressedApprove;
   final Function onPressedReject;

@@ -51,6 +51,15 @@ class AuthService {
             accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
         await _firebaseAuth.signInWithCredential(credential);
+
+        UserModel newUser = UserModel(
+            token: await FirebaseMessaging.instance.getToken(),
+            userId: _firebaseAuth.currentUser.uid);
+
+        await _db
+            .collection('users')
+            .doc(_firebaseAuth.currentUser.uid)
+            .set(newUser.toMap());
       }
     } catch (e) {
       throw 'Sistemde bir hata meydana geldi !';
@@ -70,7 +79,7 @@ class AuthService {
           userId: _firebaseAuth.currentUser.uid);
 
       await _db
-          .collection('tokens')
+          .collection('users')
           .doc(_firebaseAuth.currentUser.uid)
           .set(newUser.toMap());
 

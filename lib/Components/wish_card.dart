@@ -1,12 +1,12 @@
-import 'package:bulb/Models/comment_model.dart';
+import 'package:bulb/Models/wishes_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
-  final Comments comment;
+  final WishesModel wish;
 
-  const CommentCard({Key key, this.comment}) : super(key: key);
+  const CommentCard({Key key, this.wish}) : super(key: key);
 
   @override
   _CommentCardState createState() => _CommentCardState();
@@ -37,7 +37,7 @@ class _CommentCardState extends State<CommentCard> {
           title: Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Text(
-              widget.comment.reportTitle,
+              widget.wish.wishTitle,
               style: TextStyle(
                   color: Theme.of(context).primaryColor,
                   fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class _CommentCardState extends State<CommentCard> {
             child: Column(
               children: [
                 Text(
-                  widget.comment.reportDesc,
+                  widget.wish.wishDesc,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: 'Roboto', color: Theme.of(context).hintColor),
@@ -59,7 +59,7 @@ class _CommentCardState extends State<CommentCard> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Text(
-                      'Oluşturulma Saati: ${formatDate(widget.comment.createdAt)}',
+                      'Oluşturulma Saati: ${formatDate(widget.wish.createdAt)}',
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: 'Roboto',

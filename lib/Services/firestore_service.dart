@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bulb/Models/camapign_model.dart';
-import 'package:bulb/Models/comment_model.dart';
+import 'package:bulb/Models/wishes_model.dart';
 import 'package:bulb/Models/markers_model.dart';
 import 'package:bulb/Models/position_model.dart';
 import 'package:bulb/Models/product_category_model.dart';
@@ -484,16 +484,16 @@ class FirestoreService {
 // Şikayetler ile ilgili backend işlemleri
 // *******************************************************************************
 
-  Stream<List<Comments>> getReports() {
+  Stream<List<WishesModel>> getReports() {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
+
     return _db
-        .collection('stores')
-        .doc(_userId)
-        .collection('reports')
+        .collection('wishes')
+        .where('wishStore', isEqualTo: _userId)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => Comments.fromFirestore(doc.data()))
+            .map((doc) => WishesModel.fromFirestore(doc.data()))
             .toList());
   }
 
@@ -503,27 +503,22 @@ class FirestoreService {
 // Rezervasyon ile ilgili backend işlemleri
 // *******************************************************************************
 
-  Stream<List<Reservations>> getReservations() {
+  Stream<List<ReservationsModel>> getReservations() {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
     return _db
-        .collection('stores')
-        .doc(_userId)
         .collection('reservations')
+        .where('reservationStore', isEqualTo: _userId)
         .orderBy('reservationTime', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => Reservations.fromFirestore(doc.data()))
+            .map((doc) => ReservationsModel.fromFirestore(doc.data()))
             .toList());
   }
 
-  Future<String> approveReservation(Reservations reservation) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> approveReservation(ReservationsModel reservation) async {
     try {
       await _db
-          .collection('stores')
-          .doc(_userId)
           .collection('reservations')
           .doc(reservation.reservationId)
           .update({'reservationStatus': 'approved'});
@@ -534,13 +529,9 @@ class FirestoreService {
     }
   }
 
-  Future<String> rejectReservation(Reservations reservation) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> rejectReservation(ReservationsModel reservation) async {
     try {
       await _db
-          .collection('stores')
-          .doc(_userId)
           .collection('reservations')
           .doc(reservation.reservationId)
           .update({'reservationStatus': 'rejected'});

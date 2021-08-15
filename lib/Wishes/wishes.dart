@@ -1,6 +1,6 @@
-import 'package:bulb/Components/comment_card.dart';
+import 'package:bulb/Components/wish_card.dart';
 import 'package:bulb/Components/not_found.dart';
-import 'package:bulb/Models/comment_model.dart';
+import 'package:bulb/Models/wishes_model.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -31,7 +31,7 @@ class _ReportsState extends State<Reports> {
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(top: 5.0),
-            child: StreamBuilder<List<Comments>>(
+            child: StreamBuilder<List<WishesModel>>(
               stream: FirestoreService().getReports(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
@@ -44,7 +44,7 @@ class _ReportsState extends State<Reports> {
                             return Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: CommentCard(
-                                  comment: snapshot.data[index],
+                                  wish: snapshot.data[index],
                                 ));
                           },
                         );

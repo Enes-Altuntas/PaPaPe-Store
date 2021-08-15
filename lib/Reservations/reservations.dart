@@ -3,7 +3,6 @@ import 'package:bulb/Components/reservation_card.dart';
 import 'package:bulb/Models/reservations_model.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:bulb/Services/toast_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,7 +18,7 @@ class Reservation extends StatefulWidget {
 class _ReservationState extends State<Reservation> {
   bool isLoading = false;
   bool btnVis = true;
-  Reservations selectedReservation;
+  ReservationsModel selectedReservation;
 
   makePhoneCall(storePhone) async {
     await launch("tel:$storePhone");
@@ -116,7 +115,7 @@ class _ReservationState extends State<Reservation> {
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(top: 5.0),
-            child: StreamBuilder<List<Reservations>>(
+            child: StreamBuilder<List<ReservationsModel>>(
               stream: FirestoreService().getReservations(),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {

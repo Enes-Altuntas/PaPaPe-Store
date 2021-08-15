@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Reservations {
+class ReservationsModel {
   final String reservationDesc;
   final String reservationStatus;
   final String reservationId;
@@ -8,20 +8,21 @@ class Reservations {
   final String reservationPhone;
   final int reservationCount;
   final String reservationUser;
+  final String reservationStore;
   final Timestamp reservationTime;
 
-  Reservations({
-    this.reservationDesc,
-    this.reservationStatus,
-    this.reservationCount,
-    this.reservationName,
-    this.reservationPhone,
-    this.reservationId,
-    this.reservationUser,
-    this.reservationTime,
-  });
+  ReservationsModel(
+      {this.reservationDesc,
+      this.reservationStatus,
+      this.reservationCount,
+      this.reservationName,
+      this.reservationPhone,
+      this.reservationId,
+      this.reservationUser,
+      this.reservationTime,
+      this.reservationStore});
 
-  Reservations.fromFirestore(Map<String, dynamic> data)
+  ReservationsModel.fromFirestore(Map<String, dynamic> data)
       : reservationDesc = data['reservationDesc'],
         reservationStatus = data['reservationStatus'],
         reservationCount = data['reservationCount'],
@@ -29,7 +30,8 @@ class Reservations {
         reservationPhone = data['reservationPhone'],
         reservationId = data['reservationId'],
         reservationUser = data['reservationUser'],
-        reservationTime = data['reservationTime'];
+        reservationTime = data['reservationTime'],
+        reservationStore = data['reservationStore'];
 
   Map<String, dynamic> toMap() {
     return {
@@ -41,6 +43,7 @@ class Reservations {
       'reservationId': reservationId,
       'reservationUser': reservationUser,
       'reservationTime': reservationTime,
+      'reservationStore': reservationStore,
     };
   }
 }
