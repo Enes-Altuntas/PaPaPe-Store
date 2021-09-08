@@ -22,7 +22,7 @@ Future<void> init() async {
 
 handleNotifications() async {
   await firebaseMessaging.requestPermission(sound: true);
-  await firebaseMessaging.subscribeToTopic("isletmeler");
+  await firebaseMessaging.subscribeToTopic("stores");
 }
 
 class MyApp extends StatelessWidget {
