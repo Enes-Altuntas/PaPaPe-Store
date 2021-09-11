@@ -38,9 +38,9 @@ class MyApp extends StatelessWidget {
           title: 'BULB İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primaryColor: Colors.amber[900],
+            primaryColor: Colors.lightBlue[800],
             primaryColorDark: Colors.black,
-            accentColor: Colors.amber,
+            accentColor: Colors.lightBlue[200],
             hintColor: Colors.grey.shade800,
           ),
           home: Login()),

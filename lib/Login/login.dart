@@ -1,4 +1,5 @@
 import 'package:bulb/Components/gradient_button.dart';
+import 'package:bulb/Components/title.dart';
 import 'package:bulb/Dashboard/dashboard.dart';
 import 'package:bulb/Login/sign.dart';
 import 'package:bulb/Services/authentication_service.dart';
@@ -152,15 +153,8 @@ class _LoginState extends State<Login> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: Text('bulb',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontFamily: 'Armatic',
-                                    fontSize:
-                                        MediaQuery.of(context).size.height /
-                                            10)),
-                          ),
+                              padding: const EdgeInsets.only(bottom: 20.0),
+                              child: TitleWidget()),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.9,
                             decoration: BoxDecoration(

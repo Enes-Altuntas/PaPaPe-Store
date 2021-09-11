@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bulb/Components/gradient_button.dart';
 import 'package:bulb/Components/image_container.dart';
+import 'package:bulb/Components/title.dart';
 import 'package:bulb/Map/map.dart';
 import 'package:bulb/Models/store_category.dart';
 import 'package:bulb/Models/store_model.dart';
@@ -313,7 +314,8 @@ class _ProfileState extends State<Profile> {
 
   selectCategory() {
     storeCats.forEach((element) {
-      if (_storeProvider.storeCategory.contains(element.storeCatName)) {
+      if (_storeProvider.storeCategory != null &&
+          _storeProvider.storeCategory.contains(element.storeCatName)) {
         element.checked = true;
       } else {
         element.checked = false;
@@ -340,12 +342,7 @@ class _ProfileState extends State<Profile> {
           ),
           elevation: 0,
           centerTitle: true,
-          title: Text('bulb',
-              style: TextStyle(
-                  fontSize: 45.0,
-                  color: Colors.white,
-                  fontFamily: 'Armatic',
-                  fontWeight: FontWeight.bold)),
+          title: TitleWidget(),
           actions: [
             Padding(
               padding: const EdgeInsets.only(top: 10.0),

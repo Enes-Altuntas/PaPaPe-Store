@@ -1,3 +1,4 @@
+import 'package:bulb/Components/title.dart';
 import 'package:bulb/Providers/store_provider.dart';
 import 'package:bulb/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -100,12 +101,7 @@ class _MapsState extends State<Maps> {
         ),
         elevation: 0,
         centerTitle: true,
-        title: Text('bulb',
-            style: TextStyle(
-                fontSize: 45.0,
-                color: Colors.white,
-                fontFamily: 'Armatic',
-                fontWeight: FontWeight.bold)),
+        title: TitleWidget(),
       ),
       body: Container(
         decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bulb/Components/gradient_button.dart';
 import 'package:bulb/Components/image_container.dart';
+import 'package:bulb/Components/title.dart';
 import 'package:bulb/Models/product_model.dart';
 import 'package:bulb/Services/firestore_service.dart';
 import 'package:bulb/Services/toast_service.dart';
@@ -275,12 +276,7 @@ class _ProductSingleState extends State<ProductSingle> {
         ),
         elevation: 0,
         centerTitle: true,
-        title: Text('bulb',
-            style: TextStyle(
-                fontSize: 45.0,
-                color: Colors.white,
-                fontFamily: 'Armatic',
-                fontWeight: FontWeight.bold)),
+        title: TitleWidget(),
       ),
       body: (isLoading == false)
           ? Container(

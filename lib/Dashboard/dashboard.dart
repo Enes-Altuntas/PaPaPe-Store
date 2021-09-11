@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:bulb/Campaigns/campaigns.dart';
+import 'package:bulb/Components/title.dart';
 import 'package:bulb/Wishes/wishes.dart';
 import 'package:bulb/Login/login.dart';
 import 'package:bulb/Models/store_model.dart';
@@ -143,12 +144,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ],
           ),
-          title: Text('bulb',
-              style: TextStyle(
-                  fontSize: 45.0,
-                  color: Colors.white,
-                  fontFamily: 'Armatic',
-                  fontWeight: FontWeight.bold)),
+          title: TitleWidget(),
           actions: [
             Padding(
               padding: const EdgeInsets.only(top: 10.0),
