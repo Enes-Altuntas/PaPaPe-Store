@@ -744,11 +744,11 @@ class _CategoryDialogState extends State<CategoryDialog> {
                       widget.storeCats[index].checked = value;
                     });
                     if (value == true) {
-                      _storeProvider.storeCategory
-                          .add(widget.storeCats[index].storeCatName);
+                      _storeProvider.changeAddStoreCategory(
+                          widget.storeCats[index].storeCatName);
                     } else {
-                      _storeProvider.storeCategory.removeWhere((element) =>
-                          element == widget.storeCats[index].storeCatName);
+                      _storeProvider.changeRemoveStoreCategory(
+                          widget.storeCats[index].storeCatName);
                     }
                   },
                 ),

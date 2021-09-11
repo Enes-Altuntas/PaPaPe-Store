@@ -6,7 +6,7 @@ class StoreProvider with ChangeNotifier {
   String _storeName;
   String _storePicRef;
   String _storeAddress;
-  List _storeCategory;
+  List _storeCategory = [];
   String _storePhone;
   String _storeTaxNo;
   String _storeTaxLoc;
@@ -58,8 +58,13 @@ class StoreProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  changeStoreCategory(String value) {
+  changeAddStoreCategory(String value) {
     _storeCategory.add(value);
+    notifyListeners();
+  }
+
+  changeRemoveStoreCategory(String value) {
+    _storeCategory.removeWhere((element) => element == value);
     notifyListeners();
   }
 
