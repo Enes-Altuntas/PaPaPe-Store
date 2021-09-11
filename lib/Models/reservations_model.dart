@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReservationsModel {
   final String reservationDesc;
+  // approved, rejected, canceled
   final String reservationStatus;
   final String reservationId;
   final String reservationName;

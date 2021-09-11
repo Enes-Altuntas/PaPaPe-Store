@@ -192,11 +192,6 @@ class FirestoreService {
           .doc(campaign.campaignId)
           .set(campaign.toMap());
 
-      await _db
-          .collection('markers')
-          .doc(_userId)
-          .update({'hasCampaign': false});
-
       return 'Kampanyanız başarıyla kaydedilmiştir !';
     } catch (e) {
       throw 'Kampanyanız kaydedilirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
@@ -221,11 +216,6 @@ class FirestoreService {
           .collection('campaigns')
           .doc(campaign.campaignId)
           .set(campaign.toMap());
-
-      await _db
-          .collection('markers')
-          .doc(_userId)
-          .update({'hasCampaign': false});
 
       return 'Kampanyanız başarıyla güncellenmiştir !';
     } catch (e) {
@@ -261,11 +251,6 @@ class FirestoreService {
           .doc(campaign.campaignId)
           .set(campaign.toMap());
 
-      await _db
-          .collection('markers')
-          .doc(_userId)
-          .update({'hasCampaign': false});
-
       return 'Kampanyanız başarıyla tekrar yayınlandı !';
     } catch (e) {
       throw 'Kampanyanız yayınlanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
@@ -283,11 +268,6 @@ class FirestoreService {
           .doc(campaignId)
           .update({'campaignStatus': 'inactive'});
 
-      await _db
-          .collection('markers')
-          .doc(_userId)
-          .update({'hasCampaign': false});
-
       return 'Kampanyanız başarıyla sonlandırılmıştır !';
     } catch (e) {
       throw 'Kampanyanız sonlandırılırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
@@ -304,11 +284,6 @@ class FirestoreService {
           .collection('campaigns')
           .doc(campaignId)
           .update({'campaignActive': 'inactive', 'delInd': true});
-
-      await _db
-          .collection('markers')
-          .doc(_userId)
-          .update({'hasCampaign': false});
 
       await deletePicture(campaignId);
 

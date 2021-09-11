@@ -1,6 +1,7 @@
 import 'package:bulb/Models/position_model.dart';
 
 class MarkerModel {
+  // inactive , wait , active
   final String campaignStatus;
   final List storeCategory;
   final PositionModel position;
