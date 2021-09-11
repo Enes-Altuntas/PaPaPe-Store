@@ -150,7 +150,7 @@ class _CampaignCardState extends State<CampaignCard> {
                   style: TextStyle(
                       fontSize: 18.0,
                       fontFamily: 'Roboto',
-                      color: Theme.of(context).primaryColor,
+                      color: Colors.amber[900],
                       fontWeight: FontWeight.bold)),
             ),
             Padding(
@@ -207,7 +207,7 @@ class _CampaignCardState extends State<CampaignCard> {
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Roboto',
                               fontSize: 18.0,
-                              color: Theme.of(context).primaryColor)),
+                              color: Colors.amber[900])),
                     ),
                   ],
                 ),

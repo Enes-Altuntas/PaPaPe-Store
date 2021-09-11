@@ -333,7 +333,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                     " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün adıdır. Örnek olarak 'Ezogelin', 'Çay', 'Piercing'.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Colors.amber[900],
                                         fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),
@@ -355,7 +355,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                     " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün tanımıdır. Ürününüzü açıklamanız faydalı olacaktır.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Colors.amber[900],
                                         fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),
@@ -379,7 +379,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                     " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün fiyatıdır. İşletmenizde kullandığınız menü veya katalogdaki fiyatların aynılarını girmeniz, işletmeniz adına yarar sağlayacaktır.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Colors.amber[900],
                                         fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),

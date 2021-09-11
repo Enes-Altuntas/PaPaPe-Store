@@ -123,7 +123,8 @@ class _DashboardState extends State<Dashboard> {
           elevation: 0,
           centerTitle: true,
           bottom: TabBar(
-            labelColor: Colors.white,
+            labelColor: Colors.amber[700],
+            unselectedLabelColor: Colors.white,
             labelStyle: TextStyle(
               fontFamily: 'Bebas',
               fontSize: 15.0,

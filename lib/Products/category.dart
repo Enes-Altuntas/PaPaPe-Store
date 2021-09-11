@@ -23,7 +23,7 @@ class _CategorySingleState extends State<CategorySingle> {
 
   String _validateCatRow(String value) {
     if (value.isEmpty) {
-      return '* Kategori sırası boş olmamalıdır !';
+      return '* Menü Kategori sırası boş olmamalıdır !';
     }
     if (value.contains(RegExp(r'[^\d]')) == true) {
       return '* Yalnızca rakam içerebilir !';
@@ -34,7 +34,7 @@ class _CategorySingleState extends State<CategorySingle> {
 
   String _validateCatName(String value) {
     if (value.isEmpty) {
-      return '* Kategori adı boş olmamalıdır !';
+      return '* Menü Kategori adı boş olmamalıdır !';
     }
 
     if (value.contains(RegExp(r'[a-zA-ZğüşöçİĞÜŞÖÇ\d]')) != true) {
@@ -149,10 +149,10 @@ class _CategorySingleState extends State<CategorySingle> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 40.0),
                                   child: Text(
-                                    " * Başlık sırası örnek olarak 'Çorbalar' başlığının kaçıncı sırada olacağını belirler.",
+                                    " * Menü kategori sırası örnek olarak 'Çorbalar' başlığının kaçıncı sırada olacağını belirler.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Colors.amber[900],
                                         fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),
@@ -165,17 +165,17 @@ class _CategorySingleState extends State<CategorySingle> {
                                     validator: _validateCatRow,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
-                                        labelText: 'Başlık Sırası',
+                                        labelText: 'Menü Kategori Sırası',
                                         border: OutlineInputBorder()),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20.0),
                                   child: Text(
-                                    " * Başlık adı örnek 'Çorbalar', 'Bileklikler', 'Elbiseler'",
+                                    " * Menü kategori adı örnek 'Çorbalar', 'Bileklikler', 'Elbiseler'",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
+                                        color: Colors.amber[900],
                                         fontFamily: 'Roboto',
                                         fontSize: 16.0),
                                   ),
@@ -187,7 +187,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                     controller: _categoryName,
                                     maxLength: 50,
                                     decoration: InputDecoration(
-                                        labelText: 'Başlık Adı',
+                                        labelText: 'Menü Kategori Adı',
                                         border: OutlineInputBorder()),
                                   ),
                                 ),

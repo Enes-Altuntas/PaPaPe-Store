@@ -77,7 +77,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
 
   String validateCampaignKey(String value) {
     if (value.isEmpty) {
-      return "* Kampanya anahtarı zorunludur !";
+      return "* Kampanya anahtar sözcüğü zorunludur !";
     }
     if (value.contains(RegExp(r'[^a-zA-ZğüşöçİĞÜŞÖÇ\d]')) == true) {
       return "* Sadece harf ve rakam içermelidir !";
@@ -581,7 +581,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       controller: _key,
                                       maxLength: 15,
                                       decoration: InputDecoration(
-                                          labelText: 'Kampanya Anahtarı',
+                                          labelText: 'Kampanya Anahtar Sözcüğü',
                                           prefix: Text('#'),
                                           border: OutlineInputBorder()),
                                     ),
@@ -595,7 +595,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       enabled: isEnabled,
                                       readOnly: true,
                                       decoration: InputDecoration(
-                                          labelText: 'Kampanya Başlangıç',
+                                          labelText:
+                                              'Kampanya Başlangıç Tarihi',
                                           border: OutlineInputBorder()),
                                       onTap: () {
                                         DatePicker.showDateTimePicker(context,
@@ -627,7 +628,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       enabled: isEnabled,
                                       readOnly: true,
                                       decoration: InputDecoration(
-                                          labelText: 'Kampanya Bitiş',
+                                          labelText: 'Kampanya Bitiş Tarihi',
                                           border: OutlineInputBorder()),
                                       onTap: () {
                                         if (_startDate != null) {

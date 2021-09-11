@@ -33,7 +33,7 @@ class _ProductCardState extends State<ProductCard> {
                   child: Text(
                     widget.product.productName,
                     style: TextStyle(
-                        color: Theme.of(context).primaryColor,
+                        color: Colors.amber[900],
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
                         fontFamily: 'Roboto'),
@@ -46,7 +46,7 @@ class _ProductCardState extends State<ProductCard> {
               height: MediaQuery.of(context).size.height,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.amber[900],
                   borderRadius: BorderRadius.all(Radius.circular(15.0))),
               child: (widget.product.productPicRef != null)
                   ? Image.network(

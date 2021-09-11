@@ -350,14 +350,19 @@ class _ProfileState extends State<Profile> {
                   onPressed: () {
                     saveStore();
                   },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 30.0,
-                      )
-                    ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.amber[900],
+                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 30.0,
+                        )
+                      ],
+                    ),
                   )),
             ),
           ],

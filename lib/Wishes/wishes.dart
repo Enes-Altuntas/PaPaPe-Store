@@ -51,7 +51,7 @@ class _ReportsState extends State<Reports> {
                         break;
                       default:
                         return NotFound(
-                          notFoundIcon: FontAwesomeIcons.sadTear,
+                          notFoundIcon: FontAwesomeIcons.smileBeam,
                           notFoundIconColor: Theme.of(context).primaryColor,
                           notFoundIconSize: 75,
                           notFoundText:

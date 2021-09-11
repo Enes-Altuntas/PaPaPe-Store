@@ -23,7 +23,10 @@ class BorderedButton extends StatelessWidget {
       child: TextButton(
           child: Text(buttonText.toUpperCase(),
               style: TextStyle(
-                  fontSize: 14, fontFamily: 'Roboto', color: this.textColor)),
+                  fontSize: 14,
+                  fontFamily: 'Roboto',
+                  color: this.textColor,
+                  fontWeight: FontWeight.bold)),
           style: ButtonStyle(
               padding:
                   MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),

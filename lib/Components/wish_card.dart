@@ -39,7 +39,7 @@ class _CommentCardState extends State<CommentCard> {
             child: Text(
               widget.wish.wishTitle,
               style: TextStyle(
-                  color: Theme.of(context).primaryColor,
+                  color: Colors.amber[900],
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Roboto',
                   fontSize: 17.0),

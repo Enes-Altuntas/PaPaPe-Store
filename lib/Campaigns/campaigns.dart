@@ -70,8 +70,8 @@ class _CampaignsState extends State<Campaigns> {
                   padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: BorderedButton(
                     buttonText: 'Kampanya Yayınla',
-                    borderColor: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryColor,
+                    borderColor: Colors.amber[900],
+                    textColor: Colors.amber[900],
                     onPressed: () {
                       openDialog();
                     },
@@ -111,7 +111,7 @@ class _CampaignsState extends State<Campaigns> {
                               break;
                             default:
                               return NotFound(
-                                notFoundIcon: FontAwesomeIcons.sadTear,
+                                notFoundIcon: FontAwesomeIcons.surprise,
                                 notFoundIconColor:
                                     Theme.of(context).primaryColor,
                                 notFoundIconSize: 75,

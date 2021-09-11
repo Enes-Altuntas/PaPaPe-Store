@@ -41,10 +41,8 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50.0),
-                gradient: LinearGradient(colors: [
-                  Theme.of(context).accentColor,
-                  Theme.of(context).primaryColor
-                ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+                color: Colors.white,
+                border: Border.all(width: 2.0, color: Colors.grey)),
             child: (this.widget.localImage != null)
                 ? Image.file(this.widget.localImage, fit: BoxFit.fitWidth)
                 : (this.widget.urlImage != null)
@@ -56,7 +54,7 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                               ? child
                               : Center(
                                   child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColor,
                                   ),
                                 );
                         },
@@ -69,14 +67,14 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                 padding: const EdgeInsets.only(bottom: 20.0),
                                 child: Icon(
                                   Icons.upload_file,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColor,
                                   size: 50.0,
                                 ),
                               ),
                               Text(
                                 widget.addText,
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColor,
                                     fontFamily: 'Bebas',
                                     fontSize: 20.0),
                               ),
@@ -89,14 +87,14 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                 padding: const EdgeInsets.only(bottom: 20.0),
                                 child: FaIcon(
                                   FontAwesomeIcons.sadTear,
-                                  color: Colors.white,
+                                  color: Theme.of(context).primaryColor,
                                   size: 50.0,
                                 ),
                               ),
                               Text(
                                 'Resim Yok',
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Theme.of(context).primaryColor,
                                     fontFamily: 'Bebas',
                                     fontSize: 20.0),
                               ),

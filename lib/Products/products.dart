@@ -112,7 +112,7 @@ class _MenuState extends State<Menu> {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                 child: Text(
-                  'Ürünler',
+                  'Menü',
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 30.0,
@@ -123,13 +123,13 @@ class _MenuState extends State<Menu> {
               Padding(
                   padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: BorderedButton(
-                    buttonText: 'Yeni Başlık Ekle',
+                    buttonText: 'Menü Kategorisi Ekle',
                     widthMultiplier: 0.7,
                     onPressed: () {
                       openCategoryDialog();
                     },
-                    borderColor: Theme.of(context).primaryColor,
-                    textColor: Theme.of(context).primaryColor,
+                    borderColor: Colors.amber[900],
+                    textColor: Colors.amber[900],
                   )),
               Flexible(
                 child: StreamBuilder<List<ProductCategory>>(

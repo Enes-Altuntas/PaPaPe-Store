@@ -115,7 +115,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                 padding: const EdgeInsets.only(top: 15.0),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Colors.amber[900],
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(50.0))),
                                   child: IconButton(
@@ -134,7 +134,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                 padding: const EdgeInsets.only(
                                     top: 10.0, bottom: 15.0),
                                 child: Text(
-                                  "'${widget.category.categoryName}' başlığının altına yeni ürün ekle",
+                                  "'${widget.category.categoryName}' kategorisinin altına yeni ürün ekle",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'Roboto',
@@ -152,7 +152,7 @@ class _CategoryCardState extends State<CategoryCard> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      color: Theme.of(context).primaryColor,
+                                      color: Colors.amber[900],
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(50.0))),
                                   child: IconButton(
@@ -169,7 +169,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10.0),
                                   child: Text(
-                                    "'${widget.category.categoryName}' başlığının altına yeni ürün ekle",
+                                    "'${widget.category.categoryName}' kategorisinin altına yeni ürün ekle",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontFamily: 'Roboto',
