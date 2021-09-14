@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.papape.papape_store">
+    package="com.blv.bulovva_store">
    <application
         android:label="PaPaPe İşletme"
         android:icon="@mipmap/ic_launcher">

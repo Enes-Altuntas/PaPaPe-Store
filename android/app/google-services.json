@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:641494071867:android:f213283611528800097a1e",
+        "mobilesdk_app_id": "1:641494071867:android:30ee69a68eaab8a5097a1e",
         "android_client_info": {
-          "package_name": "com.papape.papape_store"
+          "package_name": "com.blv.bulovva_store"
         }
       },
       "oauth_client": [

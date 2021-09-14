@@ -1,4 +1,4 @@
-package com.papape.papape_store
+package com.blv.bulovva_store
 
 import io.flutter.embedding.android.FlutterActivity
 
