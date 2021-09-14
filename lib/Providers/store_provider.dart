@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:bulb/Models/store_model.dart';
+import 'package:papape_store/Models/store_model.dart';
 import 'package:flutter/material.dart';
 
 class StoreProvider with ChangeNotifier {
@@ -22,6 +22,7 @@ class StoreProvider with ChangeNotifier {
   File _storeLocalImagePath;
   double _curLocLat;
   double _curLocLong;
+  bool _changed = false;
 
   String get storeName => _storeName;
   String get storePicRef => _storePicRef;
@@ -42,9 +43,15 @@ class StoreProvider with ChangeNotifier {
   String get pers3 => _pers3;
   String get pers3Phone => _pers3Phone;
   File get storeLocalImagePath => _storeLocalImagePath;
+  bool get changed => _changed;
 
   changeStoreName(String value) {
     _storeName = value;
+    notifyListeners();
+  }
+
+  changeChanged(bool value) {
+    _changed = value;
     notifyListeners();
   }
 
@@ -161,6 +168,7 @@ class StoreProvider with ChangeNotifier {
     _storePicRef = null;
     _storeTaxLoc = null;
     _storeTaxNo = null;
+    _changed = false;
   }
 
   Store getStoreFromProvider() {

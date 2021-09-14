@@ -1,14 +1,17 @@
 import 'dart:io';
-import 'package:bulb/Components/gradient_button.dart';
-import 'package:bulb/Components/image_container.dart';
-import 'package:bulb/Components/title.dart';
-import 'package:bulb/Map/map.dart';
-import 'package:bulb/Models/store_category.dart';
-import 'package:bulb/Models/store_model.dart';
-import 'package:bulb/Providers/store_provider.dart';
-import 'package:bulb/Services/firestore_service.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Components/gradient_button.dart';
+import 'package:papape_store/Components/image_container.dart';
+import 'package:papape_store/Components/progress.dart';
+import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Dashboard/dashboard.dart';
+import 'package:papape_store/Map/map.dart';
+import 'package:papape_store/Models/store_category.dart';
+import 'package:papape_store/Models/store_model.dart';
+import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Services/firestore_service.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -127,6 +130,7 @@ class _ProfileState extends State<Profile> {
               (error, stackTrace) => ToastService().showError(error, context))
           .whenComplete(() => setState(() {
                 isLoading = false;
+                _storeProvider.changeChanged(false);
               }));
     } else {
       ToastService()
@@ -331,59 +335,79 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Theme.of(context).accentColor,
-              Theme.of(context).primaryColor
-            ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-          ),
-          elevation: 0,
-          centerTitle: true,
-          title: TitleWidget(),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: TextButton(
-                  onPressed: () {
-                    saveStore();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.amber[900],
-                        borderRadius: BorderRadius.all(Radius.circular(50.0))),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 30.0,
-                        )
-                      ],
+    return (isLoading == false)
+        ? Scaffold(
+            floatingActionButton: FloatingActionButton.extended(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.amber[800],
+                onPressed: () {
+                  saveStore();
+                },
+                label: Row(
+                  children: [
+                    Icon(Icons.save),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text('Kaydet'),
                     ),
-                  )),
-            ),
-          ],
-        ),
-        body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
-          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+                  ],
+                )),
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50.0),
-                      topRight: Radius.circular(50.0))),
-              child: (isLoading == false)
-                  ? Padding(
+                ),
+                onPressed: () {
+                  if (_storeProvider.changed == false) {
+                    _storeProvider.changeChanged(false);
+                    _storeProvider.changeStoreLocalImagePath(null);
+                    Navigator.of(context).pop();
+                  } else {
+                    CoolAlert.show(
+                        context: context,
+                        type: CoolAlertType.warning,
+                        title: 'Değişiklik',
+                        text:
+                            'Değiştirdiğiniz bilgiler bulunmaktadır kaydetmeden çıkmak istediğinize emin misiniz ?',
+                        showCancelBtn: true,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        confirmBtnColor: Theme.of(context).primaryColor,
+                        cancelBtnText: 'Hayır',
+                        onCancelBtnTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        onConfirmBtnTap: () {
+                          _storeProvider.changeChanged(false);
+                          _storeProvider.changeStoreLocalImagePath(null);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => Dashboard()));
+                        },
+                        barrierDismissible: false,
+                        confirmBtnText: 'Evet');
+                  }
+                },
+              ),
+              title: TitleWidget(),
+            ),
+            body: Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                Theme.of(context).accentColor,
+                Theme.of(context).primaryColor
+              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50.0),
+                            topRight: Radius.circular(50.0))),
+                    child: Padding(
                       padding: const EdgeInsets.only(top: 25.0),
                       child: SingleChildScrollView(
                         child: Container(
@@ -403,27 +427,35 @@ class _ProfileState extends State<Profile> {
                                       urlImage: _storeProvider.storePicRef,
                                       onPressedAdd: () {
                                         getImageAndUpload();
+                                        _storeProvider.changeChanged(true);
                                       },
                                       onPressedDelete: () {
                                         deleteImage();
+                                        _storeProvider.changeChanged(true);
                                       },
                                       onPressedEdit: () {
                                         getImageAndUpload();
+                                        _storeProvider.changeChanged(true);
                                       },
                                     )),
                                 GradientButton(
+                                    start: Theme.of(context).primaryColor,
+                                    end: Theme.of(context).accentColor,
                                     buttonText: 'Konum Al',
                                     icon: Icons.add_location_alt_outlined,
                                     widthMultiplier: 0.9,
                                     fontFamily: 'Roboto',
                                     fontSize: 15,
                                     onPressed: () {
+                                      _storeProvider.changeChanged(true);
                                       getLocation();
                                     }),
                                 Padding(
                                     padding: const EdgeInsets.only(
                                         top: 7.0, bottom: 7.0),
                                     child: GradientButton(
+                                      start: Theme.of(context).accentColor,
+                                      end: Theme.of(context).primaryColor,
                                       buttonText: 'Kategori Ekle',
                                       fontFamily: 'Roboto',
                                       fontSize: 15,
@@ -449,9 +481,11 @@ class _ProfileState extends State<Profile> {
                                             controller: taxNo,
                                             validator: validateTaxNo,
                                             onChanged: (value) {
+                                              validateTaxNo(value);
                                               _storeProvider
                                                   .changeStoreTaxNo(value);
-                                              validateTaxNo(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -475,6 +509,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changeStoreTaxLoc(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             maxLength: 25,
                                             style: TextStyle(
@@ -498,6 +534,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changeStoreName(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -519,6 +557,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changeStoreAddress(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             controller: address,
                                             maxLength: 255,
@@ -544,6 +584,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changeStorePhone(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -567,6 +609,8 @@ class _ProfileState extends State<Profile> {
                                             controller: pers1,
                                             onChanged: (value) {
                                               _storeProvider.changePers1(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -591,6 +635,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changePers1Phone(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -613,6 +659,8 @@ class _ProfileState extends State<Profile> {
                                             controller: pers2,
                                             onChanged: (value) {
                                               _storeProvider.changePers2(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -636,6 +684,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changePers2Phone(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -658,6 +708,8 @@ class _ProfileState extends State<Profile> {
                                             controller: pers3,
                                             onChanged: (value) {
                                               _storeProvider.changePers3(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -681,6 +733,8 @@ class _ProfileState extends State<Profile> {
                                             onChanged: (value) {
                                               _storeProvider
                                                   .changePers3Phone(value);
+                                              _storeProvider
+                                                  .changeChanged(true);
                                             },
                                             style: TextStyle(
                                                 fontFamily: 'Roboto',
@@ -705,15 +759,10 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                       ),
-                    )
-                  : Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-            ),
-          ),
-        ));
+                    )),
+              ),
+            ))
+        : ProgressWidget();
   }
 }
 
@@ -755,6 +804,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
                       _storeProvider.changeRemoveStoreCategory(
                           widget.storeCats[index].storeCatName);
                     }
+                    _storeProvider.changeChanged(true);
                   },
                 ),
                 title: Text(widget.storeCats[index].storeCatName),

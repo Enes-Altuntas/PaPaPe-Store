@@ -1,13 +1,12 @@
-import 'package:bulb/Components/bordered_button.dart';
-import 'package:bulb/Components/category_card.dart';
-import 'package:bulb/Components/not_found.dart';
-import 'package:bulb/Models/product_category_model.dart';
-import 'package:bulb/Models/product_model.dart';
-import 'package:bulb/Products/category.dart';
-import 'package:bulb/Products/product.dart';
-import 'package:bulb/Providers/store_provider.dart';
-import 'package:bulb/Services/firestore_service.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Components/bordered_button.dart';
+import 'package:papape_store/Components/category_card.dart';
+import 'package:papape_store/Components/not_found.dart';
+import 'package:papape_store/Models/product_category_model.dart';
+import 'package:papape_store/Models/product_model.dart';
+import 'package:papape_store/Products/category.dart';
+import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Services/firestore_service.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -25,9 +24,7 @@ class _MenuState extends State<Menu> {
   List<ProductCategory> category;
   List<Product> products;
   bool _isLoading = false;
-  String _selectedCatId;
   ProductCategory _selectedCategory;
-  Product _selectedProduct;
 
   openCategoryDialog() async {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
@@ -44,27 +41,6 @@ class _MenuState extends State<Menu> {
         .whenComplete(() {
       setState(() {
         _selectedCategory = null;
-      });
-    });
-  }
-
-  openProductDialog() async {
-    if (_selectedProduct != null && _selectedProduct.productCatId != null) {
-      int index = category.indexWhere(
-          (element) => element.categoryId == _selectedProduct.productCatId);
-      setState(() {
-        _selectedCatId = category[index].categoryId;
-      });
-    }
-    await Navigator.of(context)
-        .push(MaterialPageRoute(
-            builder: (context) => ProductSingle(
-                productData: _selectedProduct,
-                selectedCategoryId: _selectedCatId)))
-        .whenComplete(() {
-      setState(() {
-        _selectedProduct = null;
-        _selectedCatId = null;
       });
     });
   }

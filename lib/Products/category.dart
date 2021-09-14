@@ -1,7 +1,8 @@
-import 'package:bulb/Components/title.dart';
-import 'package:bulb/Models/product_category_model.dart';
-import 'package:bulb/Services/firestore_service.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Components/progress.dart';
+import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Models/product_category_model.dart';
+import 'package:papape_store/Services/firestore_service.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -106,27 +107,20 @@ class _CategorySingleState extends State<CategorySingle> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
-          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-        ),
-        elevation: 0,
-        centerTitle: true,
-        title: TitleWidget(),
-      ),
-      body: (_isLoading == false)
-          ? Container(
+    return (_isLoading == false)
+        ? Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              title: TitleWidget(),
+            ),
+            body: Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(colors: [
                 Theme.of(context).accentColor,
                 Theme.of(context).primaryColor
-              ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
@@ -202,7 +196,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                             BorderRadius.circular(50.0),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Theme.of(context).accentColor,
+                                              Theme.of(context).primaryColor,
                                               Theme.of(context).primaryColor
                                             ],
                                             begin: Alignment.centerRight,
@@ -225,13 +219,11 @@ class _CategorySingleState extends State<CategorySingle> {
                                             Text(
                                                 (widget.categoryData == null)
                                                     ? "Başlık Oluştur"
-                                                        .toUpperCase()
-                                                    : "Başlığı Düzenle"
-                                                        .toUpperCase(),
+                                                    : "Başlığı Düzenle",
                                                 style: TextStyle(
-                                                    fontSize: 17,
+                                                    fontSize: 15,
                                                     color: Colors.white,
-                                                    fontFamily: 'Bebas')),
+                                                    fontFamily: 'Roboto')),
                                           ],
                                         ),
                                         onPressed: () {
@@ -252,12 +244,7 @@ class _CategorySingleState extends State<CategorySingle> {
                   ),
                 ),
               ),
-            )
-          : Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            ),
-    );
+            ))
+        : ProgressWidget();
   }
 }

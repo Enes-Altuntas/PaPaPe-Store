@@ -8,6 +8,8 @@ class GradientButton extends StatelessWidget {
   final String fontFamily;
   final double fontSize;
   final double widthMultiplier;
+  final Color start;
+  final Color end;
 
   const GradientButton(
       {Key key,
@@ -15,6 +17,8 @@ class GradientButton extends StatelessWidget {
       this.icon,
       this.buttonText,
       this.fontFamily,
+      this.start,
+      this.end,
       this.fontSize,
       this.widthMultiplier})
       : super(key: key);
@@ -25,10 +29,10 @@ class GradientButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width * this.widthMultiplier,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          gradient: LinearGradient(colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
-          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+          gradient: LinearGradient(
+              colors: [this.start, this.end],
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft)),
       child: TextButton(
         onPressed: this.onPressed,
         child: Row(

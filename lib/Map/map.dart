@@ -1,6 +1,6 @@
-import 'package:bulb/Components/title.dart';
-import 'package:bulb/Providers/store_provider.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +32,7 @@ class _MapsState extends State<Maps> {
     } else {
       savePickYesNo();
     }
+    _storeProvider.changeChanged(true);
   }
 
   savePick() {
@@ -92,13 +93,6 @@ class _MapsState extends State<Maps> {
     }
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
-          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-        ),
         elevation: 0,
         centerTitle: true,
         title: TitleWidget(),
@@ -108,7 +102,7 @@ class _MapsState extends State<Maps> {
             gradient: LinearGradient(colors: [
           Theme.of(context).accentColor,
           Theme.of(context).primaryColor
-        ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+        ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Column(

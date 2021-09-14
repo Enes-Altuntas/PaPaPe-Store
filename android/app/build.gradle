@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.blv.bulovva_store"
+        applicationId "com.papape.papape_store"
         minSdkVersion 23
         targetSdkVersion 30
         multiDexEnabled true

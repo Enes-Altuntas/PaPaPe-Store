@@ -1,17 +1,17 @@
 import 'dart:ui';
 
-import 'package:bulb/Campaigns/campaigns.dart';
-import 'package:bulb/Components/title.dart';
-import 'package:bulb/Wishes/wishes.dart';
-import 'package:bulb/Login/login.dart';
-import 'package:bulb/Models/store_model.dart';
-import 'package:bulb/Products/products.dart';
-import 'package:bulb/Profile/profile.dart';
-import 'package:bulb/Providers/store_provider.dart';
-import 'package:bulb/Reservations/reservations.dart';
-import 'package:bulb/Services/authentication_service.dart';
-import 'package:bulb/Services/firestore_service.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Campaigns/campaigns.dart';
+import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Wishes/wishes.dart';
+import 'package:papape_store/Login/login.dart';
+import 'package:papape_store/Models/store_model.dart';
+import 'package:papape_store/Products/products.dart';
+import 'package:papape_store/Profile/profile.dart';
+import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Reservations/reservations.dart';
+import 'package:papape_store/Services/authentication_service.dart';
+import 'package:papape_store/Services/firestore_service.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -113,13 +113,6 @@ class _DashboardState extends State<Dashboard> {
                   ],
                 ),
               )),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-              Theme.of(context).accentColor,
-              Theme.of(context).primaryColor
-            ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-          ),
           elevation: 0,
           centerTitle: true,
           bottom: TabBar(
@@ -169,7 +162,7 @@ class _DashboardState extends State<Dashboard> {
               gradient: LinearGradient(colors: [
             Theme.of(context).accentColor,
             Theme.of(context).primaryColor
-          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+          ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
           child: FutureBuilder(
               future: getUserInfo,
               builder: (BuildContext context, AsyncSnapshot snapshot) {

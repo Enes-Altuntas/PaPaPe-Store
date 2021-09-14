@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:bulb/Models/camapign_model.dart';
+import 'package:papape_store/Models/camapign_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

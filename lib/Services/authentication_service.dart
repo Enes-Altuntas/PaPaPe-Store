@@ -1,5 +1,5 @@
-import 'package:bulb/Models/user_model.dart';
-import 'package:bulb/Services/firestore_service.dart';
+import 'package:papape_store/Models/user_model.dart';
+import 'package:papape_store/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -52,14 +52,7 @@ class AuthService {
 
         await _firebaseAuth.signInWithCredential(credential);
 
-        UserModel newUser = UserModel(
-            token: await FirebaseMessaging.instance.getToken(),
-            userId: _firebaseAuth.currentUser.uid);
-
-        await _db
-            .collection('users')
-            .doc(_firebaseAuth.currentUser.uid)
-            .set(newUser.toMap());
+        await saveUser();
       }
     } catch (e) {
       throw 'Sistemde bir hata meydana geldi !';
@@ -74,14 +67,7 @@ class AuthService {
 
       await _firebaseAuth.currentUser.sendEmailVerification();
 
-      UserModel newUser = UserModel(
-          token: await FirebaseMessaging.instance.getToken(),
-          userId: _firebaseAuth.currentUser.uid);
-
-      await _db
-          .collection('users')
-          .doc(_firebaseAuth.currentUser.uid)
-          .set(newUser.toMap());
+      await saveUser();
 
       await _firebaseAuth.signOut();
 
@@ -117,6 +103,28 @@ class AuthService {
       }
     } catch (e) {
       return e.message;
+    }
+  }
+
+  Future<void> saveUser() async {
+    UserModel _user = await _db
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .get()
+        .then((value) {
+      return UserModel.fromFirestore(value.data());
+    });
+
+    if (_user == null) {
+      UserModel newUser = UserModel(
+          token: await FirebaseMessaging.instance.getToken(),
+          userId: _firebaseAuth.currentUser.uid,
+          favorites: []);
+
+      await _db
+          .collection('users')
+          .doc(_firebaseAuth.currentUser.uid)
+          .set(newUser.toMap());
     }
   }
 }

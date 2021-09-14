@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:bulb/Models/camapign_model.dart';
-import 'package:bulb/Models/wishes_model.dart';
-import 'package:bulb/Models/markers_model.dart';
-import 'package:bulb/Models/position_model.dart';
-import 'package:bulb/Models/product_category_model.dart';
-import 'package:bulb/Models/product_model.dart';
-import 'package:bulb/Models/reservations_model.dart';
-import 'package:bulb/Models/store_model.dart';
-import 'package:bulb/Services/authentication_service.dart';
+import 'package:papape_store/Models/camapign_model.dart';
+import 'package:papape_store/Models/wishes_model.dart';
+import 'package:papape_store/Models/markers_model.dart';
+import 'package:papape_store/Models/position_model.dart';
+import 'package:papape_store/Models/product_category_model.dart';
+import 'package:papape_store/Models/product_model.dart';
+import 'package:papape_store/Models/reservations_model.dart';
+import 'package:papape_store/Models/store_model.dart';
+import 'package:papape_store/Services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -192,6 +192,11 @@ class FirestoreService {
           .doc(campaign.campaignId)
           .set(campaign.toMap());
 
+      await _db
+          .collection('markers')
+          .doc(_userId)
+          .update({'campaignStatus': 'wait'});
+
       return 'Kampanyanız başarıyla kaydedilmiştir !';
     } catch (e) {
       throw 'Kampanyanız kaydedilirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
@@ -251,6 +256,11 @@ class FirestoreService {
           .doc(campaign.campaignId)
           .set(campaign.toMap());
 
+      await _db
+          .collection('markers')
+          .doc(_userId)
+          .update({'campaignStatus': 'wait'});
+
       return 'Kampanyanız başarıyla tekrar yayınlandı !';
     } catch (e) {
       throw 'Kampanyanız yayınlanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
@@ -266,6 +276,11 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .doc(campaignId)
+          .update({'campaignStatus': 'inactive'});
+
+      await _db
+          .collection('markers')
+          .doc(_userId)
           .update({'campaignStatus': 'inactive'});
 
       return 'Kampanyanız başarıyla sonlandırılmıştır !';
@@ -284,6 +299,11 @@ class FirestoreService {
           .collection('campaigns')
           .doc(campaignId)
           .update({'campaignActive': 'inactive', 'delInd': true});
+
+      await _db
+          .collection('markers')
+          .doc(_userId)
+          .update({'campaignStatus': 'inactive'});
 
       await deletePicture(campaignId);
 

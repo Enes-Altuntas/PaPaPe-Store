@@ -1,7 +1,7 @@
-import 'package:bulb/Components/wish_card.dart';
-import 'package:bulb/Components/not_found.dart';
-import 'package:bulb/Models/wishes_model.dart';
-import 'package:bulb/Services/firestore_service.dart';
+import 'package:papape_store/Components/wish_card.dart';
+import 'package:papape_store/Components/not_found.dart';
+import 'package:papape_store/Models/wishes_model.dart';
+import 'package:papape_store/Services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

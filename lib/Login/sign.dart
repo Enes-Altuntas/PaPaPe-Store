@@ -1,7 +1,6 @@
-import 'package:bulb/Components/gradient_button.dart';
-import 'package:bulb/Components/title.dart';
-import 'package:bulb/Services/authentication_service.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Components/gradient_button.dart';
+import 'package:papape_store/Services/authentication_service.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -101,39 +100,57 @@ class _SignState extends State<Sign> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/logo.png"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
+                  decoration:
+                      BoxDecoration(color: Theme.of(context).primaryColor),
                   child: Form(
                     key: formkey,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 20.0),
-                          child: TitleWidget(),
-                        ),
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: RichText(
+                                text: TextSpan(
+                                    style: TextStyle(
+                                        fontSize: 70.0,
+                                        color: Colors.white,
+                                        fontFamily: 'Armatic',
+                                        fontWeight: FontWeight.bold),
+                                    children: [
+                                  TextSpan(
+                                      text: 'Pa',
+                                      style: TextStyle(color: Colors.red)),
+                                  TextSpan(
+                                      text: 'Pa',
+                                      style:
+                                          TextStyle(color: Colors.amber[600])),
+                                  TextSpan(
+                                      text: 'Pe',
+                                      style:
+                                          TextStyle(color: Colors.green[300]))
+                                ]))),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.7,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.0),
-                            color: Colors.amber[200],
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(50.0),
+                                topRight: Radius.circular(50.0)),
+                            color: Colors.white,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(
                                 right: 30.0,
                                 left: 30.0,
                                 bottom: 20.0,
-                                top: 30.0),
+                                top: 70.0),
                             child: Column(
                               children: [
                                 TextFormField(
                                     controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
                                         icon:
                                             Icon(Icons.account_circle_outlined),
                                         labelText: 'E-Posta'),
@@ -145,6 +162,7 @@ class _SignState extends State<Sign> {
                                         (isVisible == false) ? true : false,
                                     controller: passwordController,
                                     decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
                                         icon: Icon(Icons.vpn_key_outlined),
                                         labelText: 'Yeni Parola',
                                         suffixIcon: IconButton(
@@ -173,6 +191,7 @@ class _SignState extends State<Sign> {
                                         (isVisible == false) ? true : false,
                                     controller: passwordVerifyController,
                                     decoration: InputDecoration(
+                                        border: OutlineInputBorder(),
                                         icon: Icon(Icons.vpn_key_outlined),
                                         labelText: 'Yeni Parola (Tekrar)',
                                         suffixIcon: IconButton(
@@ -197,11 +216,27 @@ class _SignState extends State<Sign> {
                                 Padding(
                                     padding: const EdgeInsets.only(top: 40.0),
                                     child: GradientButton(
+                                      start: Theme.of(context).primaryColor,
+                                      end: Theme.of(context).primaryColor,
                                       buttonText: 'Kayıt Ol',
                                       fontFamily: 'Roboto',
                                       fontSize: 15,
                                       onPressed: signUp,
                                       icon: FontAwesomeIcons.save,
+                                      widthMultiplier: 0.9,
+                                    )),
+                                Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: GradientButton(
+                                      start: Colors.amber[800],
+                                      end: Colors.amber[800],
+                                      buttonText: 'Geri',
+                                      fontFamily: 'Roboto',
+                                      fontSize: 15,
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon: FontAwesomeIcons.arrowLeft,
                                       widthMultiplier: 0.9,
                                     ))
                               ],

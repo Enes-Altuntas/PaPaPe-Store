@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'package:bulb/Components/gradient_button.dart';
-import 'package:bulb/Components/image_container.dart';
-import 'package:bulb/Components/title.dart';
-import 'package:bulb/Models/product_model.dart';
-import 'package:bulb/Services/firestore_service.dart';
-import 'package:bulb/Services/toast_service.dart';
+import 'package:papape_store/Components/gradient_button.dart';
+import 'package:papape_store/Components/image_container.dart';
+import 'package:papape_store/Components/progress.dart';
+import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Models/product_model.dart';
+import 'package:papape_store/Services/firestore_service.dart';
+import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -265,26 +266,19 @@ class _ProductSingleState extends State<ProductSingle> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
-          ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-        ),
-        elevation: 0,
-        centerTitle: true,
-        title: TitleWidget(),
-      ),
-      body: (isLoading == false)
-          ? Container(
+    return (isLoading == false)
+        ? Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              title: TitleWidget(),
+            ),
+            body: Container(
               decoration: BoxDecoration(
                   gradient: LinearGradient(colors: [
                 Theme.of(context).accentColor,
                 Theme.of(context).primaryColor
-              ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
+              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
@@ -401,6 +395,8 @@ class _ProductSingleState extends State<ProductSingle> {
                                       padding: const EdgeInsets.only(
                                           top: 20.0, bottom: 60.0),
                                       child: GradientButton(
+                                        start: Theme.of(context).primaryColor,
+                                        end: Theme.of(context).primaryColor,
                                         buttonText: 'Ürün Oluştur',
                                         icon: FontAwesomeIcons.save,
                                         fontFamily: 'Roboto',
@@ -419,6 +415,9 @@ class _ProductSingleState extends State<ProductSingle> {
                                           padding: const EdgeInsets.only(
                                               top: 20.0, bottom: 5.0),
                                           child: GradientButton(
+                                            start:
+                                                Theme.of(context).primaryColor,
+                                            end: Theme.of(context).primaryColor,
                                             buttonText: 'Ürünü Güncelle',
                                             fontFamily: 'Roboto',
                                             fontSize: 15,
@@ -432,6 +431,9 @@ class _ProductSingleState extends State<ProductSingle> {
                                           padding: const EdgeInsets.only(
                                               top: 5.0, bottom: 20.0),
                                           child: GradientButton(
+                                            start:
+                                                Theme.of(context).primaryColor,
+                                            end: Theme.of(context).primaryColor,
                                             buttonText: 'Ürünü Sil',
                                             fontFamily: 'Roboto',
                                             fontSize: 15,
@@ -453,12 +455,7 @@ class _ProductSingleState extends State<ProductSingle> {
                   ),
                 ),
               ),
-            )
-          : Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            ),
-    );
+            ))
+        : ProgressWidget();
   }
 }

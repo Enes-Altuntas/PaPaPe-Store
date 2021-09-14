@@ -1,8 +1,8 @@
-import 'package:bulb/Components/product_card.dart';
-import 'package:bulb/Models/product_category_model.dart';
-import 'package:bulb/Models/product_model.dart';
-import 'package:bulb/Products/product.dart';
-import 'package:bulb/Services/firestore_service.dart';
+import 'package:papape_store/Components/product_card.dart';
+import 'package:papape_store/Models/product_category_model.dart';
+import 'package:papape_store/Models/product_model.dart';
+import 'package:papape_store/Products/product.dart';
+import 'package:papape_store/Services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -23,18 +23,11 @@ class _CategoryCardState extends State<CategoryCard> {
   Product _selectedProduct;
   String _selectedCatId;
 
-  openProductDialog() async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(
-            builder: (context) => ProductSingle(
-                productData: _selectedProduct,
-                selectedCategoryId: _selectedCatId)))
-        .whenComplete(() {
-      setState(() {
-        _selectedProduct = null;
-        _selectedCatId = null;
-      });
-    });
+  openProductDialog() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => ProductSingle(
+            productData: _selectedProduct,
+            selectedCategoryId: _selectedCatId)));
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:bulb/Models/wishes_model.dart';
+import 'package:papape_store/Models/wishes_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

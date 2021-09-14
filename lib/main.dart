@@ -1,6 +1,7 @@
-import 'package:bulb/Login/login.dart';
-import 'package:bulb/Providers/store_provider.dart';
-import 'package:bulb/Services/authentication_service.dart';
+import 'package:papape_store/Dashboard/dashboard.dart';
+import 'package:papape_store/Login/login.dart';
+import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Services/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -33,9 +34,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => StoreProvider()),
         Provider<AuthService>(
             create: (context) => AuthService(FirebaseAuth.instance)),
+        StreamProvider(
+            create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
-          title: 'BULB İşletme',
+          title: 'PaPaPe İşletme',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             primaryColor: Colors.lightBlue[800],
@@ -43,7 +46,21 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.lightBlue[200],
             hintColor: Colors.grey.shade800,
           ),
-          home: Login()),
+          home: AuthWrapper()),
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final User firebaseUser = context.watch<User>();
+    switch (firebaseUser != null && firebaseUser.emailVerified) {
+      case true:
+        return Dashboard();
+        break;
+      default:
+        return Login();
+    }
   }
 }
