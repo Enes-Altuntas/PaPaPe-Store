@@ -45,7 +45,8 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                 border: Border.all(width: 2.0, color: Colors.grey)),
             child: (this.widget.localImage != null)
                 ? Image.file(this.widget.localImage, fit: BoxFit.fitWidth)
-                : (this.widget.urlImage != null)
+                : (this.widget.urlImage != null &&
+                        this.widget.urlImage.isNotEmpty)
                     ? Image.network(
                         this.widget.urlImage,
                         fit: BoxFit.fill,

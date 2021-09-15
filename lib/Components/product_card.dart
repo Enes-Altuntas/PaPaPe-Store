@@ -48,7 +48,8 @@ class _ProductCardState extends State<ProductCard> {
               decoration: BoxDecoration(
                   color: Colors.amber[900],
                   borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              child: (widget.product.productPicRef != null)
+              child: (widget.product.productPicRef != null &&
+                      widget.product.productPicRef.isNotEmpty)
                   ? Image.network(
                       widget.product.productPicRef,
                       fit: BoxFit.fill,

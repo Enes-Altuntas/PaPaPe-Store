@@ -49,7 +49,8 @@ class _CampaignCardState extends State<CampaignCard> {
                     Theme.of(context).accentColor,
                     Theme.of(context).primaryColor
                   ], begin: Alignment.centerRight, end: Alignment.centerLeft)),
-                  child: (widget.campaign.campaignPicRef != null)
+                  child: (widget.campaign.campaignPicRef != null &&
+                          widget.campaign.campaignPicRef.isNotEmpty)
                       ? Image.network(widget.campaign.campaignPicRef,
                           loadingBuilder: (context, child, loadingProgress) {
                           return loadingProgress == null

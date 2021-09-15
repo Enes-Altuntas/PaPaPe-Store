@@ -107,13 +107,16 @@ class AuthService {
   }
 
   Future<void> saveUser() async {
-    UserModel _user = await _db
-        .collection('users')
-        .doc(_firebaseAuth.currentUser.uid)
-        .get()
-        .then((value) {
-      return UserModel.fromFirestore(value.data());
-    });
+    UserModel _user;
+    try {
+      _user = await _db
+          .collection('users')
+          .doc(_firebaseAuth.currentUser.uid)
+          .get()
+          .then((value) {
+        return UserModel.fromFirestore(value.data());
+      });
+    } catch (e) {}
 
     if (_user == null) {
       UserModel newUser = UserModel(
