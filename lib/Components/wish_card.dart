@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
   final WishesModel wish;
+  final Function onPressedCall;
 
-  const CommentCard({Key key, this.wish}) : super(key: key);
+  const CommentCard({Key key, this.wish, this.onPressedCall}) : super(key: key);
 
   @override
   _CommentCardState createState() => _CommentCardState();
@@ -65,6 +66,43 @@ class _CommentCardState extends State<CommentCard> {
                           fontFamily: 'Roboto',
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: (widget.wish.wishUserPhone == null)
+                      ? Text('İletişim No: Belirtilmemiş',
+                          style: TextStyle(
+                              color: Theme.of(context).hintColor,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0))
+                      : Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50.0))),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 5.0, top: 5.0, left: 15.0, right: 15.0),
+                            child: TextButton(
+                                onPressed: widget.onPressedCall,
+                                child: Text(
+                                  'İletişim No: +90${widget.wish.wishUserPhone}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 15.0, color: Colors.amber[900]),
+                                )),
+                          ),
+                        ),
                 ),
               ],
             ),

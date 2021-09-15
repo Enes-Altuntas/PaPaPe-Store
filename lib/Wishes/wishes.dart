@@ -4,6 +4,7 @@ import 'package:papape_store/Models/wishes_model.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Reports extends StatefulWidget {
   Reports({Key key}) : super(key: key);
@@ -13,6 +14,10 @@ class Reports extends StatefulWidget {
 }
 
 class _ReportsState extends State<Reports> {
+  makePhoneCall(userPhone) async {
+    await launch("tel:$userPhone");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,6 +50,10 @@ class _ReportsState extends State<Reports> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: CommentCard(
                                   wish: snapshot.data[index],
+                                  onPressedCall: () {
+                                    makePhoneCall(
+                                        snapshot.data[index].wishUserPhone);
+                                  },
                                 ));
                           },
                         );
