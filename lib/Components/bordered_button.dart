@@ -23,7 +23,7 @@ class BorderedButton extends StatelessWidget {
       child: TextButton(
           child: Text(buttonText.toUpperCase(),
               style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontFamily: 'Roboto',
                   color: this.textColor,
                   fontWeight: FontWeight.bold)),
@@ -34,7 +34,7 @@ class BorderedButton extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50.0),
-                      side: BorderSide(width: 2, color: borderColor)))),
+                      side: BorderSide(width: 3, color: borderColor)))),
           onPressed: onPressed),
     );
   }

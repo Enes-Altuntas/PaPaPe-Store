@@ -85,82 +85,101 @@ class _MenuState extends State<Menu> {
     return (_isLoading == false)
         ? Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: Text(
-                  'Menü',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: 30.0,
-                      fontFamily: 'Armatic',
-                      fontWeight: FontWeight.bold),
+              SizedBox(
+                height: 60.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Menü',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 30.0,
+                          fontFamily: 'Armatic',
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  padding: const EdgeInsets.only(bottom: 10.0),
                   child: BorderedButton(
                     buttonText: 'Menü Kategorisi Ekle',
                     widthMultiplier: 0.7,
                     onPressed: () {
                       openCategoryDialog();
                     },
-                    borderColor: Colors.amber[900],
-                    textColor: Colors.amber[900],
+                    borderColor: Colors.white,
+                    textColor: Colors.white,
                   )),
               Flexible(
-                child: StreamBuilder<List<ProductCategory>>(
-                  stream: FirestoreService().getProductCategories(),
-                  builder: (context, snapshot) {
-                    category = snapshot.data;
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.active:
-                        switch (snapshot.hasData && snapshot.data.length > 0) {
-                          case true:
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 20.0),
-                                    child: CategoryCard(
-                                      category: snapshot.data[index],
-                                      onPressedEdit: () {
-                                        setState(() {
-                                          _selectedCategory =
-                                              snapshot.data[index];
-                                        });
-                                        openCategoryDialog();
-                                      },
-                                      onPressedDelete: () {
-                                        deleteCatYesNo(
-                                            context, snapshot.data[index]);
-                                      },
-                                    ));
-                              },
-                            );
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(50.0),
+                          topRight: Radius.circular(50.0))),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 60.0),
+                    child: StreamBuilder<List<ProductCategory>>(
+                      stream: FirestoreService().getProductCategories(),
+                      builder: (context, snapshot) {
+                        category = snapshot.data;
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.active:
+                            switch (
+                                snapshot.hasData && snapshot.data.length > 0) {
+                              case true:
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20.0),
+                                        child: CategoryCard(
+                                          category: snapshot.data[index],
+                                          onPressedEdit: () {
+                                            setState(() {
+                                              _selectedCategory =
+                                                  snapshot.data[index];
+                                            });
+                                            openCategoryDialog();
+                                          },
+                                          onPressedDelete: () {
+                                            deleteCatYesNo(
+                                                context, snapshot.data[index]);
+                                          },
+                                        ));
+                                  },
+                                );
 
+                                break;
+                              default:
+                                return NotFound(
+                                  notFoundIcon:
+                                      FontAwesomeIcons.exclamationTriangle,
+                                  notFoundIconColor: Colors.amber[900],
+                                  notFoundIconSize: 60,
+                                  notFoundText:
+                                      'Şu an yayınlamış olduğunuz hiçbir başlık bulunmamaktadır.',
+                                  notFoundTextColor:
+                                      Theme.of(context).primaryColor,
+                                  notFoundTextSize: 40.0,
+                                );
+                            }
                             break;
                           default:
-                            return NotFound(
-                              notFoundIcon: FontAwesomeIcons.sadTear,
-                              notFoundIconColor: Theme.of(context).primaryColor,
-                              notFoundIconSize: 75,
-                              notFoundText:
-                                  'Şu an yayınlamış olduğunuz hiçbir başlık bulunmamaktadır.',
-                              notFoundTextColor: Theme.of(context).primaryColor,
-                              notFoundTextSize: 30.0,
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
                             );
                         }
-                        break;
-                      default:
-                        return Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        );
-                    }
-                  },
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],

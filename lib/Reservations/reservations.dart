@@ -98,78 +98,88 @@ class _ReservationState extends State<Reservation> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 10.0,
-            bottom: 5.0,
-          ),
-          child: Text(
-            'rezervasyonlar',
-            style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 30.0,
-                fontFamily: 'Armatic',
-                fontWeight: FontWeight.bold),
+        SizedBox(
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'rezervasyonlar',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 30.0,
+                    fontFamily: 'Armatic',
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ),
         Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: StreamBuilder<List<ReservationsModel>>(
-              stream: FirestoreService().getReservations(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.active:
-                    switch (snapshot.hasData && snapshot.data.length > 0) {
-                      case true:
-                        return ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ReservationCard(
-                                  reservation: snapshot.data[index],
-                                  onPressedApprove: () {
-                                    setState(() {
-                                      selectedReservation =
-                                          snapshot.data[index];
-                                    });
-                                    approveReservationYesNo();
-                                  },
-                                  onPressedCall: () {
-                                    makePhoneCall(
-                                        snapshot.data[index].reservationPhone);
-                                  },
-                                  onPressedReject: () {
-                                    setState(() {
-                                      selectedReservation =
-                                          snapshot.data[index];
-                                    });
-                                    rejectReservationYesNo();
-                                  },
-                                ));
-                          },
-                        );
-                        break;
-                      default:
-                        return NotFound(
-                          notFoundIcon: FontAwesomeIcons.sadTear,
-                          notFoundIconColor: Theme.of(context).primaryColor,
-                          notFoundIconSize: 75,
-                          notFoundText:
-                              'Henüz işletmeniz adına herhangi bir rezervasyon bulunmamaktadır !',
-                          notFoundTextColor: Theme.of(context).primaryColor,
-                          notFoundTextSize: 30.0,
-                        );
-                    }
-                    break;
-                  default:
-                    return Center(
-                        child: CircularProgressIndicator(
-                      color: Colors.white,
-                    ));
-                }
-              },
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50.0),
+                    topRight: Radius.circular(50.0))),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: StreamBuilder<List<ReservationsModel>>(
+                stream: FirestoreService().getReservations(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.active:
+                      switch (snapshot.hasData && snapshot.data.length > 0) {
+                        case true:
+                          return ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ReservationCard(
+                                    reservation: snapshot.data[index],
+                                    onPressedApprove: () {
+                                      setState(() {
+                                        selectedReservation =
+                                            snapshot.data[index];
+                                      });
+                                      approveReservationYesNo();
+                                    },
+                                    onPressedCall: () {
+                                      makePhoneCall(snapshot
+                                          .data[index].reservationPhone);
+                                    },
+                                    onPressedReject: () {
+                                      setState(() {
+                                        selectedReservation =
+                                            snapshot.data[index];
+                                      });
+                                      rejectReservationYesNo();
+                                    },
+                                  ));
+                            },
+                          );
+                          break;
+                        default:
+                          return NotFound(
+                            notFoundIcon: FontAwesomeIcons.exclamationTriangle,
+                            notFoundIconColor: Colors.amber[900],
+                            notFoundIconSize: 60,
+                            notFoundText:
+                                'Henüz işletmeniz adına herhangi bir rezervasyon bulunmamaktadır !',
+                            notFoundTextColor: Theme.of(context).primaryColor,
+                            notFoundTextSize: 40.0,
+                          );
+                      }
+                      break;
+                    default:
+                      return Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ));
+                  }
+                },
+              ),
             ),
           ),
         ),

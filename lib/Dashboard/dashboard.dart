@@ -176,7 +176,7 @@ class _DashboardState extends State<Dashboard> {
                                   child: Container(
                                       width: MediaQuery.of(context).size.width,
                                       decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: Theme.of(context).accentColor,
                                           borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(50.0),
                                               topRight: Radius.circular(50.0))),

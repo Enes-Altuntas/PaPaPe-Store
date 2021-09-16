@@ -22,62 +22,75 @@ class _ReportsState extends State<Reports> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
-          child: Text(
-            'Dilek ve şikayet',
-            style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 30.0,
-                fontFamily: 'Armatic',
-                fontWeight: FontWeight.bold),
+        SizedBox(
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Dilek ve şikayet',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: 30.0,
+                    fontFamily: 'Armatic',
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ),
         Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: StreamBuilder<List<WishesModel>>(
-              stream: FirestoreService().getReports(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.active:
-                    switch (snapshot.hasData && snapshot.data.length > 0) {
-                      case true:
-                        return ListView.builder(
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CommentCard(
-                                  wish: snapshot.data[index],
-                                  onPressedCall: () {
-                                    makePhoneCall(
-                                        snapshot.data[index].wishUserPhone);
-                                  },
-                                ));
-                          },
-                        );
-                        break;
-                      default:
-                        return NotFound(
-                          notFoundIcon: FontAwesomeIcons.smileBeam,
-                          notFoundIconColor: Theme.of(context).primaryColor,
-                          notFoundIconSize: 75,
-                          notFoundText:
-                              'Henüz işletmeniz adına hazırlanmış dilek veya şikayet bulunmamaktadır !',
-                          notFoundTextColor: Theme.of(context).primaryColor,
-                          notFoundTextSize: 30.0,
-                        );
-                    }
-                    break;
-                  default:
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    );
-                }
-              },
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(50.0),
+                    topRight: Radius.circular(50.0))),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 25.0),
+              child: StreamBuilder<List<WishesModel>>(
+                stream: FirestoreService().getReports(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.active:
+                      switch (snapshot.hasData && snapshot.data.length > 0) {
+                        case true:
+                          return ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CommentCard(
+                                    wish: snapshot.data[index],
+                                    onPressedCall: () {
+                                      makePhoneCall(
+                                          snapshot.data[index].wishUserPhone);
+                                    },
+                                  ));
+                            },
+                          );
+                          break;
+                        default:
+                          return NotFound(
+                            notFoundIcon: FontAwesomeIcons.exclamationTriangle,
+                            notFoundIconColor: Colors.amber[900],
+                            notFoundIconSize: 60,
+                            notFoundText:
+                                'Henüz işletmeniz adına hazırlanmış dilek veya şikayet bulunmamaktadır !',
+                            notFoundTextColor: Theme.of(context).primaryColor,
+                            notFoundTextSize: 40.0,
+                          );
+                      }
+                      break;
+                    default:
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                        ),
+                      );
+                  }
+                },
+              ),
             ),
           ),
         ),

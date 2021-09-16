@@ -134,7 +134,7 @@ class _MapsState extends State<Maps> {
                             borderRadius: BorderRadius.circular(50.0),
                             gradient: LinearGradient(
                                 colors: [
-                                  Theme.of(context).accentColor,
+                                  Theme.of(context).primaryColor,
                                   Theme.of(context).primaryColor
                                 ],
                                 begin: Alignment.centerRight,
