@@ -60,7 +60,7 @@ class _CampaignCardState extends State<CampaignCard> {
                                     color: Colors.white,
                                   ),
                                 );
-                        }, fit: BoxFit.fill)
+                        }, fit: BoxFit.fitWidth)
                       : Center(
                           child: Text('Kampanya Resmi Yok',
                               style: TextStyle(

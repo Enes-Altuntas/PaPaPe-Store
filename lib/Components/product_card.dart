@@ -52,7 +52,7 @@ class _ProductCardState extends State<ProductCard> {
                       widget.product.productPicRef.isNotEmpty)
                   ? Image.network(
                       widget.product.productPicRef,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fitWidth,
                       loadingBuilder: (context, child, loadingProgress) {
                         return loadingProgress == null
                             ? child

@@ -7,8 +7,21 @@ class ProgressWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(
-          color: Colors.amber[900],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              color: Colors.amber[900],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0),
+              child: Text(
+                'Lütfen Bekleyiniz...',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.amber[900], fontSize: 17.0),
+              ),
+            )
+          ],
         ),
       ),
     );

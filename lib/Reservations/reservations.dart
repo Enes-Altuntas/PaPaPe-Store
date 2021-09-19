@@ -123,7 +123,7 @@ class _ReservationState extends State<Reservation> {
                     topLeft: Radius.circular(50.0),
                     topRight: Radius.circular(50.0))),
             child: Padding(
-              padding: const EdgeInsets.only(top: 5.0),
+              padding: const EdgeInsets.only(top: 25.0),
               child: StreamBuilder<List<ReservationsModel>>(
                 stream: FirestoreService().getReservations(),
                 builder: (context, snapshot) {

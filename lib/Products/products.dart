@@ -121,7 +121,7 @@ class _MenuState extends State<Menu> {
                           topLeft: Radius.circular(50.0),
                           topRight: Radius.circular(50.0))),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 60.0),
+                    padding: const EdgeInsets.only(top: 30.0),
                     child: StreamBuilder<List<ProductCategory>>(
                       stream: FirestoreService().getProductCategories(),
                       builder: (context, snapshot) {

@@ -69,7 +69,7 @@ class _CommentCardState extends State<CommentCard> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
-                  child: (widget.wish.wishUserPhone == null &&
+                  child: (widget.wish.wishUserPhone == null ||
                           widget.wish.wishUserPhone.isEmpty)
                       ? Text('İletişim No: Belirtilmemiş',
                           style: TextStyle(

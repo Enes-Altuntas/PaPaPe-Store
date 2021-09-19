@@ -49,7 +49,7 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                         this.widget.urlImage.isNotEmpty)
                     ? Image.network(
                         this.widget.urlImage,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitWidth,
                         loadingBuilder: (context, child, loadingProgress) {
                           return loadingProgress == null
                               ? child

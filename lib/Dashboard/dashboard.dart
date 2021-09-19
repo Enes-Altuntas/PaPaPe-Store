@@ -18,13 +18,16 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
-  Dashboard({Key key}) : super(key: key);
+  final int defPage;
+
+  Dashboard({Key key, this.defPage}) : super(key: key);
 
   @override
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+  TabController _tabController;
   StoreProvider _storeProvider;
   Future getUserInfo;
   bool isInit = true;
@@ -64,6 +67,15 @@ class _DashboardState extends State<Dashboard> {
       });
     }
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _tabController = new TabController(length: 4, vsync: this);
+    });
+    _tabController.animateTo(widget.defPage);
   }
 
   Future<Store> _getStoreInfo() async {
@@ -116,6 +128,7 @@ class _DashboardState extends State<Dashboard> {
           elevation: 0,
           centerTitle: true,
           bottom: TabBar(
+            controller: _tabController,
             labelColor: Colors.amber[700],
             unselectedLabelColor: Colors.white,
             labelStyle: TextStyle(
@@ -181,6 +194,7 @@ class _DashboardState extends State<Dashboard> {
                                               topLeft: Radius.circular(50.0),
                                               topRight: Radius.circular(50.0))),
                                       child: TabBarView(
+                                        controller: _tabController,
                                         children: [
                                           Campaigns(),
                                           Menu(),

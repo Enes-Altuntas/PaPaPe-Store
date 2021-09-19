@@ -1,7 +1,7 @@
 name: papape_store
 description: PaPaPe İşletme Uygulaması.
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
 version: 0.1.0+33
 

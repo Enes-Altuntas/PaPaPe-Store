@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:papape_store/Components/gradient_button.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
 import 'package:papape_store/Login/sign.dart';
 import 'package:papape_store/Services/authentication_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +36,10 @@ class _LoginState extends State<Login> {
           .then((value) {
             if (FirebaseAuth.instance.currentUser != null &&
                 FirebaseAuth.instance.currentUser.emailVerified) {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => Dashboard()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => Dashboard(
+                        defPage: 0,
+                      )));
             } else {
               ToastService().showError(value, context);
             }
@@ -88,8 +90,10 @@ class _LoginState extends State<Login> {
         .read<AuthService>()
         .googleLogin()
         .then((value) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => Dashboard(
+                    defPage: 1,
+                  )));
         })
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))

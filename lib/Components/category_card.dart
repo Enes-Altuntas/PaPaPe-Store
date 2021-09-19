@@ -34,7 +34,7 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width / 8,
-      color: Colors.white,
+      color: Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(

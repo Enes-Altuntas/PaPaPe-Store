@@ -8,22 +8,28 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
 void main() async {
-  await init();
+  await initState();
   runApp(MyApp());
 }
 
-FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
-Future<void> init() async {
+Future<void> initState() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   handleNotifications();
 }
 
 handleNotifications() async {
-  await firebaseMessaging.requestPermission(sound: true);
+  FirebaseMessaging.onMessageOpenedApp.listen((message) {
+    final route = message.data["route"];
+    navigatorKey.currentState.pushNamed(route);
+  });
+
   await firebaseMessaging.subscribeToTopic("stores");
+  print(await firebaseMessaging.getToken());
 }
 
 class MyApp extends StatelessWidget {
@@ -38,15 +44,26 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
-          title: 'PaPaPe İşletme',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primaryColor: Colors.lightBlue[800],
-            primaryColorDark: Colors.black,
-            accentColor: Colors.lightBlue[200],
-            hintColor: Colors.grey.shade800,
-          ),
-          home: AuthWrapper()),
+        title: 'PaPaPe İşletme',
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        theme: ThemeData(
+          primaryColor: Colors.lightBlue[800],
+          primaryColorDark: Colors.black,
+          accentColor: Colors.lightBlue[200],
+          hintColor: Colors.grey.shade800,
+        ),
+        home: AuthWrapper(),
+        routes: {
+          "reservations": (_) => Dashboard(
+                defPage: 3,
+              ),
+          "campaigns": (_) => Dashboard(
+                defPage: 0,
+              ),
+          "wishes": (_) => Dashboard(defPage: 2),
+        },
+      ),
     );
   }
 }
@@ -57,7 +74,9 @@ class AuthWrapper extends StatelessWidget {
     final User firebaseUser = context.watch<User>();
     switch (firebaseUser != null && firebaseUser.emailVerified) {
       case true:
-        return Dashboard();
+        return Dashboard(
+          defPage: 0,
+        );
         break;
       default:
         return Login();

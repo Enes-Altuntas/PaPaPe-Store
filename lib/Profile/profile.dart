@@ -167,8 +167,8 @@ class _ProfileState extends State<Profile> {
     await Permission.photos.request();
     PermissionStatus permissionStatus = await Permission.photos.status;
     if (permissionStatus.isGranted) {
-      PickedFile image =
-          await ImagePicker().getImage(source: ImageSource.gallery);
+      PickedFile image = await ImagePicker()
+          .getImage(source: ImageSource.gallery, imageQuality: 30);
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
@@ -383,7 +383,9 @@ class _ProfileState extends State<Profile> {
                           _storeProvider.changeChanged(false);
                           _storeProvider.changeStoreLocalImagePath(null);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => Dashboard()));
+                              builder: (context) => Dashboard(
+                                    defPage: 0,
+                                  )));
                         },
                         barrierDismissible: false,
                         confirmBtnText: 'Evet');

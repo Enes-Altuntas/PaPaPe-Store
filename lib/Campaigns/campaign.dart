@@ -121,8 +121,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
     await Permission.photos.request();
     PermissionStatus permissionStatus = await Permission.photos.status;
     if (permissionStatus.isGranted) {
-      PickedFile image =
-          await ImagePicker().getImage(source: ImageSource.gallery);
+      PickedFile image = await ImagePicker()
+          .getImage(source: ImageSource.gallery, imageQuality: 30);
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
