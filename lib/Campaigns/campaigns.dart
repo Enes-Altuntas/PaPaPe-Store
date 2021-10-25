@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Campaigns extends StatefulWidget {
-  Campaigns({Key key}) : super(key: key);
+  const Campaigns({Key key}) : super(key: key);
 
   @override
   _CampaignsState createState() => _CampaignsState();
@@ -61,7 +61,7 @@ class _CampaignsState extends State<Campaigns> {
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.active:
-                      switch (snapshot.hasData && snapshot.data.length > 0) {
+                      switch (snapshot.hasData && snapshot.data.isNotEmpty) {
                         case true:
                           return Padding(
                             padding:
@@ -101,10 +101,10 @@ class _CampaignsState extends State<Campaigns> {
                       }
                       break;
                     default:
-                      return ProgressWidget();
+                      return const ProgressWidget();
                   }
                 }),
           )
-        : ProgressWidget();
+        : const ProgressWidget();
   }
 }

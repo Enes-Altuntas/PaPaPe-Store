@@ -127,7 +127,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
-            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.6),
+            aspectRatio: const CropAspectRatio(ratioX: 4, ratioY: 2.6),
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
@@ -174,7 +174,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           automatedStart: false,
           automatedStop: false,
           campaignStatus: 'wait',
-          campaignId: Uuid().v4(),
+          campaignId: const Uuid().v4(),
           campaignCounter: 0,
           campaignTitle: _title.text,
           campaignDesc: _desc.text,
@@ -522,7 +522,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
   Future<TimeOfDay> pickTime() async {
     final newTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: 7, minute: 0),
+      initialTime: const TimeOfDay(hour: 7, minute: 0),
       hourLabelText: 'Saat',
       minuteLabelText: 'Dakika',
       helpText: 'Saat/Dakika Giriniz',
@@ -564,7 +564,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: TitleWidget(),
+              title: const TitleWidget(),
               flexibleSpace: Container(
                 color: ColorConstants.instance.primaryColor,
               ),
@@ -579,7 +579,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         color: ColorConstants.instance.whiteContainer,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(50.0),
                             topRight: Radius.circular(50.0))),
                     child: (isLoading == false)
@@ -629,7 +629,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       key: formKey,
                                       autovalidateMode:
                                           AutovalidateMode.onUserInteraction,
-                                      child: Container(
+                                      child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.9,
@@ -656,7 +656,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                               validator: validateCampaignTitle,
                                               enabled: isEnabled,
                                               controller: _title,
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                   labelText: 'Kampanya Başlığı',
                                                   border: OutlineInputBorder()),
                                             ),
@@ -685,7 +685,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                               keyboardType: TextInputType.text,
                                               maxLines: 3,
                                               controller: _desc,
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                   labelText:
                                                       'Kampanya Açıklaması',
                                                   border: OutlineInputBorder()),
@@ -713,7 +713,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                               enabled: isEnabled,
                                               controller: _key,
                                               maxLength: 15,
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                   labelText:
                                                       'Kampanya Anahtar Sözcüğü',
                                                   prefix: Text('#'),
@@ -742,7 +742,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                               validator: validateCampaignStart,
                                               enabled: isEnabled,
                                               readOnly: true,
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                   labelText:
                                                       'Kampanya Başlangıç Tarihi',
                                                   border: OutlineInputBorder()),
@@ -783,7 +783,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                               controller: _finish,
                                               enabled: isEnabled,
                                               readOnly: true,
-                                              decoration: InputDecoration(
+                                              decoration: const InputDecoration(
                                                   labelText:
                                                       'Kampanya Bitiş Tarihi',
                                                   border: OutlineInputBorder()),
@@ -915,10 +915,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                               ),
                             ),
                           )
-                        : ProgressWidget()),
+                        : const ProgressWidget()),
               ),
             ),
           )
-        : ProgressWidget();
+        : const ProgressWidget();
   }
 }

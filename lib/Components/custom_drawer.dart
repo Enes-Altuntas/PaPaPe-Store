@@ -27,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
           Navigator.of(context).pop();
           context.read<AuthService>().signOut().then((value) {
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
+                MaterialPageRoute(builder: (context) => const Login()));
           });
         },
         barrierDismissible: false,
@@ -44,7 +44,7 @@ class CustomDrawer extends StatelessWidget {
           UserAccountsDrawerHeader(
             accountName: (firebaseUser.displayName != null)
                 ? Text(firebaseUser.displayName)
-                : Text('Kullanıcı'),
+                : const Text('Kullanıcı'),
             accountEmail: Text(firebaseUser.email),
             currentAccountPicture: Container(
               decoration: BoxDecoration(
@@ -68,13 +68,13 @@ class CustomDrawer extends StatelessWidget {
               Icons.store,
               color: ColorConstants.instance.primaryColor,
             ),
-            title: Text('İşletme Bilgileri'),
+            title: const Text('İşletme Bilgileri'),
             onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => Profile()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const Profile()));
             },
           ),
-          Divider(
+          const Divider(
             thickness: 2,
           ),
           ListTile(
@@ -82,14 +82,14 @@ class CustomDrawer extends StatelessWidget {
               Icons.assignment_late,
               color: ColorConstants.instance.primaryColor,
             ),
-            title: Text('KVK ve Gizlilik'),
+            title: const Text('KVK ve Gizlilik'),
           ),
           ListTile(
             leading: Icon(
               Icons.logout_outlined,
               color: ColorConstants.instance.primaryColor,
             ),
-            title: Text('Çıkış Yap'),
+            title: const Text('Çıkış Yap'),
             onTap: () {
               exitYesNo(context);
             },

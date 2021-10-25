@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 class CategorySingle extends StatefulWidget {
   final ProductCategory categoryData;
 
-  CategorySingle({Key key, this.categoryData}) : super(key: key);
+  const CategorySingle({Key key, this.categoryData}) : super(key: key);
 
   @override
   _CategorySingleState createState() => _CategorySingleState();
@@ -52,7 +52,7 @@ class _CategorySingleState extends State<CategorySingle> {
         _isLoading = true;
       });
       ProductCategory category = ProductCategory(
-        categoryId: Uuid().v4(),
+        categoryId: const Uuid().v4(),
         categoryRow: int.parse(_categoryRow.text),
         categoryName: _categoryName.text,
       );
@@ -114,7 +114,7 @@ class _CategorySingleState extends State<CategorySingle> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: TitleWidget(),
+              title: const TitleWidget(),
               flexibleSpace: Container(
                 color: ColorConstants.instance.primaryColor,
               ),
@@ -129,7 +129,7 @@ class _CategorySingleState extends State<CategorySingle> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: ColorConstants.instance.whiteContainer,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(50.0),
                           topRight: Radius.circular(50.0))),
                   child: Column(
@@ -138,7 +138,7 @@ class _CategorySingleState extends State<CategorySingle> {
                         child: Form(
                           key: formKeyCat,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.9,
                             child: Column(
                               children: [
@@ -162,7 +162,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                     maxLength: 3,
                                     validator: _validateCatRow,
                                     keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         labelText: 'Menü Kategori Sırası',
                                         border: OutlineInputBorder()),
                                   ),
@@ -186,7 +186,7 @@ class _CategorySingleState extends State<CategorySingle> {
                                     validator: _validateCatName,
                                     controller: _categoryName,
                                     maxLength: 50,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         labelText: 'Menü Kategori Adı',
                                         border: OutlineInputBorder()),
                                   ),
@@ -255,6 +255,6 @@ class _CategorySingleState extends State<CategorySingle> {
                 ),
               ),
             ))
-        : ProgressWidget();
+        : const ProgressWidget();
   }
 }

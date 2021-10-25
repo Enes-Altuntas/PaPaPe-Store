@@ -45,12 +45,11 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                 color: ColorConstants.instance.whiteContainer,
                 border: Border.all(
                     width: 2.0, color: ColorConstants.instance.hintColor)),
-            child: (this.widget.localImage != null)
-                ? Image.file(this.widget.localImage, fit: BoxFit.cover)
-                : (this.widget.urlImage != null &&
-                        this.widget.urlImage.isNotEmpty)
+            child: (widget.localImage != null)
+                ? Image.file(widget.localImage, fit: BoxFit.cover)
+                : (widget.urlImage != null && widget.urlImage.isNotEmpty)
                     ? Image.network(
-                        this.widget.urlImage,
+                        widget.urlImage,
                         fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) {
                           return loadingProgress == null
@@ -62,7 +61,7 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                 );
                         },
                       )
-                    : (this.widget.addable)
+                    : (widget.addable)
                         ? Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

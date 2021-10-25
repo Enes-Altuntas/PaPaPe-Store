@@ -16,7 +16,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class FirestoreService {
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   Geoflutterfire geo = Geoflutterfire();
   String downloadUrl;
@@ -183,7 +183,7 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .get()
-          .then((value) => value.docs.forEach((element) {
+          .then((value) => value.docs.map((element) {
                 element.reference.update({'campaignStatus': 'inactive'});
               }));
 
@@ -247,7 +247,7 @@ class FirestoreService {
           .doc(_userId)
           .collection('campaigns')
           .get()
-          .then((value) => value.docs.forEach((element) {
+          .then((value) => value.docs.map((element) {
                 element.reference.update({'campaignStatus': 'inactive'});
               }));
 

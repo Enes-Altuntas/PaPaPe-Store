@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Reports extends StatefulWidget {
-  Reports({Key key}) : super(key: key);
+  const Reports({Key key}) : super(key: key);
 
   @override
   _ReportsState createState() => _ReportsState();
@@ -29,7 +29,7 @@ class _ReportsState extends State<Reports> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
-              switch (snapshot.hasData && snapshot.data.length > 0) {
+              switch (snapshot.hasData && snapshot.data.isNotEmpty) {
                 case true:
                   return ListView.builder(
                     itemCount: snapshot.data.length,
@@ -58,7 +58,7 @@ class _ReportsState extends State<Reports> {
               }
               break;
             default:
-              return ProgressWidget();
+              return const ProgressWidget();
           }
         },
       ),

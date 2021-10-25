@@ -21,7 +21,7 @@ import 'package:flutter/material.dart';
 class Dashboard extends StatefulWidget {
   final int defPage;
 
-  Dashboard({Key key, this.defPage}) : super(key: key);
+  const Dashboard({Key key, this.defPage}) : super(key: key);
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -53,6 +53,7 @@ class _DashboardState extends State<Dashboard> {
     ),
   ];
 
+  @override
   Future<void> didChangeDependencies() async {
     if (isInit) {
       _storeProvider = Provider.of<StoreProvider>(context);
@@ -112,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
       return;
     }
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CampaignSingle(campaignData: null)));
+        builder: (context) => const CampaignSingle(campaignData: null)));
   }
 
   openCategoryDialog() async {
@@ -125,7 +126,7 @@ class _DashboardState extends State<Dashboard> {
     }
     await Navigator.of(context)
         .push(MaterialPageRoute(
-            builder: (context) => CategorySingle(categoryData: null)))
+            builder: (context) => const CategorySingle(categoryData: null)))
         .whenComplete(() {});
   }
 
@@ -140,15 +141,15 @@ class _DashboardState extends State<Dashboard> {
         elevation: 5,
         centerTitle: true,
         toolbarHeight: 70.0,
-        title: TitleWidget(),
+        title: const TitleWidget(),
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       bottomNavigationBar: CurvedNavigationBar(
         items: items,
         height: 60.0,
         backgroundColor: Colors.transparent,
         animationCurve: Curves.easeIn,
-        animationDuration: Duration(milliseconds: 500),
+        animationDuration: const Duration(milliseconds: 500),
         onTap: onTapped,
         index: _selectedIndex,
         color: ColorConstants.instance.primaryColor,
@@ -193,15 +194,15 @@ class _DashboardState extends State<Dashboard> {
                 ? (isLoading == false)
                     ? PageView(
                         controller: pageController,
-                        children: [
+                        children: const [
                           Campaigns(),
                           Menu(),
                           Reports(),
                           Reservation()
                         ],
                       )
-                    : ProgressWidget()
-                : ProgressWidget();
+                    : const ProgressWidget()
+                : const ProgressWidget();
           }),
     );
   }

@@ -8,7 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService {
   final FirebaseAuth _firebaseAuth;
   final FirestoreService firestoreService = FirestoreService();
-  FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthService(this._firebaseAuth);
@@ -116,7 +116,9 @@ class AuthService {
           .then((value) {
         return UserModel.fromFirestore(value.data());
       });
-    } catch (e) {}
+    } catch (e) {
+      return e.message;
+    }
 
     if (_user == null) {
       UserModel newUser = UserModel(

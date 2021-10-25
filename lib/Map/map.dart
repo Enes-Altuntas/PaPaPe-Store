@@ -9,6 +9,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class Maps extends StatefulWidget {
+  const Maps({Key key}) : super(key: key);
+
   @override
   _MapsState createState() => _MapsState();
 }
@@ -88,7 +90,7 @@ class _MapsState extends State<Maps> {
     if (_storeProvider.storeLocLat != null &&
         _storeProvider.storeLocLong != null) {
       picker.add(Marker(
-          markerId: MarkerId('1'),
+          markerId: const MarkerId('1'),
           position:
               LatLng(_storeProvider.storeLocLat, _storeProvider.storeLocLong)));
     }
@@ -96,7 +98,7 @@ class _MapsState extends State<Maps> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: TitleWidget(),
+        title: const TitleWidget(),
         toolbarHeight: 70.0,
         flexibleSpace: Container(
           color: ColorConstants.instance.primaryColor,

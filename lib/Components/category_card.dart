@@ -12,7 +12,7 @@ class CategoryCard extends StatefulWidget {
   final Function onPressedEdit;
   final Function onPressedDelete;
 
-  CategoryCard(
+  const CategoryCard(
       {Key key, this.category, this.onPressedEdit, this.onPressedDelete})
       : super(key: key);
 
@@ -86,13 +86,13 @@ class _CategoryCardState extends State<CategoryCard> {
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.active:
-                    switch (snapshot.hasData && snapshot.data.length > 0) {
+                    switch (snapshot.hasData && snapshot.data.isNotEmpty) {
                       case true:
                         return Column(
                           children: [
                             ListView.builder(
                               shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
+                              physics: const ClampingScrollPhysics(),
                               itemCount: snapshot.data.length,
                               itemBuilder: (context, index) {
                                 return Padding(
@@ -116,7 +116,7 @@ class _CategoryCardState extends State<CategoryCard> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     color: ColorConstants.instance.activeColor,
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(50.0))),
                                 child: IconButton(
                                     onPressed: () {
@@ -156,7 +156,7 @@ class _CategoryCardState extends State<CategoryCard> {
                               Container(
                                 decoration: BoxDecoration(
                                     color: ColorConstants.instance.activeColor,
-                                    borderRadius: BorderRadius.all(
+                                    borderRadius: const BorderRadius.all(
                                         Radius.circular(50.0))),
                                 child: IconButton(
                                     onPressed: () {

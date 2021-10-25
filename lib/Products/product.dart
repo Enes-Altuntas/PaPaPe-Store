@@ -20,7 +20,7 @@ class ProductSingle extends StatefulWidget {
   final Product productData;
   final String selectedCategoryId;
 
-  ProductSingle({Key key, this.productData, this.selectedCategoryId})
+  const ProductSingle({Key key, this.productData, this.selectedCategoryId})
       : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class _ProductSingleState extends State<ProductSingle> {
         isLoading = true;
       });
       Product product = Product(
-          productId: Uuid().v4(),
+          productId: const Uuid().v4(),
           productCatId: widget.selectedCategoryId,
           productDesc: _productDesc.text,
           productName: _productName.text,
@@ -217,7 +217,7 @@ class _ProductSingleState extends State<ProductSingle> {
       if (image != null) {
         File cropped = await ImageCropper.cropImage(
             sourcePath: image.path,
-            aspectRatio: CropAspectRatio(ratioX: 4, ratioY: 2.6),
+            aspectRatio: const CropAspectRatio(ratioX: 4, ratioY: 2.6),
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
@@ -276,7 +276,7 @@ class _ProductSingleState extends State<ProductSingle> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
-              title: TitleWidget(),
+              title: const TitleWidget(),
               flexibleSpace: Container(
                 color: ColorConstants.instance.primaryColor,
               ),
@@ -291,7 +291,7 @@ class _ProductSingleState extends State<ProductSingle> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       color: ColorConstants.instance.whiteContainer,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(50.0),
                           topRight: Radius.circular(50.0))),
                   child: Padding(
@@ -323,7 +323,7 @@ class _ProductSingleState extends State<ProductSingle> {
                         Form(
                           key: formKeyProd,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width * 0.9,
                             child: Column(
                               children: [
@@ -346,7 +346,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                     controller: _productName,
                                     maxLength: 50,
                                     validator: _validateProdName,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         labelText: 'Ürün Adı',
                                         border: OutlineInputBorder()),
                                   ),
@@ -372,7 +372,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                     maxLength: 255,
                                     maxLines: 5,
                                     // validator: _validateProdDesc,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         labelText: 'Ürün Tanımı',
                                         border: OutlineInputBorder()),
                                   ),
@@ -396,7 +396,7 @@ class _ProductSingleState extends State<ProductSingle> {
                                     controller: _productPrice,
                                     validator: _validateProdPrice,
                                     keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         labelText: 'Ürün Fiyatı',
                                         border: OutlineInputBorder()),
                                   ),
@@ -472,6 +472,6 @@ class _ProductSingleState extends State<ProductSingle> {
                 ),
               ),
             ))
-        : ProgressWidget();
+        : const ProgressWidget();
   }
 }

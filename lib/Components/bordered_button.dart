@@ -18,18 +18,18 @@ class BorderedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * this.widthMultiplier,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * widthMultiplier,
       child: TextButton(
           child: Text(buttonText.toUpperCase(),
               style: TextStyle(
                   fontSize: 16,
                   fontFamily: 'Roboto',
-                  color: this.textColor,
+                  color: textColor,
                   fontWeight: FontWeight.bold)),
           style: ButtonStyle(
-              padding:
-                  MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(15)),
+              padding: MaterialStateProperty.all<EdgeInsets>(
+                  const EdgeInsets.all(15)),
               foregroundColor: MaterialStateProperty.all<Color>(borderColor),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(

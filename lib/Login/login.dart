@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
-  Login({Key key}) : super(key: key);
+  const Login({Key key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
             if (FirebaseAuth.instance.currentUser != null &&
                 FirebaseAuth.instance.currentUser.emailVerified) {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => Dashboard(
+                  builder: (context) => const Dashboard(
                         defPage: 0,
                       )));
             } else {
@@ -81,7 +81,8 @@ class _LoginState extends State<Login> {
   }
 
   void signUp() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Sign()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const Sign()));
   }
 
   void googleSignIn() {
@@ -93,7 +94,7 @@ class _LoginState extends State<Login> {
         .googleLogin()
         .then((value) {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => Dashboard(
+              builder: (context) => const Dashboard(
                     defPage: 1,
                   )));
         })
@@ -154,7 +155,7 @@ class _LoginState extends State<Login> {
                           padding: const EdgeInsets.only(bottom: 20.0),
                           child: RichText(
                               text: TextSpan(
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 70.0,
                                       fontFamily: 'Armatic',
                                       fontWeight: FontWeight.bold),
@@ -180,7 +181,7 @@ class _LoginState extends State<Login> {
                         height: MediaQuery.of(context).size.height * 0.7,
                         decoration: BoxDecoration(
                             color: ColorConstants.instance.whiteContainer,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(50.0),
                                 topRight: Radius.circular(50.0))),
                         child: Padding(
@@ -241,7 +242,7 @@ class _LoginState extends State<Login> {
                                 child: TextFormField(
                                     controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                         icon:
                                             Icon(Icons.account_circle_outlined),
@@ -255,13 +256,13 @@ class _LoginState extends State<Login> {
                                       (isVisible == false) ? true : false,
                                   controller: passwordController,
                                   decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      icon: Icon(Icons.vpn_key_outlined),
+                                      border: const OutlineInputBorder(),
+                                      icon: const Icon(Icons.vpn_key_outlined),
                                       labelText: 'Parola',
                                       suffixIcon: IconButton(
                                         icon: (isVisible == false)
-                                            ? Icon(Icons.visibility_off)
-                                            : Icon(Icons.visibility),
+                                            ? const Icon(Icons.visibility_off)
+                                            : const Icon(Icons.visibility),
                                         onPressed: () {
                                           if (isVisible == true) {
                                             setState(() {
@@ -319,7 +320,8 @@ class _LoginState extends State<Login> {
                                           fontWeight: FontWeight.bold,
                                         ),
                                         children: [
-                                          TextSpan(text: 'Hesabınız yok mu? '),
+                                          const TextSpan(
+                                              text: 'Hesabınız yok mu? '),
                                           TextSpan(
                                               text: 'Kayıt Olun!',
                                               style: TextStyle(
@@ -338,6 +340,6 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               )
-            : ProgressWidget());
+            : const ProgressWidget());
   }
 }

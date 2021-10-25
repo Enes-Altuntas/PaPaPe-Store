@@ -11,7 +11,8 @@ class CampaignCard extends StatefulWidget {
   final Campaign campaign;
   final Function onPressed;
 
-  CampaignCard({Key key, this.campaign, this.onPressed}) : super(key: key);
+  const CampaignCard({Key key, this.campaign, this.onPressed})
+      : super(key: key);
 
   @override
   _CampaignCardState createState() => _CampaignCardState();
@@ -56,7 +57,7 @@ class _CampaignCardState extends State<CampaignCard> {
                           loadingBuilder: (context, child, loadingProgress) {
                           return loadingProgress == null
                               ? child
-                              : Center(
+                              : const Center(
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
                                   ),
@@ -160,7 +161,7 @@ class _CampaignCardState extends State<CampaignCard> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(widget.campaign.campaignDesc,
-                  style: TextStyle(fontFamily: 'Roboto'),
+                  style: const TextStyle(fontFamily: 'Roboto'),
                   textAlign: TextAlign.center),
             ),
             Padding(
@@ -179,7 +180,7 @@ class _CampaignCardState extends State<CampaignCard> {
                       color: ColorConstants.instance.hintColor.withOpacity(0.4),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: const Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),

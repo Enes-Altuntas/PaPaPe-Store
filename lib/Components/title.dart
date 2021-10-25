@@ -8,7 +8,7 @@ class TitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
         text: TextSpan(
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 50.0,
                 fontFamily: 'Armatic',
                 fontWeight: FontWeight.bold),

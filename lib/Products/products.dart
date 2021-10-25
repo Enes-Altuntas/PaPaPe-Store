@@ -14,7 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class Menu extends StatefulWidget {
-  Menu({Key key}) : super(key: key);
+  const Menu({Key key}) : super(key: key);
 
   @override
   _MenuState createState() => _MenuState();
@@ -90,7 +90,7 @@ class _MenuState extends State<Menu> {
               category = snapshot.data;
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
-                  switch (snapshot.hasData && snapshot.data.length > 0) {
+                  switch (snapshot.hasData && snapshot.data.isNotEmpty) {
                     case true:
                       return ListView.builder(
                         shrinkWrap: true,
@@ -127,10 +127,10 @@ class _MenuState extends State<Menu> {
                   }
                   break;
                 default:
-                  return ProgressWidget();
+                  return const ProgressWidget();
               }
             },
           )
-        : ProgressWidget();
+        : const ProgressWidget();
   }
 }

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class Sign extends StatefulWidget {
-  Sign({Key key}) : super(key: key);
+  const Sign({Key key}) : super(key: key);
 
   @override
   _SignState createState() => _SignState();
@@ -114,7 +114,7 @@ class _SignState extends State<Sign> {
                             padding: const EdgeInsets.only(bottom: 20.0),
                             child: RichText(
                                 text: TextSpan(
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 70.0,
                                         fontFamily: 'Armatic',
                                         fontWeight: FontWeight.bold),
@@ -142,7 +142,7 @@ class _SignState extends State<Sign> {
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height * 0.7,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(50.0),
                                 topRight: Radius.circular(50.0)),
                             color: ColorConstants.instance.whiteContainer,
@@ -158,7 +158,7 @@ class _SignState extends State<Sign> {
                                 TextFormField(
                                     controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
                                         icon:
                                             Icon(Icons.account_circle_outlined),
@@ -171,13 +171,14 @@ class _SignState extends State<Sign> {
                                         (isVisible == false) ? true : false,
                                     controller: passwordController,
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        icon: Icon(Icons.vpn_key_outlined),
+                                        border: const OutlineInputBorder(),
+                                        icon:
+                                            const Icon(Icons.vpn_key_outlined),
                                         labelText: 'Yeni Parola',
                                         suffixIcon: IconButton(
                                           icon: (isVisible == false)
-                                              ? Icon(Icons.visibility_off)
-                                              : Icon(Icons.visibility),
+                                              ? const Icon(Icons.visibility_off)
+                                              : const Icon(Icons.visibility),
                                           onPressed: () {
                                             if (isVisible == true) {
                                               setState(() {
@@ -200,13 +201,14 @@ class _SignState extends State<Sign> {
                                         (isVisible == false) ? true : false,
                                     controller: passwordVerifyController,
                                     decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        icon: Icon(Icons.vpn_key_outlined),
+                                        border: const OutlineInputBorder(),
+                                        icon:
+                                            const Icon(Icons.vpn_key_outlined),
                                         labelText: 'Yeni Parola (Tekrar)',
                                         suffixIcon: IconButton(
                                           icon: (isVisible == false)
-                                              ? Icon(Icons.visibility_off)
-                                              : Icon(Icons.visibility),
+                                              ? const Icon(Icons.visibility_off)
+                                              : const Icon(Icons.visibility),
                                           onPressed: () {
                                             if (isVisible == true) {
                                               setState(() {
@@ -261,6 +263,6 @@ class _SignState extends State<Sign> {
                   ),
                 ),
               )
-            : ProgressWidget());
+            : const ProgressWidget());
   }
 }

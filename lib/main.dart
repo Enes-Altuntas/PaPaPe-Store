@@ -15,7 +15,7 @@ final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
 void main() async {
   await initState();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 Future<void> initState() async {
@@ -35,6 +35,8 @@ handleNotifications() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -48,8 +50,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'PaPaPe İşletme',
-        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
-        supportedLocales: [const Locale('en', 'EN'), const Locale('tr', 'TR')],
+        localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
+        supportedLocales: const [Locale('en', 'EN'), Locale('tr', 'TR')],
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(
@@ -65,15 +67,15 @@ class MyApp extends StatelessWidget {
               ),
               color: ColorConstants.instance.whiteContainer),
         ),
-        home: AuthWrapper(),
+        home: const AuthWrapper(),
         routes: {
-          "reservations": (_) => Dashboard(
+          "reservations": (_) => const Dashboard(
                 defPage: 3,
               ),
-          "campaigns": (_) => Dashboard(
+          "campaigns": (_) => const Dashboard(
                 defPage: 0,
               ),
-          "wishes": (_) => Dashboard(defPage: 2),
+          "wishes": (_) => const Dashboard(defPage: 2),
         },
       ),
     );
@@ -81,17 +83,19 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final User firebaseUser = context.watch<User>();
     switch (firebaseUser != null && firebaseUser.emailVerified) {
       case true:
-        return Dashboard(
+        return const Dashboard(
           defPage: 0,
         );
         break;
       default:
-        return Login();
+        return const Login();
     }
   }
 }

@@ -11,7 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Reservation extends StatefulWidget {
-  Reservation({Key key}) : super(key: key);
+  const Reservation({Key key}) : super(key: key);
 
   @override
   _ReservationState createState() => _ReservationState();
@@ -105,7 +105,7 @@ class _ReservationState extends State<Reservation> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
-              switch (snapshot.hasData && snapshot.data.length > 0) {
+              switch (snapshot.hasData && snapshot.data.isNotEmpty) {
                 case true:
                   return ListView.builder(
                     itemCount: snapshot.data.length,
@@ -147,7 +147,7 @@ class _ReservationState extends State<Reservation> {
               }
               break;
             default:
-              return ProgressWidget();
+              return const ProgressWidget();
           }
         },
       ),
