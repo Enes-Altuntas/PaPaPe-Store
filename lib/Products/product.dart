@@ -63,6 +63,7 @@ class _ProductSingleState extends State<ProductSingle> {
                 _productName.text = '';
                 _productPrice.text = '';
                 productPic = null;
+                picBtn = false;
               }));
     }
   }
@@ -196,6 +197,7 @@ class _ProductSingleState extends State<ProductSingle> {
     setState(() {
       productPic = null;
       picDeleted = true;
+      picBtn = false;
     });
     if (widget.productData != null &&
         widget.productData.productPicRef != null) {
@@ -229,6 +231,7 @@ class _ProductSingleState extends State<ProductSingle> {
         setState(() {
           productPic = cropped;
           picDeleted = false;
+          picBtn = true;
         });
       }
     }

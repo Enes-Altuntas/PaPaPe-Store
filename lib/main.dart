@@ -8,6 +8,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -47,6 +48,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'PaPaPe İşletme',
+        localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+        supportedLocales: [const Locale('en', 'EN'), const Locale('tr', 'TR')],
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(

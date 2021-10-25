@@ -163,17 +163,17 @@ class _LoginState extends State<Login> {
                                     text: 'Pa',
                                     style: TextStyle(
                                         color: ColorConstants
-                                            .instance.textOnColor)),
+                                            .instance.inactiveColor)),
                                 TextSpan(
                                     text: 'Pa',
                                     style: TextStyle(
                                         color: ColorConstants
-                                            .instance.textOnColor)),
+                                            .instance.waitingColor)),
                                 TextSpan(
                                     text: 'Pe',
                                     style: TextStyle(
                                         color: ColorConstants
-                                            .instance.textOnColor))
+                                            .instance.activeColor))
                               ]))),
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -314,7 +314,8 @@ class _LoginState extends State<Login> {
                                     text: TextSpan(
                                         style: TextStyle(
                                           fontFamily: 'Roboto',
-                                          color: Theme.of(context).hintColor,
+                                          color:
+                                              ColorConstants.instance.hintColor,
                                           fontWeight: FontWeight.bold,
                                         ),
                                         children: [

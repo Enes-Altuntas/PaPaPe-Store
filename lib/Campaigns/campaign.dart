@@ -10,7 +10,6 @@ import 'package:papape_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -108,6 +107,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
     setState(() {
       campaignPic = null;
       picDeleted = true;
+      picBtn = false;
     });
     if (widget.campaignData != null &&
         widget.campaignData.campaignPicRef != null) {
@@ -140,6 +140,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
         setState(() {
           campaignPic = cropped;
           picDeleted = false;
+          picBtn = true;
         });
       }
     }
@@ -149,6 +150,22 @@ class _CampaignSingleState extends State<CampaignSingle> {
   }
 
   saveCampaign() {
+    if (_startDate.millisecondsSinceEpoch <
+            Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch ||
+        _finishDate.millisecondsSinceEpoch <
+            Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch) {
+      ToastService().showWarning(
+          "Kampanya başlangıç ve bitiş tarihleri geçmişte yer alamaz !",
+          context);
+      return;
+    }
+    if (_finishDate.millisecondsSinceEpoch <=
+        _startDate.millisecondsSinceEpoch) {
+      ToastService().showWarning(
+          "Kampanya başlangıç tarihi, kampanya bitiş tarihinden sonra olamaz !",
+          context);
+      return;
+    }
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
@@ -196,6 +213,13 @@ class _CampaignSingleState extends State<CampaignSingle> {
           context);
       return;
     }
+    if (_finishDate.millisecondsSinceEpoch <=
+        _startDate.millisecondsSinceEpoch) {
+      ToastService().showWarning(
+          "Kampanya başlangıç tarihi, kampanya bitiş tarihinden sonra olamaz !",
+          context);
+      return;
+    }
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
@@ -234,6 +258,13 @@ class _CampaignSingleState extends State<CampaignSingle> {
             Timestamp.fromDate(DateTime.now()).millisecondsSinceEpoch) {
       ToastService().showInfo(
           "Kampanya başlangıç ve bitiş tarihleri geçmişte yer alamaz !",
+          context);
+      return;
+    }
+    if (_finishDate.millisecondsSinceEpoch <=
+        _startDate.millisecondsSinceEpoch) {
+      ToastService().showWarning(
+          "Kampanya başlangıç tarihi, kampanya bitiş tarihinden sonra olamaz !",
           context);
       return;
     }
@@ -473,6 +504,59 @@ class _CampaignSingleState extends State<CampaignSingle> {
     }
   }
 
+  Future<DateTime> pickDate() async {
+    final initialDate = DateTime.now();
+    final newDate = await showDatePicker(
+        context: context,
+        initialDate: initialDate,
+        firstDate: initialDate,
+        currentDate: DateTime.now(),
+        locale: const Locale("tr", "TR"),
+        lastDate: DateTime(DateTime.now().year + 10));
+
+    if (newDate == null) return null;
+
+    return newDate;
+  }
+
+  Future<TimeOfDay> pickTime() async {
+    final newTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 7, minute: 0),
+      hourLabelText: 'Saat',
+      minuteLabelText: 'Dakika',
+      helpText: 'Saat/Dakika Giriniz',
+      cancelText: 'İptal Et',
+      confirmText: 'Tamam',
+      initialEntryMode: TimePickerEntryMode.input,
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            alwaysUse24HourFormat: true,
+          ),
+          child: child,
+        );
+      },
+    );
+
+    if (newTime == null) return null;
+
+    return newTime;
+  }
+
+  Future<Timestamp> pickDateTime() async {
+    final date = await pickDate();
+    if (date == null) return null;
+
+    final time = await pickTime();
+    if (time == null) return null;
+
+    DateTime dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+
+    return Timestamp.fromDate(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return (isLoading == false)
@@ -481,6 +565,9 @@ class _CampaignSingleState extends State<CampaignSingle> {
               elevation: 0,
               centerTitle: true,
               title: TitleWidget(),
+              flexibleSpace: Container(
+                color: ColorConstants.instance.primaryColor,
+              ),
             ),
             body: Container(
               decoration: BoxDecoration(
@@ -659,29 +746,18 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                   labelText:
                                                       'Kampanya Başlangıç Tarihi',
                                                   border: OutlineInputBorder()),
-                                              onTap: () {
-                                                DatePicker.showDateTimePicker(
-                                                    context,
-                                                    showTitleActions: true,
-                                                    minTime: DateTime.now().add(
-                                                        new Duration(
-                                                            minutes: 15)),
-                                                    maxTime:
-                                                        DateTime(2030, 1, 1),
-                                                    onConfirm: (date) {
+                                              onTap: () async {
+                                                Timestamp startDate =
+                                                    await pickDateTime();
+
+                                                if (startDate != null) {
                                                   setState(() {
-                                                    _startDate =
-                                                        Timestamp.fromDate(
-                                                            date);
+                                                    _startDate = startDate;
                                                     _start.text =
-                                                        formatDate(_startDate);
+                                                        formatDate(startDate);
                                                     _finish.text = '';
                                                   });
-                                                },
-                                                    currentTime: DateTime.now()
-                                                        .add(new Duration(
-                                                            minutes: 15)),
-                                                    locale: LocaleType.tr);
+                                                }
                                               },
                                             ),
                                           ),
@@ -711,31 +787,18 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                                   labelText:
                                                       'Kampanya Bitiş Tarihi',
                                                   border: OutlineInputBorder()),
-                                              onTap: () {
+                                              onTap: () async {
                                                 if (_startDate != null) {
-                                                  DatePicker.showDateTimePicker(
-                                                      context,
-                                                      showTitleActions: true,
-                                                      minTime: _startDate
-                                                          .toDate()
-                                                          .add(new Duration(
-                                                              hours: 1)),
-                                                      maxTime:
-                                                          DateTime(2050, 1, 1),
-                                                      onConfirm: (date) {
+                                                  Timestamp finishDate =
+                                                      await pickDateTime();
+
+                                                  if (finishDate != null) {
                                                     setState(() {
-                                                      _finishDate =
-                                                          Timestamp.fromDate(
-                                                              date);
+                                                      _finishDate = finishDate;
                                                       _finish.text = formatDate(
-                                                          _finishDate);
+                                                          finishDate);
                                                     });
-                                                  },
-                                                      currentTime: _startDate
-                                                          .toDate()
-                                                          .add(new Duration(
-                                                              hours: 1)),
-                                                      locale: LocaleType.tr);
+                                                  }
                                                 } else {
                                                   ToastService().showWarning(
                                                       "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
