@@ -82,7 +82,7 @@ class CustomDrawer extends StatelessWidget {
               Icons.assignment_late,
               color: ColorConstants.instance.primaryColor,
             ),
-            title: const Text('KVK ve Gizlilik'),
+            title: const Text('KVKK ve Gizlilik'),
           ),
           ListTile(
             leading: Icon(

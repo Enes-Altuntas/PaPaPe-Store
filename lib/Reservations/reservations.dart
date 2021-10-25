@@ -23,7 +23,7 @@ class _ReservationState extends State<Reservation> {
   ReservationsModel selectedReservation;
 
   makePhoneCall(storePhone) async {
-    await launch("tel:$storePhone");
+    await launch("tel:+90$storePhone");
   }
 
   approveReservation() async {

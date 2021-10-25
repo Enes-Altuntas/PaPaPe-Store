@@ -41,10 +41,13 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
             height: MediaQuery.of(context).size.height / 3.5,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50.0),
-                color: ColorConstants.instance.whiteContainer,
-                border: Border.all(
-                    width: 2.0, color: ColorConstants.instance.hintColor)),
+              gradient: LinearGradient(colors: [
+                ColorConstants.instance.primaryColor,
+                ColorConstants.instance.secondaryColor,
+              ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+              borderRadius: BorderRadius.circular(50.0),
+              color: ColorConstants.instance.primaryColor,
+            ),
             child: (widget.localImage != null)
                 ? Image.file(widget.localImage, fit: BoxFit.cover)
                 : (widget.urlImage != null && widget.urlImage.isNotEmpty)
@@ -56,7 +59,7 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                               ? child
                               : Center(
                                   child: CircularProgressIndicator(
-                                    color: ColorConstants.instance.primaryColor,
+                                    color: ColorConstants.instance.iconOnColor,
                                   ),
                                 );
                         },
@@ -69,14 +72,14 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                 padding: const EdgeInsets.only(bottom: 20.0),
                                 child: Icon(
                                   Icons.upload_file,
-                                  color: ColorConstants.instance.primaryColor,
+                                  color: ColorConstants.instance.iconOnColor,
                                   size: 50.0,
                                 ),
                               ),
                               Text(
                                 widget.addText,
                                 style: TextStyle(
-                                    color: ColorConstants.instance.primaryColor,
+                                    color: ColorConstants.instance.textOnColor,
                                     fontFamily: 'Bebas',
                                     fontSize: 20.0),
                               ),

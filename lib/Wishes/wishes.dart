@@ -17,7 +17,7 @@ class Reports extends StatefulWidget {
 
 class _ReportsState extends State<Reports> {
   makePhoneCall(userPhone) async {
-    await launch("tel:$userPhone");
+    await launch("tel:+90$userPhone");
   }
 
   @override
