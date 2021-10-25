@@ -1,13 +1,14 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 
 class ToastService {
   showSuccess(msg, _context) {
     CoolAlert.show(
       context: _context,
       title: 'Tebrikler !',
-      backgroundColor: Theme.of(_context).primaryColor,
-      confirmBtnColor: Theme.of(_context).primaryColor,
+      backgroundColor: ColorConstants.instance.primaryColor,
+      confirmBtnColor: ColorConstants.instance.primaryColor,
       barrierDismissible: false,
       type: CoolAlertType.success,
       confirmBtnText: 'Tamam',
@@ -21,8 +22,8 @@ class ToastService {
       context: _context,
       title: 'Dikkat !',
       type: CoolAlertType.warning,
-      backgroundColor: Theme.of(_context).primaryColor,
-      confirmBtnColor: Theme.of(_context).primaryColor,
+      backgroundColor: ColorConstants.instance.primaryColor,
+      confirmBtnColor: ColorConstants.instance.primaryColor,
       barrierDismissible: false,
       confirmBtnText: 'Tamam',
       cancelBtnText: 'Geri Dön',
@@ -35,8 +36,8 @@ class ToastService {
       context: _context,
       title: 'Hata !',
       type: CoolAlertType.error,
-      backgroundColor: Theme.of(_context).primaryColor,
-      confirmBtnColor: Theme.of(_context).primaryColor,
+      backgroundColor: ColorConstants.instance.primaryColor,
+      confirmBtnColor: ColorConstants.instance.primaryColor,
       barrierDismissible: false,
       confirmBtnText: 'Tamam',
       cancelBtnText: 'Geri Dön',
@@ -49,8 +50,8 @@ class ToastService {
       context: _context,
       title: 'Bilgilendirme !',
       type: CoolAlertType.info,
-      backgroundColor: Theme.of(_context).primaryColor,
-      confirmBtnColor: Theme.of(_context).primaryColor,
+      backgroundColor: ColorConstants.instance.primaryColor,
+      confirmBtnColor: ColorConstants.instance.primaryColor,
       barrierDismissible: false,
       confirmBtnText: 'Tamam',
       cancelBtnText: 'Geri Dön',

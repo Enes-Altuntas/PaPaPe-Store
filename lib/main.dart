@@ -1,3 +1,4 @@
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
 import 'package:papape_store/Login/login.dart';
 import 'package:papape_store/Providers/store_provider.dart';
@@ -29,7 +30,7 @@ handleNotifications() async {
   });
 
   await firebaseMessaging.subscribeToTopic("stores");
-  print(await firebaseMessaging.getToken());
+  await firebaseMessaging.requestPermission(sound: true);
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         Provider<AuthService>(
             create: (context) => AuthService(FirebaseAuth.instance)),
         StreamProvider(
+            initialData: null,
             create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
@@ -48,10 +50,17 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(
-          primaryColor: Colors.lightBlue[800],
-          primaryColorDark: Colors.black,
-          accentColor: Colors.lightBlue[200],
-          hintColor: Colors.grey.shade800,
+          cardTheme: CardTheme(
+              clipBehavior: Clip.antiAlias,
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(
+                  color: ColorConstants.instance.primaryColor,
+                  width: 2.0,
+                ),
+              ),
+              color: ColorConstants.instance.whiteContainer),
         ),
         home: AuthWrapper(),
         routes: {

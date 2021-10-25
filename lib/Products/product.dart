@@ -3,6 +3,7 @@ import 'package:papape_store/Components/gradient_button.dart';
 import 'package:papape_store/Components/image_container.dart';
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_model.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
@@ -111,8 +112,8 @@ class _ProductSingleState extends State<ProductSingle> {
         type: CoolAlertType.warning,
         title: '',
         text: 'Ürünü silmek istediğinize emin misiniz ?',
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         showCancelBtn: true,
         cancelBtnText: 'Hayır',
         barrierDismissible: false,
@@ -133,8 +134,8 @@ class _ProductSingleState extends State<ProductSingle> {
         title: '',
         text: 'Ürünü güncellemek istediğinize emin misiniz ?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -154,8 +155,8 @@ class _ProductSingleState extends State<ProductSingle> {
         title: '',
         text: 'Ürünü kaydetmek istediğinize emin misiniz ?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -218,11 +219,12 @@ class _ProductSingleState extends State<ProductSingle> {
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
-                toolbarTitle: 'Resmi Düzenle',
-                toolbarColor: Theme.of(context).primaryColor,
-                toolbarWidgetColor: Colors.white,
-                statusBarColor: Theme.of(context).primaryColor,
-                backgroundColor: Colors.white));
+              toolbarTitle: 'Resmi Düzenle',
+              toolbarColor: ColorConstants.instance.primaryColor,
+              toolbarWidgetColor: ColorConstants.instance.textOnColor,
+              statusBarColor: ColorConstants.instance.primaryColor,
+              backgroundColor: ColorConstants.instance.textOnColor,
+            ));
 
         setState(() {
           productPic = cropped;
@@ -272,19 +274,20 @@ class _ProductSingleState extends State<ProductSingle> {
               elevation: 0,
               centerTitle: true,
               title: TitleWidget(),
+              flexibleSpace: Container(
+                color: ColorConstants.instance.primaryColor,
+              ),
             ),
             body: Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                Theme.of(context).accentColor,
-                Theme.of(context).primaryColor
-              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+                color: ColorConstants.instance.primaryColor,
+              ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColorConstants.instance.whiteContainer,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(50.0),
                           topRight: Radius.circular(50.0))),
@@ -327,8 +330,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                     " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün adıdır. Örnek olarak 'Ezogelin', 'Çay', 'Piercing'.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.amber[900],
+                                        color:
+                                            ColorConstants.instance.hintColor,
                                         fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
                                 ),
@@ -349,8 +354,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                     " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün tanımıdır. Ürününüzü açıklamanız faydalı olacaktır.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.amber[900],
+                                        color:
+                                            ColorConstants.instance.hintColor,
                                         fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
                                 ),
@@ -373,8 +380,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                     " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün fiyatıdır. İşletmenizde kullandığınız menü veya katalogdaki fiyatların aynılarını girmeniz, işletmeniz adına yarar sağlayacaktır.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.amber[900],
+                                        color:
+                                            ColorConstants.instance.hintColor,
                                         fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
                                 ),
@@ -395,8 +404,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                       padding: const EdgeInsets.only(
                                           top: 20.0, bottom: 60.0),
                                       child: GradientButton(
-                                        start: Theme.of(context).primaryColor,
-                                        end: Theme.of(context).primaryColor,
+                                        start: ColorConstants
+                                            .instance.primaryColor,
+                                        end: ColorConstants
+                                            .instance.secondaryColor,
                                         buttonText: 'Ürün Oluştur',
                                         icon: FontAwesomeIcons.save,
                                         fontFamily: 'Roboto',
@@ -415,9 +426,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                           padding: const EdgeInsets.only(
                                               top: 20.0, bottom: 5.0),
                                           child: GradientButton(
-                                            start:
-                                                Theme.of(context).primaryColor,
-                                            end: Theme.of(context).primaryColor,
+                                            start: ColorConstants
+                                                .instance.primaryColor,
+                                            end: ColorConstants
+                                                .instance.secondaryColor,
                                             buttonText: 'Ürünü Güncelle',
                                             fontFamily: 'Roboto',
                                             fontSize: 15,
@@ -431,9 +443,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                           padding: const EdgeInsets.only(
                                               top: 5.0, bottom: 20.0),
                                           child: GradientButton(
-                                            start:
-                                                Theme.of(context).primaryColor,
-                                            end: Theme.of(context).primaryColor,
+                                            start: ColorConstants
+                                                .instance.primaryColor,
+                                            end: ColorConstants
+                                                .instance.secondaryColor,
                                             buttonText: 'Ürünü Sil',
                                             fontFamily: 'Roboto',
                                             fontSize: 15,

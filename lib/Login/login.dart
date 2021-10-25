@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:papape_store/Components/gradient_button.dart';
+import 'package:papape_store/Components/progress.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
 import 'package:papape_store/Login/sign.dart';
 import 'package:papape_store/Services/authentication_service.dart';
@@ -142,7 +144,7 @@ class _LoginState extends State<Login> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 decoration:
-                    BoxDecoration(color: Theme.of(context).primaryColor),
+                    BoxDecoration(color: ColorConstants.instance.primaryColor),
                 child: Form(
                   key: formkey,
                   child: Column(
@@ -154,25 +156,30 @@ class _LoginState extends State<Login> {
                               text: TextSpan(
                                   style: TextStyle(
                                       fontSize: 70.0,
-                                      color: Colors.white,
                                       fontFamily: 'Armatic',
                                       fontWeight: FontWeight.bold),
                                   children: [
                                 TextSpan(
                                     text: 'Pa',
-                                    style: TextStyle(color: Colors.red)),
+                                    style: TextStyle(
+                                        color: ColorConstants
+                                            .instance.textOnColor)),
                                 TextSpan(
                                     text: 'Pa',
-                                    style: TextStyle(color: Colors.amber[600])),
+                                    style: TextStyle(
+                                        color: ColorConstants
+                                            .instance.textOnColor)),
                                 TextSpan(
                                     text: 'Pe',
-                                    style: TextStyle(color: Colors.green[300]))
+                                    style: TextStyle(
+                                        color: ColorConstants
+                                            .instance.textOnColor))
                               ]))),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.7,
                         decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: ColorConstants.instance.whiteContainer,
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(50.0),
                                 topRight: Radius.circular(50.0))),
@@ -187,38 +194,44 @@ class _LoginState extends State<Login> {
                                 children: [
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.red,
+                                        color: ColorConstants
+                                            .instance.googleRedColor,
                                         borderRadius:
                                             BorderRadius.circular(50.0)),
                                     child: IconButton(
                                         onPressed: googleSignIn,
                                         icon: FaIcon(
                                           FontAwesomeIcons.google,
-                                          color: Colors.white,
+                                          color: ColorConstants
+                                              .instance.iconOnColor,
                                         )),
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.amber[600],
+                                        color: ColorConstants
+                                            .instance.facebookColor,
                                         borderRadius:
                                             BorderRadius.circular(50.0)),
                                     child: IconButton(
                                         onPressed: googleSignIn,
                                         icon: FaIcon(
                                           FontAwesomeIcons.facebookF,
-                                          color: Colors.white,
+                                          color: ColorConstants
+                                              .instance.iconOnColor,
                                         )),
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.green,
+                                        color: ColorConstants
+                                            .instance.twitterColor,
                                         borderRadius:
                                             BorderRadius.circular(50.0)),
                                     child: IconButton(
                                         onPressed: googleSignIn,
                                         icon: FaIcon(
                                           FontAwesomeIcons.twitter,
-                                          color: Colors.white,
+                                          color: ColorConstants
+                                              .instance.iconOnColor,
                                         )),
                                   )
                                 ],
@@ -272,9 +285,11 @@ class _LoginState extends State<Login> {
                                       child: Text(
                                         'Parolamı Unuttum !',
                                         style: TextStyle(
-                                            fontFamily: 'Roboto',
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.amber[900]),
+                                          fontFamily: 'Roboto',
+                                          fontWeight: FontWeight.bold,
+                                          color: ColorConstants
+                                              .instance.primaryColor,
+                                        ),
                                       )),
                                 ],
                               ),
@@ -282,8 +297,8 @@ class _LoginState extends State<Login> {
                                 padding: const EdgeInsets.only(top: 50.0),
                                 child: GradientButton(
                                   buttonText: 'Giriş Yap',
-                                  start: Theme.of(context).primaryColor,
-                                  end: Theme.of(context).primaryColor,
+                                  start: ColorConstants.instance.primaryColor,
+                                  end: ColorConstants.instance.secondaryColor,
                                   icon: FontAwesomeIcons.signInAlt,
                                   onPressed: signIn,
                                   fontFamily: 'Roboto',
@@ -307,7 +322,9 @@ class _LoginState extends State<Login> {
                                           TextSpan(
                                               text: 'Kayıt Olun!',
                                               style: TextStyle(
-                                                  color: Colors.amber[900]))
+                                                color: ColorConstants
+                                                    .instance.primaryColor,
+                                              ))
                                         ]),
                                   ),
                                 ),
@@ -320,8 +337,6 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               )
-            : Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              ));
+            : ProgressWidget());
   }
 }

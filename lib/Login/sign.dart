@@ -1,4 +1,6 @@
 import 'package:papape_store/Components/gradient_button.dart';
+import 'package:papape_store/Components/progress.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Services/authentication_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -45,8 +47,8 @@ class _SignState extends State<Sign> {
                 title: '',
                 text: value,
                 showCancelBtn: false,
-                backgroundColor: Theme.of(context).primaryColor,
-                confirmBtnColor: Theme.of(context).primaryColor,
+                backgroundColor: ColorConstants.instance.primaryColor,
+                confirmBtnColor: ColorConstants.instance.primaryColor,
                 onConfirmBtnTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
@@ -100,8 +102,9 @@ class _SignState extends State<Sign> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
-                  decoration:
-                      BoxDecoration(color: Theme.of(context).primaryColor),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.instance.primaryColor,
+                  ),
                   child: Form(
                     key: formkey,
                     child: Column(
@@ -113,21 +116,27 @@ class _SignState extends State<Sign> {
                                 text: TextSpan(
                                     style: TextStyle(
                                         fontSize: 70.0,
-                                        color: Colors.white,
                                         fontFamily: 'Armatic',
                                         fontWeight: FontWeight.bold),
                                     children: [
                                   TextSpan(
                                       text: 'Pa',
-                                      style: TextStyle(color: Colors.red)),
+                                      style: TextStyle(
+                                        color:
+                                            ColorConstants.instance.textOnColor,
+                                      )),
                                   TextSpan(
                                       text: 'Pa',
-                                      style:
-                                          TextStyle(color: Colors.amber[600])),
+                                      style: TextStyle(
+                                        color:
+                                            ColorConstants.instance.textOnColor,
+                                      )),
                                   TextSpan(
                                       text: 'Pe',
-                                      style:
-                                          TextStyle(color: Colors.green[300]))
+                                      style: TextStyle(
+                                        color:
+                                            ColorConstants.instance.textOnColor,
+                                      ))
                                 ]))),
                         Container(
                           width: MediaQuery.of(context).size.width,
@@ -136,7 +145,7 @@ class _SignState extends State<Sign> {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(50.0),
                                 topRight: Radius.circular(50.0)),
-                            color: Colors.white,
+                            color: ColorConstants.instance.whiteContainer,
                           ),
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -216,8 +225,10 @@ class _SignState extends State<Sign> {
                                 Padding(
                                     padding: const EdgeInsets.only(top: 40.0),
                                     child: GradientButton(
-                                      start: Theme.of(context).primaryColor,
-                                      end: Theme.of(context).primaryColor,
+                                      start:
+                                          ColorConstants.instance.primaryColor,
+                                      end: ColorConstants
+                                          .instance.secondaryColor,
                                       buttonText: 'Kayıt Ol',
                                       fontFamily: 'Roboto',
                                       fontSize: 15,
@@ -228,8 +239,10 @@ class _SignState extends State<Sign> {
                                 Padding(
                                     padding: const EdgeInsets.only(top: 10.0),
                                     child: GradientButton(
-                                      start: Colors.amber[800],
-                                      end: Colors.amber[800],
+                                      start: ColorConstants
+                                          .instance.signBackButtonSecondary,
+                                      end: ColorConstants
+                                          .instance.signBackButtonPrimary,
                                       buttonText: 'Geri',
                                       fontFamily: 'Roboto',
                                       fontSize: 15,
@@ -248,8 +261,6 @@ class _SignState extends State<Sign> {
                   ),
                 ),
               )
-            : Center(
-                child: CircularProgressIndicator(color: Colors.white),
-              ));
+            : ProgressWidget());
   }
 }

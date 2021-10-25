@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 
 class GradientButton extends StatelessWidget {
   final Function onPressed;
@@ -31,8 +32,8 @@ class GradientButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
           gradient: LinearGradient(
               colors: [this.start, this.end],
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft)),
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter)),
       child: TextButton(
         onPressed: this.onPressed,
         child: Row(
@@ -40,15 +41,18 @@ class GradientButton extends StatelessWidget {
           children: [
             FaIcon(
               this.icon,
-              color: Colors.white,
+              color: ColorConstants.instance.iconOnColor,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(this.buttonText,
-                  style: TextStyle(
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Text(this.buttonText,
+                    style: TextStyle(
                       fontFamily: this.fontFamily,
                       fontSize: this.fontSize,
-                      color: Colors.white)),
+                      color: ColorConstants.instance.textOnColor,
+                    )),
+              ),
             ),
           ],
         ),

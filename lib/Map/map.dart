@@ -1,4 +1,5 @@
 import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Providers/store_provider.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -96,78 +97,70 @@ class _MapsState extends State<Maps> {
         elevation: 0,
         centerTitle: true,
         title: TitleWidget(),
+        toolbarHeight: 70.0,
+        flexibleSpace: Container(
+          color: ColorConstants.instance.primaryColor,
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-          Theme.of(context).accentColor,
-          Theme.of(context).primaryColor
-        ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 10,
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomCenter,
-                  children: [
-                    GoogleMap(
-                      onMapCreated: (GoogleMapController controller) {
-                        changeMapMode();
-                        _controller = controller;
-                      },
-                      initialCameraPosition: CameraPosition(
-                          target: LatLng(_storeProvider.curLocLat,
-                              _storeProvider.curLocLong),
-                          zoom: 17.0),
-                      markers: Set.from(picker),
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      onTap: pick,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.0),
-                            gradient: LinearGradient(
-                                colors: [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context).primaryColor
-                                ],
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft)),
-                        child: TextButton(
-                          onPressed: decidePick,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.save,
-                                color: Colors.white,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
-                                  'Konumu Kaydet',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: 'Bebas',
-                                      fontSize: 18.0),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
+          color: ColorConstants.instance.primaryColor,
+        ),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                changeMapMode();
+                _controller = controller;
+              },
+              initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                      _storeProvider.curLocLat, _storeProvider.curLocLong),
+                  zoom: 17.0),
+              markers: Set.from(picker),
+              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              onTap: pick,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50.0),
+                    gradient: LinearGradient(
+                        colors: [
+                          ColorConstants.instance.primaryColor,
+                          ColorConstants.instance.secondaryColor,
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter)),
+                child: TextButton(
+                  onPressed: decidePick,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.save,
+                        color: ColorConstants.instance.iconOnColor,
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          'Konumu Kaydet',
+                          style: TextStyle(
+                              color: ColorConstants.instance.textOnColor,
+                              fontFamily: 'Bebas',
+                              fontSize: 18.0),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

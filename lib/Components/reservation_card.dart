@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/reservations_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -36,15 +37,7 @@ class _ReservationCardState extends State<ReservationCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50.0),
-      ),
-      clipBehavior: Clip.antiAlias,
-      color: Colors.white,
-      shadowColor: Colors.black,
-      elevation: 5.0,
       child: Container(
-        decoration: BoxDecoration(color: Colors.amber[200]),
         child: ListTile(
           title: Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -52,7 +45,7 @@ class _ReservationCardState extends State<ReservationCard> {
               'İsim-Soyisim: ${widget.reservation.reservationName}',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.amber[900],
+                color: ColorConstants.instance.primaryColor,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -66,14 +59,18 @@ class _ReservationCardState extends State<ReservationCard> {
                   child: Text(
                     'Rezerve kişi sayısı: ${widget.reservation.reservationCount.toString()}',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Theme.of(context).hintColor),
+                    style: TextStyle(
+                      color: ColorConstants.instance.hintColor,
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
                     'Rezervasyon Açıklaması: ${(widget.reservation.reservationDesc)}',
-                    style: TextStyle(color: Theme.of(context).hintColor),
+                    style: TextStyle(
+                      color: ColorConstants.instance.hintColor,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -83,8 +80,9 @@ class _ReservationCardState extends State<ReservationCard> {
                     'Başvuru Durumu: ${(widget.reservation.reservationStatus == 'waiting') ? 'Beklemede' : (widget.reservation.reservationStatus == 'approved') ? 'Onaylanmış' : (widget.reservation.reservationStatus == 'canceled') ? 'İptal edilmiş' : 'Reddedilmiş'}',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).hintColor),
+                      fontWeight: FontWeight.bold,
+                      color: ColorConstants.instance.hintColor,
+                    ),
                   ),
                 ),
                 Padding(
@@ -92,7 +90,7 @@ class _ReservationCardState extends State<ReservationCard> {
                   child: Text(
                       'Rezervasyon Saati: ${formatDate(widget.reservation.reservationTime)}',
                       style: TextStyle(
-                          color: Theme.of(context).hintColor,
+                          color: ColorConstants.instance.hintColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 15.0)),
                 ),
@@ -100,10 +98,11 @@ class _ReservationCardState extends State<ReservationCard> {
                   padding: const EdgeInsets.only(top: 15.0),
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ColorConstants.instance.whiteContainer,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: ColorConstants.instance.hintColor
+                                .withOpacity(0.5),
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: Offset(0, 3), // changes position of shadow
@@ -119,7 +118,10 @@ class _ReservationCardState extends State<ReservationCard> {
                             'Rez. Telefon: +90${widget.reservation.reservationPhone}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 15.0, color: Colors.amber[900]),
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstants.instance.primaryColor,
+                            ),
                           )),
                     ),
                   ),
@@ -135,7 +137,7 @@ class _ReservationCardState extends State<ReservationCard> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                color: Colors.green,
+                                color: ColorConstants.instance.activeColor,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(50.0))),
                             child: TextButton(
@@ -145,15 +147,21 @@ class _ReservationCardState extends State<ReservationCard> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
-                                      child: FaIcon(FontAwesomeIcons.thumbsUp,
-                                          color: Colors.white),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.thumbsUp,
+                                        color:
+                                            ColorConstants.instance.iconOnColor,
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10.0, right: 10.0),
                                       child: Text(
                                         'Onayla',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                          color: ColorConstants
+                                              .instance.textOnColor,
+                                        ),
                                       ),
                                     )
                                   ],
@@ -161,7 +169,7 @@ class _ReservationCardState extends State<ReservationCard> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                                color: Colors.red[400],
+                                color: ColorConstants.instance.inactiveColor,
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(50.0))),
                             child: TextButton(
@@ -171,15 +179,21 @@ class _ReservationCardState extends State<ReservationCard> {
                                     Padding(
                                       padding:
                                           const EdgeInsets.only(left: 10.0),
-                                      child: FaIcon(FontAwesomeIcons.thumbsDown,
-                                          color: Colors.white),
+                                      child: FaIcon(
+                                        FontAwesomeIcons.thumbsDown,
+                                        color:
+                                            ColorConstants.instance.iconOnColor,
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           left: 10.0, right: 10.0),
                                       child: Text(
                                         'Reddet',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                          color: ColorConstants
+                                              .instance.textOnColor,
+                                        ),
                                       ),
                                     )
                                   ],

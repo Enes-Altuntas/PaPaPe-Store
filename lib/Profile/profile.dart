@@ -3,6 +3,7 @@ import 'package:papape_store/Components/gradient_button.dart';
 import 'package:papape_store/Components/image_container.dart';
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
 import 'package:papape_store/Map/map.dart';
 import 'package:papape_store/Models/store_category.dart';
@@ -338,8 +339,8 @@ class _ProfileState extends State<Profile> {
     return (isLoading == false)
         ? Scaffold(
             floatingActionButton: FloatingActionButton.extended(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.amber[800],
+                foregroundColor: ColorConstants.instance.textOnColor,
+                backgroundColor: ColorConstants.instance.primaryColor,
                 onPressed: () {
                   saveStore();
                 },
@@ -355,10 +356,13 @@ class _ProfileState extends State<Profile> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
+              flexibleSpace: Container(
+                color: ColorConstants.instance.primaryColor,
+              ),
               leading: IconButton(
                 icon: Icon(
                   Icons.arrow_back,
-                  color: Colors.white,
+                  color: ColorConstants.instance.iconOnColor,
                 ),
                 onPressed: () {
                   if (_storeProvider.changed == false) {
@@ -373,8 +377,8 @@ class _ProfileState extends State<Profile> {
                         text:
                             'Değiştirdiğiniz bilgiler bulunmaktadır kaydetmeden çıkmak istediğinize emin misiniz ?',
                         showCancelBtn: true,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        confirmBtnColor: Theme.of(context).primaryColor,
+                        backgroundColor: ColorConstants.instance.primaryColor,
+                        confirmBtnColor: ColorConstants.instance.primaryColor,
                         cancelBtnText: 'Hayır',
                         onCancelBtnTap: () {
                           Navigator.of(context).pop();
@@ -396,19 +400,17 @@ class _ProfileState extends State<Profile> {
             ),
             body: Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                Theme.of(context).accentColor,
-                Theme.of(context).primaryColor
-              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+                color: ColorConstants.instance.primaryColor,
+              ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: ColorConstants.instance.whiteContainer,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(50.0),
-                            topRight: Radius.circular(50.0))),
+                            topLeft: Radius.circular(40.0),
+                            topRight: Radius.circular(40.0))),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 25.0),
                       child: SingleChildScrollView(
@@ -441,8 +443,8 @@ class _ProfileState extends State<Profile> {
                                       },
                                     )),
                                 GradientButton(
-                                    start: Theme.of(context).primaryColor,
-                                    end: Theme.of(context).accentColor,
+                                    start: ColorConstants.instance.primaryColor,
+                                    end: ColorConstants.instance.secondaryColor,
                                     buttonText: 'Konum Al',
                                     icon: Icons.add_location_alt_outlined,
                                     widthMultiplier: 0.9,
@@ -456,8 +458,10 @@ class _ProfileState extends State<Profile> {
                                     padding: const EdgeInsets.only(
                                         top: 7.0, bottom: 7.0),
                                     child: GradientButton(
-                                      start: Theme.of(context).accentColor,
-                                      end: Theme.of(context).primaryColor,
+                                      start:
+                                          ColorConstants.instance.primaryColor,
+                                      end: ColorConstants
+                                          .instance.secondaryColor,
                                       buttonText: 'Kategori Ekle',
                                       fontFamily: 'Roboto',
                                       fontSize: 15,
@@ -490,9 +494,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.number,
                                             maxLength: 10,
                                             decoration: InputDecoration(
@@ -516,9 +521,10 @@ class _ProfileState extends State<Profile> {
                                             },
                                             maxLength: 25,
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             decoration: InputDecoration(
                                                 icon:
                                                     Icon(Icons.account_balance),
@@ -540,9 +546,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             decoration: InputDecoration(
                                                 labelText: 'İşletme İsmi',
                                                 icon: Icon(
@@ -567,9 +574,10 @@ class _ProfileState extends State<Profile> {
                                             maxLines: 3,
                                             keyboardType: TextInputType.text,
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             decoration: InputDecoration(
                                                 labelText: 'İşletme Adresi',
                                                 icon: Icon(
@@ -590,9 +598,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.phone,
                                             maxLength: 10,
                                             decoration: InputDecoration(
@@ -615,9 +624,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.text,
                                             maxLength: 50,
                                             decoration: InputDecoration(
@@ -641,9 +651,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.phone,
                                             maxLength: 10,
                                             decoration: InputDecoration(
@@ -665,9 +676,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.text,
                                             maxLength: 50,
                                             decoration: InputDecoration(
@@ -690,9 +702,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.phone,
                                             maxLength: 10,
                                             decoration: InputDecoration(
@@ -714,9 +727,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.text,
                                             maxLength: 50,
                                             decoration: InputDecoration(
@@ -739,9 +753,10 @@ class _ProfileState extends State<Profile> {
                                                   .changeChanged(true);
                                             },
                                             style: TextStyle(
-                                                fontFamily: 'Roboto',
-                                                color: Theme.of(context)
-                                                    .hintColor),
+                                              fontFamily: 'Roboto',
+                                              color: ColorConstants
+                                                  .instance.hintColor,
+                                            ),
                                             keyboardType: TextInputType.phone,
                                             maxLength: 10,
                                             decoration: InputDecoration(
@@ -795,6 +810,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
               return ListTile(
                 leading: Checkbox(
                   value: widget.storeCats[index].checked,
+                  activeColor: Theme.of(context).colorScheme.primary,
                   onChanged: (value) {
                     setState(() {
                       widget.storeCats[index].checked = value;

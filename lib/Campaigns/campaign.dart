@@ -3,6 +3,7 @@ import 'package:papape_store/Components/gradient_button.dart';
 import 'package:papape_store/Components/image_container.dart';
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
@@ -130,11 +131,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
             compressQuality: 100,
             compressFormat: ImageCompressFormat.jpg,
             androidUiSettings: AndroidUiSettings(
-                toolbarTitle: 'Resmi Düzenle',
-                toolbarColor: Theme.of(context).primaryColor,
-                toolbarWidgetColor: Colors.white,
-                statusBarColor: Theme.of(context).primaryColor,
-                backgroundColor: Colors.white));
+              toolbarTitle: 'Resmi Düzenle',
+              toolbarColor: ColorConstants.instance.primaryColor,
+              toolbarWidgetColor: ColorConstants.instance.whiteContainer,
+              statusBarColor: ColorConstants.instance.primaryColor,
+              backgroundColor: ColorConstants.instance.whiteContainer,
+            ));
         setState(() {
           campaignPic = cropped;
           picDeleted = false;
@@ -301,8 +303,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
         title: '',
         text: 'Kampanyayı sonlandırmak istediğinize emin misiniz ?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -323,8 +325,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
         text:
             'Seçili kampanyayı tekrar yayınlamak, bu kampanyayı aktif kampanyanız haline getirir. Kampanyayı tekrar yayınlamak istediğinize emin misiniz?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -344,8 +346,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
         title: '',
         text: 'Kampanyayı güncellemek istediğinize emin misiniz ?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -366,8 +368,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
         text:
             'Kampanyayı kaydetmek, bu kampanyayı aktif kampanyanız haline getirir. Kampanyayı kaydetmek istediğinize emin misiniz ?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -388,8 +390,8 @@ class _CampaignSingleState extends State<CampaignSingle> {
         text:
             'Kampanyayı listeden kaldırmak, kullanıcıların verdiğiniz kampanyayı listede görememesine ve sizin bu kampanyayı yeniden yayınlayamamanıza yol açacaktır ! Kampanyayı listeden kaldırmak istediğinize emin misiniz ?',
         showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         cancelBtnText: 'Hayır',
         onCancelBtnTap: () {
           Navigator.of(context).pop();
@@ -482,366 +484,375 @@ class _CampaignSingleState extends State<CampaignSingle> {
             ),
             body: Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                Theme.of(context).accentColor,
-                Theme.of(context).primaryColor
-              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+                color: ColorConstants.instance.primaryColor,
+              ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50.0),
-                          topRight: Radius.circular(50.0))),
-                  child: (isLoading == false)
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 25.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: CustomImageContainer(
-                                    addText: 'Resim Ekle',
-                                    addable: (widget.campaignData != null &&
-                                            widget.campaignData
-                                                    .campaignStatus ==
-                                                'active')
-                                        ? false
-                                        : true,
-                                    buttonVis: picBtn,
-                                    localImage: campaignPic,
-                                    urlImage: (widget.campaignData != null)
-                                        ? widget.campaignData.campaignPicRef
-                                        : null,
-                                    onPressedAdd: () {
-                                      if (widget.campaignData != null) {
-                                        if (widget
-                                                .campaignData.campaignStatus !=
-                                            'active') {
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: ColorConstants.instance.whiteContainer,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(50.0),
+                            topRight: Radius.circular(50.0))),
+                    child: (isLoading == false)
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 25.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: CustomImageContainer(
+                                      addText: 'Resim Ekle',
+                                      addable: (widget.campaignData != null &&
+                                              widget.campaignData
+                                                      .campaignStatus ==
+                                                  'active')
+                                          ? false
+                                          : true,
+                                      buttonVis: picBtn,
+                                      localImage: campaignPic,
+                                      urlImage: (widget.campaignData != null)
+                                          ? widget.campaignData.campaignPicRef
+                                          : null,
+                                      onPressedAdd: () {
+                                        if (widget.campaignData != null) {
+                                          if (widget.campaignData
+                                                  .campaignStatus !=
+                                              'active') {
+                                            getImage();
+                                          }
+                                        } else {
                                           getImage();
                                         }
-                                      } else {
+                                      },
+                                      onPressedDelete: () {
+                                        deleteImage();
+                                      },
+                                      onPressedEdit: () {
                                         getImage();
-                                      }
-                                    },
-                                    onPressedDelete: () {
-                                      deleteImage();
-                                    },
-                                    onPressedEdit: () {
-                                      getImage();
-                                    },
+                                      },
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 40.0),
-                                  child: Form(
-                                    key: formKey,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.9,
-                                      child: Column(children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Text(
-                                            " * Kampanya başlığı, kampanyanızın en dikkat çekici kısmıdır. Kampanyanızı güzel tanımladığından emin olun!",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.amber[900],
-                                                fontFamily: 'Roboto',
-                                                fontSize: 16.0),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 40.0),
+                                    child: Form(
+                                      key: formKey,
+                                      autovalidateMode:
+                                          AutovalidateMode.onUserInteraction,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.9,
+                                        child: Column(children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Text(
+                                              " * Kampanya başlığı, kampanyanızın en dikkat çekici kısmıdır. Kampanyanızı güzel tanımladığından emin olun!",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.hintColor,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10.0),
-                                          child: TextFormField(
-                                            maxLength: 50,
-                                            validator: validateCampaignTitle,
-                                            enabled: isEnabled,
-                                            controller: _title,
-                                            decoration: InputDecoration(
-                                                labelText: 'Kampanya Başlığı',
-                                                border: OutlineInputBorder()),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: TextFormField(
+                                              maxLength: 50,
+                                              validator: validateCampaignTitle,
+                                              enabled: isEnabled,
+                                              controller: _title,
+                                              decoration: InputDecoration(
+                                                  labelText: 'Kampanya Başlığı',
+                                                  border: OutlineInputBorder()),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Text(
-                                            " * Kampanyanızı herkesin anlayabileceği şekilde açıklamanız çok önemlidir unutmayın!",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.amber[900],
-                                                fontFamily: 'Roboto',
-                                                fontSize: 16.0),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Text(
+                                              " * Kampanyanızı herkesin anlayabileceği şekilde açıklamanız çok önemlidir unutmayın!",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.hintColor,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: TextFormField(
-                                            maxLength: 255,
-                                            validator: validateCampaignDesc,
-                                            enabled: isEnabled,
-                                            keyboardType: TextInputType.text,
-                                            maxLines: 3,
-                                            controller: _desc,
-                                            decoration: InputDecoration(
-                                                labelText:
-                                                    'Kampanya Açıklaması',
-                                                border: OutlineInputBorder()),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: TextFormField(
+                                              maxLength: 255,
+                                              validator: validateCampaignDesc,
+                                              enabled: isEnabled,
+                                              keyboardType: TextInputType.text,
+                                              maxLines: 3,
+                                              controller: _desc,
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Kampanya Açıklaması',
+                                                  border: OutlineInputBorder()),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Text(
-                                            " * Kampanya anahtar sözcüğü, müşterilerinizin ödeme yaparken kampanyanızdan yararlanmak için kullanacakları sözcüktür!",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.amber[900],
-                                                fontFamily: 'Roboto',
-                                                fontSize: 16.0),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Text(
+                                              " * Kampanya anahtar sözcüğü, müşterilerinizin ödeme yaparken kampanyanızdan yararlanmak için kullanacakları sözcüktür!",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.hintColor,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: TextFormField(
-                                            validator: validateCampaignKey,
-                                            enabled: isEnabled,
-                                            controller: _key,
-                                            maxLength: 15,
-                                            decoration: InputDecoration(
-                                                labelText:
-                                                    'Kampanya Anahtar Sözcüğü',
-                                                prefix: Text('#'),
-                                                border: OutlineInputBorder()),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: TextFormField(
+                                              validator: validateCampaignKey,
+                                              enabled: isEnabled,
+                                              controller: _key,
+                                              maxLength: 15,
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Kampanya Anahtar Sözcüğü',
+                                                  prefix: Text('#'),
+                                                  border: OutlineInputBorder()),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Text(
-                                            " * Kampanyanızın hangi tarih ve saatte başlayacağını belirtmeniz gereklidir.",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.amber[900],
-                                                fontFamily: 'Roboto',
-                                                fontSize: 16.0),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Text(
+                                              " * Kampanyanızın hangi tarih ve saatte başlayacağını belirtmeniz gereklidir.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.hintColor,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0),
+                                            ),
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, bottom: 8.0),
-                                          child: TextFormField(
-                                            controller: _start,
-                                            validator: validateCampaignStart,
-                                            enabled: isEnabled,
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                                labelText:
-                                                    'Kampanya Başlangıç Tarihi',
-                                                border: OutlineInputBorder()),
-                                            onTap: () {
-                                              DatePicker.showDateTimePicker(
-                                                  context,
-                                                  showTitleActions: true,
-                                                  minTime: DateTime.now().add(
-                                                      new Duration(
-                                                          minutes: 15)),
-                                                  maxTime: DateTime(2030, 1, 1),
-                                                  onConfirm: (date) {
-                                                setState(() {
-                                                  _startDate =
-                                                      Timestamp.fromDate(date);
-                                                  _start.text =
-                                                      formatDate(_startDate);
-                                                  _finish.text = '';
-                                                });
-                                              },
-                                                  currentTime: DateTime.now()
-                                                      .add(new Duration(
-                                                          minutes: 15)),
-                                                  locale: LocaleType.tr);
-                                            },
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20.0),
-                                          child: Text(
-                                            " * Kampanyanızın hangi tarih ve saatte biteceğini belirtmeniz gereklidir.",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: Colors.amber[900],
-                                                fontFamily: 'Roboto',
-                                                fontSize: 16.0),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8.0, bottom: 10.0),
-                                          child: TextFormField(
-                                            validator: validateCampaignFinish,
-                                            controller: _finish,
-                                            enabled: isEnabled,
-                                            readOnly: true,
-                                            decoration: InputDecoration(
-                                                labelText:
-                                                    'Kampanya Bitiş Tarihi',
-                                                border: OutlineInputBorder()),
-                                            onTap: () {
-                                              if (_startDate != null) {
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0, bottom: 8.0),
+                                            child: TextFormField(
+                                              controller: _start,
+                                              validator: validateCampaignStart,
+                                              enabled: isEnabled,
+                                              readOnly: true,
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Kampanya Başlangıç Tarihi',
+                                                  border: OutlineInputBorder()),
+                                              onTap: () {
                                                 DatePicker.showDateTimePicker(
                                                     context,
                                                     showTitleActions: true,
-                                                    minTime: _startDate
-                                                        .toDate()
-                                                        .add(new Duration(
-                                                            hours: 1)),
+                                                    minTime: DateTime.now().add(
+                                                        new Duration(
+                                                            minutes: 15)),
                                                     maxTime:
-                                                        DateTime(2050, 1, 1),
+                                                        DateTime(2030, 1, 1),
                                                     onConfirm: (date) {
                                                   setState(() {
-                                                    _finishDate =
+                                                    _startDate =
                                                         Timestamp.fromDate(
                                                             date);
-                                                    _finish.text =
-                                                        formatDate(_finishDate);
+                                                    _start.text =
+                                                        formatDate(_startDate);
+                                                    _finish.text = '';
                                                   });
                                                 },
-                                                    currentTime: _startDate
-                                                        .toDate()
+                                                    currentTime: DateTime.now()
                                                         .add(new Duration(
-                                                            hours: 1)),
+                                                            minutes: 15)),
                                                     locale: LocaleType.tr);
-                                              } else {
-                                                ToastService().showWarning(
-                                                    "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
-                                                    context);
-                                              }
-                                            },
-                                          ),
-                                        ),
-                                        Visibility(
-                                            visible: saveBtn,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 20.0),
-                                              child: GradientButton(
-                                                buttonText: 'Kampanya Yayınla',
-                                                start: Theme.of(context)
-                                                    .primaryColor,
-                                                end: Theme.of(context)
-                                                    .primaryColor,
-                                                onPressed: () {
-                                                  saveYesNo();
-                                                },
-                                                fontFamily: 'Roboto',
-                                                fontSize: 15,
-                                                widthMultiplier: 0.9,
-                                                icon: FontAwesomeIcons.save,
-                                              ),
-                                            )),
-                                        Visibility(
-                                            visible: renewBtn,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 20.0, bottom: 20.0),
-                                              child: GradientButton(
-                                                start: Theme.of(context)
-                                                    .primaryColor,
-                                                end: Theme.of(context)
-                                                    .primaryColor,
-                                                buttonText: 'Kampanyayı Yinele',
-                                                icon: FontAwesomeIcons.save,
-                                                fontFamily: 'Roboto',
-                                                fontSize: 15,
-                                                onPressed: () {
-                                                  renewYesNo();
-                                                },
-                                                widthMultiplier: 0.9,
-                                              ),
-                                            )),
-                                        Visibility(
-                                            visible: deleteBtn,
-                                            child: GradientButton(
-                                              start: Theme.of(context)
-                                                  .primaryColor,
-                                              end: Theme.of(context)
-                                                  .primaryColor,
-                                              buttonText: 'Kampanyayı Sil',
-                                              icon: FontAwesomeIcons.trash,
-                                              fontFamily: 'Roboto',
-                                              fontSize: 15,
-                                              onPressed: () {
-                                                deleteYesNo();
                                               },
-                                              widthMultiplier: 0.9,
-                                            )),
-                                        Visibility(
-                                            visible: updateBtn,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 20.0),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0),
+                                            child: Text(
+                                              " * Kampanyanızın hangi tarih ve saatte biteceğini belirtmeniz gereklidir.",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.hintColor,
+                                                  fontFamily: 'Roboto',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 8.0, bottom: 10.0),
+                                            child: TextFormField(
+                                              validator: validateCampaignFinish,
+                                              controller: _finish,
+                                              enabled: isEnabled,
+                                              readOnly: true,
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Kampanya Bitiş Tarihi',
+                                                  border: OutlineInputBorder()),
+                                              onTap: () {
+                                                if (_startDate != null) {
+                                                  DatePicker.showDateTimePicker(
+                                                      context,
+                                                      showTitleActions: true,
+                                                      minTime: _startDate
+                                                          .toDate()
+                                                          .add(new Duration(
+                                                              hours: 1)),
+                                                      maxTime:
+                                                          DateTime(2050, 1, 1),
+                                                      onConfirm: (date) {
+                                                    setState(() {
+                                                      _finishDate =
+                                                          Timestamp.fromDate(
+                                                              date);
+                                                      _finish.text = formatDate(
+                                                          _finishDate);
+                                                    });
+                                                  },
+                                                      currentTime: _startDate
+                                                          .toDate()
+                                                          .add(new Duration(
+                                                              hours: 1)),
+                                                      locale: LocaleType.tr);
+                                                } else {
+                                                  ToastService().showWarning(
+                                                      "Bitiş tarihi girmeden önce başlangıç tarihi girilmelidir !",
+                                                      context);
+                                                }
+                                              },
+                                            ),
+                                          ),
+                                          Visibility(
+                                              visible: saveBtn,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.0),
+                                                child: GradientButton(
+                                                  buttonText:
+                                                      'Kampanya Yayınla',
+                                                  start: ColorConstants
+                                                      .instance.primaryColor,
+                                                  end: ColorConstants
+                                                      .instance.secondaryColor,
+                                                  onPressed: () {
+                                                    saveYesNo();
+                                                  },
+                                                  fontFamily: 'Roboto',
+                                                  fontSize: 15,
+                                                  widthMultiplier: 0.9,
+                                                  icon: FontAwesomeIcons.save,
+                                                ),
+                                              )),
+                                          Visibility(
+                                              visible: renewBtn,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.0, bottom: 20.0),
+                                                child: GradientButton(
+                                                  start: ColorConstants
+                                                      .instance.primaryColor,
+                                                  end: ColorConstants
+                                                      .instance.secondaryColor,
+                                                  buttonText:
+                                                      'Kampanyayı Yinele',
+                                                  icon: FontAwesomeIcons.save,
+                                                  fontFamily: 'Roboto',
+                                                  fontSize: 15,
+                                                  onPressed: () {
+                                                    renewYesNo();
+                                                  },
+                                                  widthMultiplier: 0.9,
+                                                ),
+                                              )),
+                                          Visibility(
+                                              visible: deleteBtn,
                                               child: GradientButton(
-                                                start: Theme.of(context)
-                                                    .primaryColor,
-                                                end: Theme.of(context)
-                                                    .primaryColor,
-                                                buttonText:
-                                                    'Kampanyayı Güncelle',
-                                                fontFamily: 'Roboto',
-                                                fontSize: 15,
-                                                icon: FontAwesomeIcons.save,
-                                                onPressed: () {
-                                                  updateYesNo();
-                                                },
-                                                widthMultiplier: 0.9,
-                                              ),
-                                            )),
-                                        Visibility(
-                                            visible: endBtn,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 20.0),
-                                              child: GradientButton(
-                                                start: Theme.of(context)
-                                                    .primaryColor,
-                                                end: Theme.of(context)
-                                                    .primaryColor,
-                                                buttonText:
-                                                    'Kampanyayı Sonlandır',
-                                                fontFamily: 'Roboto',
-                                                fontSize: 15,
+                                                start: ColorConstants
+                                                    .instance.primaryColor,
+                                                end: ColorConstants
+                                                    .instance.secondaryColor,
+                                                buttonText: 'Kampanyayı Sil',
                                                 icon: FontAwesomeIcons.trash,
+                                                fontFamily: 'Roboto',
+                                                fontSize: 15,
                                                 onPressed: () {
-                                                  removeYesNo();
+                                                  deleteYesNo();
                                                 },
                                                 widthMultiplier: 0.9,
-                                              ),
-                                            )),
-                                      ]),
+                                              )),
+                                          Visibility(
+                                              visible: updateBtn,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.0),
+                                                child: GradientButton(
+                                                  start: ColorConstants
+                                                      .instance.primaryColor,
+                                                  end: ColorConstants
+                                                      .instance.secondaryColor,
+                                                  buttonText:
+                                                      'Kampanyayı Güncelle',
+                                                  fontFamily: 'Roboto',
+                                                  fontSize: 15,
+                                                  icon: FontAwesomeIcons.save,
+                                                  onPressed: () {
+                                                    updateYesNo();
+                                                  },
+                                                  widthMultiplier: 0.9,
+                                                ),
+                                              )),
+                                          Visibility(
+                                              visible: endBtn,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 20.0),
+                                                child: GradientButton(
+                                                  start: ColorConstants
+                                                      .instance.primaryColor,
+                                                  end: ColorConstants
+                                                      .instance.secondaryColor,
+                                                  buttonText:
+                                                      'Kampanyayı Sonlandır',
+                                                  fontFamily: 'Roboto',
+                                                  fontSize: 15,
+                                                  icon: FontAwesomeIcons.trash,
+                                                  onPressed: () {
+                                                    removeYesNo();
+                                                  },
+                                                  widthMultiplier: 0.9,
+                                                ),
+                                              )),
+                                        ]),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      : Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        ),
-                ),
+                          )
+                        : ProgressWidget()),
               ),
             ),
           )

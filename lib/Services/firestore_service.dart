@@ -77,6 +77,7 @@ class FirestoreService {
       MarkerModel newMarker = MarkerModel(
         campaignStatus: 'none',
         storeCategory: store.storeCategory,
+        storeName: store.storeName,
         position: PositionModel(
             geohash: center.hash,
             geopoint: GeoPoint(store.storeLocLat, store.storeLocLong)),
@@ -117,6 +118,7 @@ class FirestoreService {
         await _db.collection('stores').doc(_uuid).set(updStore.toMap());
         await _db.collection('markers').doc(_uuid).update({
           'storeCategory': store.storeCategory,
+          'storeName': store.storeName,
           'position': PositionModel(
                   geohash: center.hash,
                   geopoint: GeoPoint(store.storeLocLat, store.storeLocLong))

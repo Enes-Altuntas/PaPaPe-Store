@@ -1,3 +1,4 @@
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,84 +15,93 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(50.0),
-      ),
-      clipBehavior: Clip.antiAlias,
-      color: Colors.white,
+    return GestureDetector(
+      onTap: widget.onTapped,
       child: Container(
-        decoration: BoxDecoration(color: Colors.amber[200]),
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: ListTile(
-            onTap: widget.onTapped,
-            title: Row(
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
               children: [
-                Flexible(
-                  child: Text(
-                    widget.product.productName,
-                    style: TextStyle(
-                        color: Colors.amber[900],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                        fontFamily: 'Roboto'),
+                ClipRRect(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 3,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                        color: ColorConstants.instance.primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(15.0))),
+                    child: (widget.product.productPicRef != null &&
+                            widget.product.productPicRef.isNotEmpty)
+                        ? Image.network(
+                            widget.product.productPicRef,
+                            fit: BoxFit.fill,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              return loadingProgress == null
+                                  ? child
+                                  : Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 15.0, bottom: 15.0),
+                                      child: Center(
+                                        child: CircularProgressIndicator(
+                                          color: ColorConstants
+                                              .instance.iconOnColor,
+                                        ),
+                                      ),
+                                    );
+                            },
+                          )
+                        : Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                'Resim Yok',
+                                style: TextStyle(
+                                  color: ColorConstants.instance.textOnColor,
+                                ),
+                              ),
+                            ),
+                          ),
                   ),
                 ),
-              ],
-            ),
-            trailing: Container(
-              width: MediaQuery.of(context).size.width / 4.5,
-              height: MediaQuery.of(context).size.height,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                  color: Colors.amber[900],
-                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              child: (widget.product.productPicRef != null &&
-                      widget.product.productPicRef.isNotEmpty)
-                  ? Image.network(
-                      widget.product.productPicRef,
-                      fit: BoxFit.fitWidth,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        return loadingProgress == null
-                            ? child
-                            : Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              );
-                      },
-                    )
-                  : Center(
-                      child: Text(
-                        'Resim Yok',
-                        style: TextStyle(color: Colors.white),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        widget.product.productName,
+                        style: TextStyle(
+                            color: ColorConstants.instance.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0,
+                            fontFamily: 'Roboto'),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-            ),
-            subtitle: Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.product.productDesc,
-                      style: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontFamily: 'Roboto')),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    child: Text(
-                      'Fiyat: ${widget.product.productPrice} TRY',
-                      style: TextStyle(
-                          color: Theme.of(context).hintColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
-                          fontFamily: 'Roboto'),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          widget.product.productDesc,
+                          style: TextStyle(fontFamily: 'Roboto'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Text(
+                          'Fiyat: ${widget.product.productPrice} TRY',
+                          style: TextStyle(
+                              color: ColorConstants.instance.primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
+                              fontFamily: 'Roboto'),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ))
+              ],
             ),
           ),
         ),

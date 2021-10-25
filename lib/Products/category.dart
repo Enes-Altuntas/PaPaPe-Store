@@ -1,5 +1,6 @@
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_category_model.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
@@ -114,19 +115,20 @@ class _CategorySingleState extends State<CategorySingle> {
               elevation: 0,
               centerTitle: true,
               title: TitleWidget(),
+              flexibleSpace: Container(
+                color: ColorConstants.instance.primaryColor,
+              ),
             ),
             body: Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                Theme.of(context).accentColor,
-                Theme.of(context).primaryColor
-              ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
+                color: ColorConstants.instance.primaryColor,
+              ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColorConstants.instance.whiteContainer,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(50.0),
                           topRight: Radius.circular(50.0))),
@@ -146,8 +148,10 @@ class _CategorySingleState extends State<CategorySingle> {
                                     " * Menü kategori sırası örnek olarak 'Çorbalar' başlığının kaçıncı sırada olacağını belirler.",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.amber[900],
+                                        color:
+                                            ColorConstants.instance.hintColor,
                                         fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
                                 ),
@@ -169,8 +173,10 @@ class _CategorySingleState extends State<CategorySingle> {
                                     " * Menü kategori adı örnek 'Çorbalar', 'Bileklikler', 'Elbiseler'",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: Colors.amber[900],
+                                        color:
+                                            ColorConstants.instance.hintColor,
                                         fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
                                 ),
@@ -196,8 +202,10 @@ class _CategorySingleState extends State<CategorySingle> {
                                             BorderRadius.circular(50.0),
                                         gradient: LinearGradient(
                                             colors: [
-                                              Theme.of(context).primaryColor,
-                                              Theme.of(context).primaryColor
+                                              ColorConstants
+                                                  .instance.primaryColor,
+                                              ColorConstants
+                                                  .instance.secondaryColor,
                                             ],
                                             begin: Alignment.centerRight,
                                             end: Alignment.centerLeft)),
@@ -213,7 +221,8 @@ class _CategorySingleState extends State<CategorySingle> {
                                                 (widget.categoryData == null)
                                                     ? Icons.save
                                                     : Icons.edit,
-                                                color: Colors.white,
+                                                color: ColorConstants
+                                                    .instance.iconOnColor,
                                               ),
                                             ),
                                             Text(
@@ -222,7 +231,8 @@ class _CategorySingleState extends State<CategorySingle> {
                                                     : "Başlığı Düzenle",
                                                 style: TextStyle(
                                                     fontSize: 15,
-                                                    color: Colors.white,
+                                                    color: ColorConstants
+                                                        .instance.textOnColor,
                                                     fontFamily: 'Roboto')),
                                           ],
                                         ),

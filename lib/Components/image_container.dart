@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 
 class CustomImageContainer extends StatefulWidget {
   final bool buttonVis;
@@ -41,21 +42,22 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50.0),
-                color: Colors.white,
-                border: Border.all(width: 2.0, color: Colors.grey)),
+                color: ColorConstants.instance.whiteContainer,
+                border: Border.all(
+                    width: 2.0, color: ColorConstants.instance.hintColor)),
             child: (this.widget.localImage != null)
                 ? Image.file(this.widget.localImage, fit: BoxFit.fitWidth)
                 : (this.widget.urlImage != null &&
                         this.widget.urlImage.isNotEmpty)
                     ? Image.network(
                         this.widget.urlImage,
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.cover,
                         loadingBuilder: (context, child, loadingProgress) {
                           return loadingProgress == null
                               ? child
                               : Center(
                                   child: CircularProgressIndicator(
-                                    color: Theme.of(context).primaryColor,
+                                    color: ColorConstants.instance.primaryColor,
                                   ),
                                 );
                         },
@@ -68,14 +70,14 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                 padding: const EdgeInsets.only(bottom: 20.0),
                                 child: Icon(
                                   Icons.upload_file,
-                                  color: Theme.of(context).primaryColor,
+                                  color: ColorConstants.instance.primaryColor,
                                   size: 50.0,
                                 ),
                               ),
                               Text(
                                 widget.addText,
                                 style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                                    color: ColorConstants.instance.primaryColor,
                                     fontFamily: 'Bebas',
                                     fontSize: 20.0),
                               ),
@@ -88,14 +90,14 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                 padding: const EdgeInsets.only(bottom: 20.0),
                                 child: FaIcon(
                                   FontAwesomeIcons.sadTear,
-                                  color: Theme.of(context).primaryColor,
+                                  color: ColorConstants.instance.primaryColor,
                                   size: 50.0,
                                 ),
                               ),
                               Text(
                                 'Resim Yok',
                                 style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
+                                    color: ColorConstants.instance.primaryColor,
                                     fontFamily: 'Bebas',
                                     fontSize: 20.0),
                               ),
@@ -116,15 +118,18 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                         borderRadius: BorderRadius.circular(50.0),
                         gradient: LinearGradient(
                             colors: [
-                              Theme.of(context).accentColor,
-                              Theme.of(context).primaryColor
+                              ColorConstants.instance.primaryColor,
+                              ColorConstants.instance.secondaryColor,
                             ],
-                            begin: Alignment.centerRight,
-                            end: Alignment.centerLeft)),
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.edit, color: Colors.white),
+                        Icon(
+                          Icons.edit,
+                          color: ColorConstants.instance.iconOnColor,
+                        ),
                       ],
                     ))),
           ),
@@ -139,15 +144,18 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                         borderRadius: BorderRadius.circular(50.0),
                         gradient: LinearGradient(
                             colors: [
-                              Theme.of(context).accentColor,
-                              Theme.of(context).primaryColor
+                              ColorConstants.instance.primaryColor,
+                              ColorConstants.instance.secondaryColor,
                             ],
-                            begin: Alignment.centerRight,
-                            end: Alignment.centerLeft)),
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.delete, color: Colors.white),
+                        Icon(
+                          Icons.delete,
+                          color: ColorConstants.instance.iconOnColor,
+                        ),
                       ],
                     ))),
           ),

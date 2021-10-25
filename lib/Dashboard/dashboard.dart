@@ -1,20 +1,21 @@
-import 'dart:ui';
-
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:papape_store/Campaigns/campaign.dart';
 import 'package:papape_store/Campaigns/campaigns.dart';
+import 'package:papape_store/Components/custom_drawer.dart';
+import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
-import 'package:papape_store/Wishes/wishes.dart';
-import 'package:papape_store/Login/login.dart';
+import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/store_model.dart';
+import 'package:papape_store/Products/category.dart';
 import 'package:papape_store/Products/products.dart';
-import 'package:papape_store/Profile/profile.dart';
 import 'package:papape_store/Providers/store_provider.dart';
 import 'package:papape_store/Reservations/reservations.dart';
-import 'package:papape_store/Services/authentication_service.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
-import 'package:cool_alert/cool_alert.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:papape_store/Wishes/wishes.dart';
 import 'package:provider/provider.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -26,37 +27,31 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
-  TabController _tabController;
+class _DashboardState extends State<Dashboard> {
+  PageController pageController = PageController();
   StoreProvider _storeProvider;
+  int _selectedIndex = 0;
   Future getUserInfo;
   bool isInit = true;
   bool isLoading = false;
-
-  exitYesNo() {
-    CoolAlert.show(
-        context: context,
-        type: CoolAlertType.warning,
-        title: '',
-        text: 'Çıkmak istediğinize emin misiniz ?',
-        showCancelBtn: true,
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
-        cancelBtnText: 'Hayır',
-        onCancelBtnTap: () {
-          Navigator.of(context).pop();
-        },
-        onConfirmBtnTap: () {
-          Navigator.of(context).pop();
-          _storeProvider.free();
-          context.read<AuthService>().signOut().then((value) {
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
-          });
-        },
-        barrierDismissible: false,
-        confirmBtnText: 'Evet');
-  }
+  List<FaIcon> items = [
+    FaIcon(
+      FontAwesomeIcons.tags,
+      color: ColorConstants.instance.iconOnColor,
+    ),
+    FaIcon(
+      FontAwesomeIcons.bookOpen,
+      color: ColorConstants.instance.iconOnColor,
+    ),
+    FaIcon(
+      FontAwesomeIcons.bullhorn,
+      color: ColorConstants.instance.iconOnColor,
+    ),
+    FaIcon(
+      FontAwesomeIcons.bell,
+      color: ColorConstants.instance.iconOnColor,
+    ),
+  ];
 
   Future<void> didChangeDependencies() async {
     if (isInit) {
@@ -73,9 +68,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setState(() {
-      _tabController = new TabController(length: 4, vsync: this);
+      _selectedIndex = widget.defPage;
     });
-    _tabController.animateTo(widget.defPage);
   }
 
   Future<Store> _getStoreInfo() async {
@@ -102,123 +96,113 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     return _store;
   }
 
+  void onTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    pageController.jumpToPage(index);
+  }
+
+  openDialog() async {
+    _storeProvider = Provider.of<StoreProvider>(context, listen: false);
+    if (_storeProvider.storeId == null) {
+      ToastService().showInfo(
+          'Kampanya yayınlamadan önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
+          context);
+      return;
+    }
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => CampaignSingle(campaignData: null)));
+  }
+
+  openCategoryDialog() async {
+    _storeProvider = Provider.of<StoreProvider>(context, listen: false);
+    if (_storeProvider.storeId == null) {
+      ToastService().showInfo(
+          'Yeni başlık eklemeden önce profil sayfasına giderek bilgilerinizi kaydetmelisiniz !',
+          context);
+      return;
+    }
+    await Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => CategorySingle(categoryData: null)))
+        .whenComplete(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Profile()));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              )),
-          elevation: 0,
-          centerTitle: true,
-          bottom: TabBar(
-            controller: _tabController,
-            labelColor: Colors.amber[700],
-            unselectedLabelColor: Colors.white,
-            labelStyle: TextStyle(
-              fontFamily: 'Bebas',
-              fontSize: 15.0,
-            ),
-            indicatorColor: Colors.transparent,
-            tabs: [
-              Tab(
-                icon: FaIcon(FontAwesomeIcons.tags),
-              ),
-              Tab(
-                icon: FaIcon(FontAwesomeIcons.bookOpen),
-              ),
-              Tab(
-                icon: FaIcon(FontAwesomeIcons.bullhorn),
-              ),
-              Tab(
-                icon: FaIcon(FontAwesomeIcons.bell),
-              ),
-            ],
-          ),
-          title: TitleWidget(),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: TextButton(
-                  onPressed: () {
-                    exitYesNo();
-                  },
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.exit_to_app,
-                        color: Colors.white,
-                      )
-                    ],
-                  )),
-            ),
-          ],
+    return Scaffold(
+      extendBody: true,
+      appBar: AppBar(
+        flexibleSpace: Container(
+          color: ColorConstants.instance.primaryColor,
         ),
-        body: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            Theme.of(context).accentColor,
-            Theme.of(context).primaryColor
-          ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
-          child: FutureBuilder(
-              future: getUserInfo,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                return (snapshot.connectionState == ConnectionState.done)
-                    ? (isLoading == false)
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      decoration: BoxDecoration(
-                                          color: Theme.of(context).accentColor,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(50.0),
-                                              topRight: Radius.circular(50.0))),
-                                      child: TabBarView(
-                                        controller: _tabController,
-                                        children: [
-                                          Campaigns(),
-                                          Menu(),
-                                          Reports(),
-                                          Reservation()
-                                        ],
-                                      )),
-                                ),
-                              ],
-                            ),
-                          )
-                        : Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          )
-                    : Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      );
-              }),
-        ),
+        elevation: 5,
+        centerTitle: true,
+        toolbarHeight: 70.0,
+        title: TitleWidget(),
       ),
+      drawer: CustomDrawer(),
+      bottomNavigationBar: CurvedNavigationBar(
+        items: items,
+        height: 60.0,
+        backgroundColor: Colors.transparent,
+        animationCurve: Curves.easeIn,
+        animationDuration: Duration(milliseconds: 500),
+        onTap: onTapped,
+        index: _selectedIndex,
+        color: ColorConstants.instance.primaryColor,
+        buttonBackgroundColor: ColorConstants.instance.primaryColor,
+      ),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        animatedIconTheme: IconThemeData(
+          color: ColorConstants.instance.iconOnColor,
+        ),
+        backgroundColor: ColorConstants.instance.primaryColor,
+        overlayColor: ColorConstants.instance.hintColor,
+        overlayOpacity: 0.8,
+        children: [
+          SpeedDialChild(
+              child: Icon(
+                Icons.add,
+                color: ColorConstants.instance.primaryColor,
+              ),
+              onTap: () {
+                openCategoryDialog();
+              },
+              backgroundColor: ColorConstants.instance.whiteContainer,
+              label: 'Menü Başlığı Ekle'),
+          SpeedDialChild(
+              child: Icon(
+                Icons.add,
+                color: ColorConstants.instance.iconOnColor,
+              ),
+              onTap: () {
+                openDialog();
+              },
+              backgroundColor: ColorConstants.instance.primaryColor,
+              label: 'Kampanya Yayınla'),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: FutureBuilder(
+          future: getUserInfo,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return (snapshot.connectionState == ConnectionState.done)
+                ? (isLoading == false)
+                    ? PageView(
+                        controller: pageController,
+                        children: [
+                          Campaigns(),
+                          Menu(),
+                          Reports(),
+                          Reservation()
+                        ],
+                      )
+                    : ProgressWidget()
+                : ProgressWidget();
+          }),
     );
   }
 }
