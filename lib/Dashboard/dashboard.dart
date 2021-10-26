@@ -146,7 +146,7 @@ class _DashboardState extends State<Dashboard> {
       drawer: const CustomDrawer(),
       bottomNavigationBar: CurvedNavigationBar(
         items: items,
-        height: 60.0,
+        height: 75.0,
         backgroundColor: Colors.transparent,
         animationCurve: Curves.easeIn,
         animationDuration: const Duration(milliseconds: 500),

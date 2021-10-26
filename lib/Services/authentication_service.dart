@@ -117,7 +117,7 @@ class AuthService {
         return UserModel.fromFirestore(value.data());
       });
     } catch (e) {
-      return e.message;
+      print(e);
     }
 
     if (_user == null) {
