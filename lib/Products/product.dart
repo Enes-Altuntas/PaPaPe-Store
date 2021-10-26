@@ -13,7 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 class ProductSingle extends StatefulWidget {
@@ -34,11 +33,9 @@ class _ProductSingleState extends State<ProductSingle> {
   final TextEditingController _productPrice = TextEditingController();
   bool isLoading = false;
   bool isInit = true;
-  bool picBtn = false;
   bool editBtn = false;
   bool saveBtn = true;
   File productPic;
-  bool picDeleted = false;
 
   saveProduct() {
     if (formKeyProd.currentState.validate()) {
@@ -63,7 +60,6 @@ class _ProductSingleState extends State<ProductSingle> {
                 _productName.text = '';
                 _productPrice.text = '';
                 productPic = null;
-                picBtn = false;
               }));
     }
   }
@@ -78,7 +74,7 @@ class _ProductSingleState extends State<ProductSingle> {
           productCatId: widget.selectedCategoryId,
           productDesc: _productDesc.text,
           productLocalImage: productPic,
-          productPicRef: (picDeleted) ? null : widget.productData.productPicRef,
+          productPicRef: widget.productData.productPicRef,
           productName: _productName.text,
           productPrice: int.parse(_productPrice.text));
       FirestoreService()
@@ -196,8 +192,6 @@ class _ProductSingleState extends State<ProductSingle> {
   deleteImage() {
     setState(() {
       productPic = null;
-      picDeleted = true;
-      picBtn = false;
     });
     if (widget.productData != null &&
         widget.productData.productPicRef != null) {
@@ -205,36 +199,52 @@ class _ProductSingleState extends State<ProductSingle> {
     }
   }
 
-  getImage() async {
+  getImage(String type) async {
     setState(() {
       isLoading = true;
     });
-    await Permission.photos.request();
-    PermissionStatus permissionStatus = await Permission.photos.status;
-    if (permissionStatus.isGranted) {
-      PickedFile image = await ImagePicker()
-          .getImage(source: ImageSource.gallery, imageQuality: 30);
-      if (image != null) {
-        File cropped = await ImageCropper.cropImage(
-            sourcePath: image.path,
-            aspectRatio: const CropAspectRatio(ratioX: 4, ratioY: 2.6),
-            compressQuality: 100,
-            compressFormat: ImageCompressFormat.jpg,
-            androidUiSettings: AndroidUiSettings(
-              toolbarTitle: 'Resmi Düzenle',
-              toolbarColor: ColorConstants.instance.primaryColor,
-              toolbarWidgetColor: ColorConstants.instance.textOnColor,
-              statusBarColor: ColorConstants.instance.primaryColor,
-              backgroundColor: ColorConstants.instance.textOnColor,
-            ));
 
-        setState(() {
-          productPic = cropped;
-          picDeleted = false;
-          picBtn = true;
-        });
+    PickedFile image;
+
+    if (type == 'gallery') {
+      try {
+        image = await ImagePicker()
+            .getImage(source: ImageSource.gallery, imageQuality: 30);
+      } catch (e) {
+        ToastService().showInfo(
+            'Galeriye erişemiyoruz, eğer izin vermediyseniz bu işlem için kameraya izin vermelisiniz !',
+            context);
+      }
+    } else if (type == 'photo') {
+      try {
+        image = await ImagePicker()
+            .getImage(source: ImageSource.camera, imageQuality: 30);
+      } catch (e) {
+        ToastService().showInfo(
+            'Kameraya erişemiyoruz, eğer izin vermediyseniz bu işlem için kameraya izin vermelisiniz !',
+            context);
       }
     }
+
+    if (image != null) {
+      File cropped = await ImageCropper.cropImage(
+          sourcePath: image.path,
+          aspectRatio: const CropAspectRatio(ratioX: 4, ratioY: 2.6),
+          compressQuality: 100,
+          compressFormat: ImageCompressFormat.jpg,
+          androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Resmi Düzenle',
+            toolbarColor: ColorConstants.instance.primaryColor,
+            toolbarWidgetColor: ColorConstants.instance.textOnColor,
+            statusBarColor: ColorConstants.instance.primaryColor,
+            backgroundColor: ColorConstants.instance.textOnColor,
+          ));
+
+      setState(() {
+        productPic = cropped;
+      });
+    }
+
     setState(() {
       isLoading = false;
     });
@@ -255,18 +265,6 @@ class _ProductSingleState extends State<ProductSingle> {
         });
       }
     }
-    if ((widget.productData != null &&
-            (widget.productData.productLocalImage != null ||
-                widget.productData.productPicRef != null)) ||
-        productPic != null) {
-      setState(() {
-        picBtn = true;
-      });
-    } else {
-      setState(() {
-        picBtn = false;
-      });
-    }
   }
 
   @override
@@ -281,197 +279,163 @@ class _ProductSingleState extends State<ProductSingle> {
                 color: ColorConstants.instance.primaryColor,
               ),
             ),
-            body: Container(
-              decoration: BoxDecoration(
-                color: ColorConstants.instance.primaryColor,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      color: ColorConstants.instance.whiteContainer,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(50.0),
-                          topRight: Radius.circular(50.0))),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
-                    child: SingleChildScrollView(
-                        child: Column(
+            body: SingleChildScrollView(
+                child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15.0),
+                  child: CustomImageContainer(
+                    localImage: productPic,
+                    onPressedAdd: (String type) {
+                      getImage(type);
+                    },
+                    onPressedDelete: () {
+                      deleteImage();
+                    },
+                    urlImage: (widget.productData != null)
+                        ? widget.productData.productPicRef
+                        : null,
+                  ),
+                ),
+                Form(
+                  key: formKeyProd,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: CustomImageContainer(
-                            addText: 'Resim Ekle',
-                            addable: true,
-                            buttonVis: picBtn,
-                            localImage: productPic,
-                            onPressedAdd: () {
-                              getImage();
-                            },
-                            onPressedDelete: () {
-                              deleteImage();
-                            },
-                            onPressedEdit: () {
-                              getImage();
-                            },
-                            urlImage: (widget.productData != null)
-                                ? widget.productData.productPicRef
-                                : null,
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün adıdır. Örnek olarak 'Ezogelin', 'Çay', 'Piercing'.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorConstants.instance.hintColor,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
                           ),
                         ),
-                        Form(
-                          key: formKeyProd,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.9,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
-                                  child: Text(
-                                    " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün adıdır. Örnek olarak 'Ezogelin', 'Çay', 'Piercing'.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color:
-                                            ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: TextFormField(
-                                    controller: _productName,
-                                    maxLength: 50,
-                                    validator: _validateProdName,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Ürün Adı',
-                                        border: OutlineInputBorder()),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
-                                  child: Text(
-                                    " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün tanımıdır. Ürününüzü açıklamanız faydalı olacaktır.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color:
-                                            ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: TextFormField(
-                                    controller: _productDesc,
-                                    keyboardType: TextInputType.text,
-                                    maxLength: 255,
-                                    maxLines: 5,
-                                    // validator: _validateProdDesc,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Ürün Tanımı',
-                                        border: OutlineInputBorder()),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
-                                  child: Text(
-                                    " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün fiyatıdır. İşletmenizde kullandığınız menü veya katalogdaki fiyatların aynılarını girmeniz, işletmeniz adına yarar sağlayacaktır.",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color:
-                                            ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: TextFormField(
-                                    controller: _productPrice,
-                                    validator: _validateProdPrice,
-                                    keyboardType: TextInputType.number,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Ürün Fiyatı',
-                                        border: OutlineInputBorder()),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: saveBtn,
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 20.0, bottom: 60.0),
-                                      child: GradientButton(
-                                        start: ColorConstants
-                                            .instance.primaryColor,
-                                        end: ColorConstants
-                                            .instance.secondaryColor,
-                                        buttonText: 'Ürün Oluştur',
-                                        icon: FontAwesomeIcons.save,
-                                        fontFamily: 'Roboto',
-                                        fontSize: 15,
-                                        onPressed: () {
-                                          saveYesNo();
-                                        },
-                                        widthMultiplier: 0.9,
-                                      )),
-                                ),
-                                Visibility(
-                                  visible: editBtn,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 20.0, bottom: 5.0),
-                                          child: GradientButton(
-                                            start: ColorConstants
-                                                .instance.primaryColor,
-                                            end: ColorConstants
-                                                .instance.secondaryColor,
-                                            buttonText: 'Ürünü Güncelle',
-                                            fontFamily: 'Roboto',
-                                            fontSize: 15,
-                                            icon: FontAwesomeIcons.save,
-                                            onPressed: () {
-                                              updateYesNo();
-                                            },
-                                            widthMultiplier: 0.9,
-                                          )),
-                                      Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 5.0, bottom: 20.0),
-                                          child: GradientButton(
-                                            start: ColorConstants
-                                                .instance.primaryColor,
-                                            end: ColorConstants
-                                                .instance.secondaryColor,
-                                            buttonText: 'Ürünü Sil',
-                                            fontFamily: 'Roboto',
-                                            fontSize: 15,
-                                            icon: FontAwesomeIcons.trash,
-                                            onPressed: () {
-                                              deleteProdYesNo();
-                                            },
-                                            widthMultiplier: 0.9,
-                                          )),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: TextFormField(
+                            controller: _productName,
+                            maxLength: 50,
+                            validator: _validateProdName,
+                            decoration: const InputDecoration(
+                                labelText: 'Ürün Adı',
+                                border: OutlineInputBorder()),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün tanımıdır. Ürününüzü açıklamanız faydalı olacaktır.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorConstants.instance.hintColor,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: TextFormField(
+                            controller: _productDesc,
+                            keyboardType: TextInputType.text,
+                            maxLength: 255,
+                            maxLines: 5,
+                            // validator: _validateProdDesc,
+                            decoration: const InputDecoration(
+                                labelText: 'Ürün Tanımı',
+                                border: OutlineInputBorder()),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            " * Ürün adı kataloğunuzdaki veya menünüzde sattığınız ürünün fiyatıdır. İşletmenizde kullandığınız menü veya katalogdaki fiyatların aynılarını girmeniz, işletmeniz adına yarar sağlayacaktır.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: ColorConstants.instance.hintColor,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: TextFormField(
+                            controller: _productPrice,
+                            validator: _validateProdPrice,
+                            keyboardType: TextInputType.number,
+                            decoration: const InputDecoration(
+                                labelText: 'Ürün Fiyatı',
+                                border: OutlineInputBorder()),
+                          ),
+                        ),
+                        Visibility(
+                          visible: saveBtn,
+                          child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, bottom: 60.0),
+                              child: GradientButton(
+                                start: ColorConstants.instance.primaryColor,
+                                end: ColorConstants.instance.secondaryColor,
+                                buttonText: 'Ürün Oluştur',
+                                icon: FontAwesomeIcons.save,
+                                fontFamily: 'Roboto',
+                                fontSize: 15,
+                                onPressed: () {
+                                  saveYesNo();
+                                },
+                                widthMultiplier: 0.9,
+                              )),
+                        ),
+                        Visibility(
+                          visible: editBtn,
+                          child: Column(
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20.0, bottom: 5.0),
+                                  child: GradientButton(
+                                    start: ColorConstants.instance.primaryColor,
+                                    end: ColorConstants.instance.secondaryColor,
+                                    buttonText: 'Ürünü Güncelle',
+                                    fontFamily: 'Roboto',
+                                    fontSize: 15,
+                                    icon: FontAwesomeIcons.save,
+                                    onPressed: () {
+                                      updateYesNo();
+                                    },
+                                    widthMultiplier: 0.9,
+                                  )),
+                              Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 5.0, bottom: 20.0),
+                                  child: GradientButton(
+                                    start: ColorConstants.instance.primaryColor,
+                                    end: ColorConstants.instance.secondaryColor,
+                                    buttonText: 'Ürünü Sil',
+                                    fontFamily: 'Roboto',
+                                    fontSize: 15,
+                                    icon: FontAwesomeIcons.trash,
+                                    onPressed: () {
+                                      deleteProdYesNo();
+                                    },
+                                    widthMultiplier: 0.9,
+                                  )),
+                            ],
                           ),
                         ),
                       ],
-                    )),
+                    ),
                   ),
                 ),
-              ),
-            ))
+              ],
+            )))
         : const ProgressWidget();
   }
 }

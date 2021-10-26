@@ -80,7 +80,11 @@ class _ReservationCardState extends State<ReservationCard> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: ColorConstants.instance.hintColor,
+                    color: (widget.reservation.reservationStatus == 'waiting')
+                        ? ColorConstants.instance.waitingColor
+                        : (widget.reservation.reservationStatus == 'approved')
+                            ? ColorConstants.instance.activeColor
+                            : ColorConstants.instance.inactiveColor,
                   ),
                 ),
               ),

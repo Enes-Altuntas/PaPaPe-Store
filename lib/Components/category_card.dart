@@ -52,7 +52,7 @@ class _CategoryCardState extends State<CategoryCard> {
                 Text(
                   widget.category.categoryName,
                   style: TextStyle(
-                    fontSize: 22.0,
+                    fontSize: 25.0,
                     fontFamily: 'Bebas',
                     color: ColorConstants.instance.primaryColor,
                   ),
@@ -62,7 +62,8 @@ class _CategoryCardState extends State<CategoryCard> {
                     GestureDetector(
                         child: Icon(
                           Icons.edit,
-                          color: ColorConstants.instance.secondaryColor,
+                          color: ColorConstants.instance.primaryColor,
+                          size: 25.0,
                         ),
                         onTap: widget.onPressedEdit),
                     Padding(
@@ -71,6 +72,7 @@ class _CategoryCardState extends State<CategoryCard> {
                         child: Icon(
                           Icons.delete,
                           color: ColorConstants.instance.inactiveColor,
+                          size: 25.0,
                         ),
                         onTap: widget.onPressedDelete,
                       ),
@@ -90,35 +92,42 @@ class _CategoryCardState extends State<CategoryCard> {
                       case true:
                         return Column(
                           children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const ClampingScrollPhysics(),
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10.0),
-                                  child: ProductCard(
-                                    onTapped: () {
-                                      setState(() {
-                                        _selectedProduct = snapshot.data[index];
-                                        _selectedCatId =
-                                            widget.category.categoryId;
-                                      });
-                                      openProductDialog();
-                                    },
-                                    product: snapshot.data[index],
-                                  ),
-                                );
-                              },
+                            SizedBox(
+                              height: 260.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                itemCount: snapshot.data.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 10.0),
+                                    child: ProductCard(
+                                      onTapped: () {
+                                        setState(() {
+                                          _selectedProduct =
+                                              snapshot.data[index];
+                                          _selectedCatId =
+                                              widget.category.categoryId;
+                                        });
+                                        openProductDialog();
+                                      },
+                                      product: snapshot.data[index],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(top: 15.0),
                               child: Container(
+                                width: MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
-                                    color: ColorConstants.instance.activeColor,
+                                    color: ColorConstants.instance.primaryColor,
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(50.0))),
-                                child: IconButton(
+                                child: TextButton(
                                     onPressed: () {
                                       setState(() {
                                         _selectedCatId =
@@ -126,23 +135,26 @@ class _CategoryCardState extends State<CategoryCard> {
                                       });
                                       openProductDialogNew();
                                     },
-                                    icon: FaIcon(FontAwesomeIcons.plus,
-                                        size: 25.0,
-                                        color: ColorConstants
-                                            .instance.iconOnColor)),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 15.0),
-                              child: Text(
-                                "'${widget.category.categoryName}' kategorisinin altına yeni ürün ekle",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 18.0,
-                                  color: ColorConstants.instance.hintColor,
-                                ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.plus,
+                                            size: 25.0,
+                                            color: ColorConstants
+                                                .instance.iconOnColor),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 15.0),
+                                          child: Text(
+                                            'Yeni Ürün Ekle',
+                                            style: TextStyle(
+                                                color: ColorConstants
+                                                    .instance.textOnColor),
+                                          ),
+                                        )
+                                      ],
+                                    )),
                               ),
                             ),
                           ],
@@ -150,42 +162,42 @@ class _CategoryCardState extends State<CategoryCard> {
                         break;
                       default:
                         return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    color: ColorConstants.instance.activeColor,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(50.0))),
-                                child: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _selectedCatId =
-                                            widget.category.categoryId;
-                                      });
-                                      openProductDialogNew();
-                                    },
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.plus,
-                                      size: 25.0,
-                                      color:
-                                          ColorConstants.instance.iconOnColor,
-                                    )),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: Text(
-                                  "'${widget.category.categoryName}' kategorisinin altına yeni ürün ekle",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 18.0,
-                                    color: ColorConstants.instance.hintColor,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 2,
+                              decoration: BoxDecoration(
+                                  color: ColorConstants.instance.primaryColor,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50.0))),
+                              child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _selectedCatId =
+                                          widget.category.categoryId;
+                                    });
+                                    openProductDialogNew();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      FaIcon(FontAwesomeIcons.plus,
+                                          size: 25.0,
+                                          color: ColorConstants
+                                              .instance.iconOnColor),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 15.0),
+                                        child: Text(
+                                          'Yeni Ürün Ekle',
+                                          style: TextStyle(
+                                              color: ColorConstants
+                                                  .instance.textOnColor),
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ),
                         );
                     }

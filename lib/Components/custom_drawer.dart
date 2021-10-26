@@ -43,20 +43,26 @@ class CustomDrawer extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             accountName: (firebaseUser.displayName != null)
-                ? Text(firebaseUser.displayName)
-                : const Text('Kullanıcı'),
+                ? Text('Hoşgeldiniz ${firebaseUser.displayName},')
+                : const Text('Hoşgeldiniz,'),
             accountEmail: Text(firebaseUser.email),
-            currentAccountPicture: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: ColorConstants.instance.whiteContainer,
-              ),
-              child: Icon(
-                Icons.person,
-                size: 50.0,
-                color: ColorConstants.instance.primaryColor,
-              ),
-            ),
+            currentAccountPicture: (firebaseUser.photoURL == null)
+                ? Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: ColorConstants.instance.whiteContainer,
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      size: 50.0,
+                      color: ColorConstants.instance.primaryColor,
+                    ),
+                  )
+                : CircleAvatar(
+                    radius: 50.0,
+                    backgroundImage: NetworkImage(firebaseUser.photoURL),
+                    backgroundColor: Colors.transparent,
+                  ),
             decoration: BoxDecoration(
                 gradient: LinearGradient(colors: [
               ColorConstants.instance.primaryColor,

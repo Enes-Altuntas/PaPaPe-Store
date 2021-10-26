@@ -1,29 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 
 class CustomImageContainer extends StatefulWidget {
-  final bool buttonVis;
-  final bool addable;
   final File localImage;
   final String urlImage;
-  final String addText;
-  final Function onPressedEdit;
-  final Function onPressedDelete;
   final Function onPressedAdd;
+  final Function onPressedDelete;
 
   const CustomImageContainer({
     Key key,
-    this.buttonVis,
-    this.addable,
-    this.onPressedAdd,
     this.onPressedDelete,
-    this.onPressedEdit,
+    this.onPressedAdd,
     this.localImage,
     this.urlImage,
-    this.addText,
   }) : super(key: key);
 
   @override
@@ -34,134 +25,105 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: AlignmentDirectional.bottomCenter, children: [
-      InkWell(
-        onTap: widget.onPressedAdd,
-        child: Container(
-            clipBehavior: Clip.antiAlias,
-            height: MediaQuery.of(context).size.height / 3.5,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                ColorConstants.instance.primaryColor,
-                ColorConstants.instance.secondaryColor,
-              ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
-              borderRadius: BorderRadius.circular(50.0),
-              color: ColorConstants.instance.primaryColor,
-            ),
-            child: (widget.localImage != null)
-                ? Image.file(widget.localImage, fit: BoxFit.cover)
-                : (widget.urlImage != null && widget.urlImage.isNotEmpty)
-                    ? Image.network(
-                        widget.urlImage,
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          return loadingProgress == null
-                              ? child
-                              : Center(
-                                  child: CircularProgressIndicator(
-                                    color: ColorConstants.instance.iconOnColor,
-                                  ),
-                                );
-                        },
-                      )
-                    : (widget.addable)
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 20.0),
-                                child: Icon(
-                                  Icons.upload_file,
+      Container(
+          clipBehavior: Clip.antiAlias,
+          height: MediaQuery.of(context).size.height / 3.5,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              ColorConstants.instance.secondaryColor,
+              ColorConstants.instance.primaryColor,
+            ], begin: Alignment.bottomCenter, end: Alignment.topCenter),
+            color: ColorConstants.instance.primaryColor,
+          ),
+          child: (widget.localImage != null)
+              ? Image.file(widget.localImage, fit: BoxFit.cover)
+              : (widget.urlImage != null && widget.urlImage.isNotEmpty)
+                  ? Image.network(
+                      widget.urlImage,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return loadingProgress == null
+                            ? child
+                            : Center(
+                                child: CircularProgressIndicator(
                                   color: ColorConstants.instance.iconOnColor,
-                                  size: 50.0,
                                 ),
-                              ),
-                              Text(
-                                widget.addText,
-                                style: TextStyle(
-                                    color: ColorConstants.instance.textOnColor,
-                                    fontFamily: 'Bebas',
-                                    fontSize: 20.0),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 20.0),
-                                child: FaIcon(
-                                  FontAwesomeIcons.sadTear,
+                              );
+                      },
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            widget.onPressedAdd('gallery');
+                          },
+                          child: Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
                                   color: ColorConstants.instance.primaryColor,
-                                  size: 50.0,
-                                ),
-                              ),
-                              Text(
-                                'Resim Yok',
-                                style: TextStyle(
-                                    color: ColorConstants.instance.primaryColor,
-                                    fontFamily: 'Bebas',
-                                    fontSize: 20.0),
-                              ),
-                            ],
-                          )),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Visibility(
-            visible: widget.buttonVis,
-            child: TextButton(
-                onPressed: widget.onPressedEdit,
+                                  border: Border.all(
+                                      width: 2.0,
+                                      color: ColorConstants
+                                          .instance.whiteContainer)),
+                              child: Icon(
+                                Icons.photo_size_select_actual_rounded,
+                                color: ColorConstants.instance.iconOnColor,
+                              )),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            widget.onPressedAdd('photo');
+                          },
+                          child: Container(
+                              height: 50.0,
+                              width: 50.0,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: ColorConstants.instance.primaryColor,
+                                  border: Border.all(
+                                      width: 2.0,
+                                      color: ColorConstants
+                                          .instance.whiteContainer)),
+                              child: Icon(
+                                Icons.camera_alt,
+                                color: ColorConstants.instance.iconOnColor,
+                              )),
+                        )
+                      ],
+                    )),
+      Padding(
+        padding: const EdgeInsets.only(bottom: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Visibility(
+              visible: (widget.localImage != null || widget.urlImage != null),
+              child: GestureDetector(
+                onTap: widget.onPressedDelete,
                 child: Container(
                     height: 50.0,
                     width: 50.0,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
+                        shape: BoxShape.circle,
                         gradient: LinearGradient(
                             colors: [
-                              ColorConstants.instance.primaryColor,
-                              ColorConstants.instance.secondaryColor,
+                              ColorConstants.instance.signBackButtonSecondary,
+                              ColorConstants.instance.signBackButtonPrimary,
                             ],
                             begin: Alignment.bottomCenter,
                             end: Alignment.topCenter)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.edit,
-                          color: ColorConstants.instance.iconOnColor,
-                        ),
-                      ],
-                    ))),
-          ),
-          Visibility(
-            visible: widget.buttonVis,
-            child: TextButton(
-                onPressed: widget.onPressedDelete,
-                child: Container(
-                    height: 50.0,
-                    width: 50.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        gradient: LinearGradient(
-                            colors: [
-                              ColorConstants.instance.primaryColor,
-                              ColorConstants.instance.secondaryColor,
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.delete,
-                          color: ColorConstants.instance.iconOnColor,
-                        ),
-                      ],
-                    ))),
-          ),
-        ],
+                    child: Icon(
+                      Icons.delete,
+                      color: ColorConstants.instance.iconOnColor,
+                    )),
+              ),
+            ),
+          ],
+        ),
       )
     ]);
   }
