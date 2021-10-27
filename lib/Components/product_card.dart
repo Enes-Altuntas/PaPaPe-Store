@@ -30,7 +30,7 @@ class _ProductCardState extends State<ProductCard> {
       onTap: _flip,
       child: TweenAnimationBuilder(
           tween: Tween<double>(begin: 0, end: angle),
-          duration: const Duration(seconds: 1),
+          duration: const Duration(milliseconds: 400),
           builder: (BuildContext context, double val, __) {
             if (val >= (pi / 2)) {
               isBack = true;
@@ -53,14 +53,36 @@ class _ProductCardState extends State<ProductCard> {
                       ? SizedBox(
                           width: MediaQuery.of(context).size.width,
                           height: MediaQuery.of(context).size.height,
-                          child: ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                                Colors.black.withOpacity(0.2),
-                                BlendMode.multiply),
-                            child: Image.network(
-                              widget.product.productPicRef,
-                              fit: BoxFit.cover,
-                            ),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            alignment: Alignment.center,
+                            children: [
+                              ColorFiltered(
+                                colorFilter: ColorFilter.mode(
+                                    Colors.black.withOpacity(0.4),
+                                    BlendMode.multiply),
+                                child: Image.network(
+                                  widget.product.productPicRef,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              Center(
+                                  child: Text(
+                                widget.product.productName,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: ColorConstants.instance.textOnColor,
+                                    fontWeight: FontWeight.bold,
+                                    shadows: const <Shadow>[
+                                      Shadow(
+                                        offset: Offset(2.0, 2.0),
+                                        blurRadius: 2.0,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                      ),
+                                    ],
+                                    fontSize: 25.0),
+                              ))
+                            ],
                           ),
                         )
                       : Transform(
@@ -93,44 +115,50 @@ class _ProductCardState extends State<ProductCard> {
                                           ),
                                         ),
                                       )),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        widget.product.productName,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: ColorConstants
-                                                .instance.waitingColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0),
+                                  SingleChildScrollView(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 40.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            widget.product.productName,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                color: ColorConstants
+                                                    .instance.waitingColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.0),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0),
+                                            child: Text(
+                                              widget.product.productDesc,
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.textOnColor,
+                                                  fontSize: 14.0),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10.0, bottom: 10.0),
+                                            child: Text(
+                                              'TRY ${widget.product.productPrice.toDouble().toString()}',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: ColorConstants
+                                                      .instance.waitingColor,
+                                                  fontSize: 18.0),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Text(
-                                          widget.product.productDesc,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: ColorConstants
-                                                  .instance.textOnColor,
-                                              fontSize: 14.0),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10.0, bottom: 10.0),
-                                        child: Text(
-                                          'TRY ${widget.product.productPrice.toString()}.00',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: ColorConstants
-                                                  .instance.waitingColor,
-                                              fontSize: 18.0),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),

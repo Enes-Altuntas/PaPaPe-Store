@@ -75,16 +75,24 @@ class _ReservationCardState extends State<ReservationCard> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  'Başvuru Durumu: ${(widget.reservation.reservationStatus == 'waiting') ? 'Beklemede' : (widget.reservation.reservationStatus == 'approved') ? 'Onaylanmış' : (widget.reservation.reservationStatus == 'canceled') ? 'İptal edilmiş' : 'Reddedilmiş'}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
                     color: (widget.reservation.reservationStatus == 'waiting')
                         ? ColorConstants.instance.waitingColor
                         : (widget.reservation.reservationStatus == 'approved')
                             ? ColorConstants.instance.activeColor
                             : ColorConstants.instance.inactiveColor,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Text(
+                      'Başvuru Durumu: ${(widget.reservation.reservationStatus == 'waiting') ? 'Beklemede' : (widget.reservation.reservationStatus == 'approved') ? 'Onaylanmış' : (widget.reservation.reservationStatus == 'canceled') ? 'İptal edilmiş' : 'Reddedilmiş'}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstants.instance.textOnColor),
+                    ),
                   ),
                 ),
               ),

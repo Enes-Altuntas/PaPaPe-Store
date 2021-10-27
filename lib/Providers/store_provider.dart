@@ -168,6 +168,8 @@ class StoreProvider with ChangeNotifier {
     _storePicRef = null;
     _storeTaxLoc = null;
     _storeTaxNo = null;
+    _curLocLat = null;
+    _curLocLong = null;
     _changed = false;
   }
 

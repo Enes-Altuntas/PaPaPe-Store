@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Login/login.dart';
 import 'package:papape_store/Profile/profile.dart';
+import 'package:papape_store/Providers/store_provider.dart';
 import 'package:papape_store/Services/authentication_service.dart';
 import 'package:provider/provider.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key key}) : super(key: key);
 
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   exitYesNo(BuildContext context) {
     CoolAlert.show(
         context: context,
@@ -25,6 +31,9 @@ class CustomDrawer extends StatelessWidget {
         },
         onConfirmBtnTap: () {
           Navigator.of(context).pop();
+          StoreProvider storeProvider =
+              Provider.of<StoreProvider>(context, listen: false);
+          storeProvider.free();
           context.read<AuthService>().signOut().then((value) {
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (context) => const Login()));

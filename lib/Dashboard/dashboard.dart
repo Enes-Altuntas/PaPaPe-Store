@@ -27,8 +27,8 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  PageController pageController = PageController();
+class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+  TabController _tabController;
   StoreProvider _storeProvider;
   int _selectedIndex = 0;
   Future getUserInfo;
@@ -69,8 +69,10 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     setState(() {
+      _tabController = TabController(length: 4, vsync: this);
       _selectedIndex = widget.defPage;
     });
+    _tabController.animateTo(_selectedIndex);
   }
 
   Future<Store> _getStoreInfo() async {
@@ -101,7 +103,7 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       _selectedIndex = index;
     });
-    pageController.jumpToPage(index);
+    _tabController.animateTo(index);
   }
 
   openDialog() async {
@@ -192,8 +194,8 @@ class _DashboardState extends State<Dashboard> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             return (snapshot.connectionState == ConnectionState.done)
                 ? (isLoading == false)
-                    ? PageView(
-                        controller: pageController,
+                    ? TabBarView(
+                        controller: _tabController,
                         children: const [
                           Campaigns(),
                           Menu(),
