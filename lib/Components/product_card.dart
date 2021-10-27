@@ -57,15 +57,24 @@ class _ProductCardState extends State<ProductCard> {
                             fit: StackFit.expand,
                             alignment: Alignment.center,
                             children: [
-                              ColorFiltered(
-                                colorFilter: ColorFilter.mode(
-                                    Colors.black.withOpacity(0.4),
-                                    BlendMode.multiply),
-                                child: Image.network(
-                                  widget.product.productPicRef,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                              (widget.product != null &&
+                                      widget.product.productPicRef != null)
+                                  ? ColorFiltered(
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.4),
+                                          BlendMode.multiply),
+                                      child: Image.network(
+                                        widget.product.productPicRef,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    )
+                                  : Container(
+                                      color:
+                                          ColorConstants.instance.primaryColor,
+                                      width: MediaQuery.of(context).size.width,
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                    ),
                               Center(
                                   child: Text(
                                 widget.product.productName,
@@ -96,7 +105,7 @@ class _ProductCardState extends State<ProductCard> {
                               child: Stack(
                                 children: [
                                   Positioned(
-                                      top: 0,
+                                      bottom: 0,
                                       right: 0,
                                       child: GestureDetector(
                                         onTap: widget.onTapped,
@@ -115,50 +124,44 @@ class _ProductCardState extends State<ProductCard> {
                                           ),
                                         ),
                                       )),
-                                  SingleChildScrollView(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 40.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            widget.product.productName,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                color: ColorConstants
-                                                    .instance.waitingColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20.0),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0),
-                                            child: Text(
-                                              widget.product.productDesc,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  color: ColorConstants
-                                                      .instance.textOnColor,
-                                                  fontSize: 14.0),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0, bottom: 10.0),
-                                            child: Text(
-                                              'TRY ${widget.product.productPrice.toDouble().toString()}',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: ColorConstants
-                                                      .instance.waitingColor,
-                                                  fontSize: 18.0),
-                                            ),
-                                          ),
-                                        ],
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.product.productName,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: ColorConstants
+                                                .instance.waitingColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.0),
                                       ),
-                                    ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                          widget.product.productDesc,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: ColorConstants
+                                                  .instance.textOnColor,
+                                              fontSize: 14.0),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10.0, bottom: 10.0),
+                                        child: Text(
+                                          'TRY ${widget.product.productPrice.toDouble().toString()}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: ColorConstants
+                                                  .instance.waitingColor,
+                                              fontSize: 18.0),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
