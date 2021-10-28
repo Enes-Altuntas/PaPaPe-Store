@@ -10,6 +10,7 @@ import 'package:papape_store/Models/store_model.dart';
 import 'package:papape_store/Products/category.dart';
 import 'package:papape_store/Products/products.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Qr/qr_scan.dart';
 import 'package:papape_store/Reservations/reservations.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
@@ -106,7 +107,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     _tabController.animateTo(index);
   }
 
-  openDialog() async {
+  openDialog() {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
       ToastService().showInfo(
@@ -114,11 +115,11 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           context);
       return;
     }
-    await Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const CampaignSingle(campaignData: null)));
   }
 
-  openCategoryDialog() async {
+  openCategoryDialog() {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
     if (_storeProvider.storeId == null) {
       ToastService().showInfo(
@@ -126,7 +127,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           context);
       return;
     }
-    await Navigator.of(context)
+    Navigator.of(context)
         .push(MaterialPageRoute(
             builder: (context) => const CategorySingle(categoryData: null)))
         .whenComplete(() {});
@@ -187,6 +188,17 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               },
               backgroundColor: ColorConstants.instance.primaryColor,
               label: 'Kampanya Yayınla'),
+          SpeedDialChild(
+              child: Icon(
+                Icons.qr_code,
+                color: ColorConstants.instance.primaryColor,
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const QrScanner()));
+              },
+              backgroundColor: ColorConstants.instance.iconOnColor,
+              label: 'QR Kod Okut'),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

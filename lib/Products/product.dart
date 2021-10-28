@@ -378,8 +378,8 @@ class _ProductSingleState extends State<ProductSingle> {
                               padding: const EdgeInsets.only(
                                   top: 20.0, bottom: 60.0),
                               child: GradientButton(
-                                start: ColorConstants.instance.primaryColor,
-                                end: ColorConstants.instance.secondaryColor,
+                                start: ColorConstants.instance.buttonDarkGold,
+                                end: ColorConstants.instance.buttonLightColor,
                                 buttonText: 'Ürün Oluştur',
                                 icon: FontAwesomeIcons.save,
                                 fontSize: 15,
@@ -397,8 +397,10 @@ class _ProductSingleState extends State<ProductSingle> {
                                   padding: const EdgeInsets.only(
                                       top: 20.0, bottom: 5.0),
                                   child: GradientButton(
-                                    start: ColorConstants.instance.primaryColor,
-                                    end: ColorConstants.instance.secondaryColor,
+                                    start:
+                                        ColorConstants.instance.buttonDarkGold,
+                                    end: ColorConstants
+                                        .instance.buttonLightColor,
                                     buttonText: 'Ürünü Güncelle',
                                     fontSize: 15,
                                     icon: FontAwesomeIcons.save,
