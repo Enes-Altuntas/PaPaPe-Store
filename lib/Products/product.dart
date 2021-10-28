@@ -311,7 +311,6 @@ class _ProductSingleState extends State<ProductSingle> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ColorConstants.instance.hintColor,
-                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0),
                           ),
@@ -334,7 +333,6 @@ class _ProductSingleState extends State<ProductSingle> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ColorConstants.instance.hintColor,
-                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0),
                           ),
@@ -359,7 +357,6 @@ class _ProductSingleState extends State<ProductSingle> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ColorConstants.instance.hintColor,
-                                fontFamily: 'Roboto',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0),
                           ),
@@ -385,7 +382,6 @@ class _ProductSingleState extends State<ProductSingle> {
                                 end: ColorConstants.instance.secondaryColor,
                                 buttonText: 'Ürün Oluştur',
                                 icon: FontAwesomeIcons.save,
-                                fontFamily: 'Roboto',
                                 fontSize: 15,
                                 onPressed: () {
                                   saveYesNo();
@@ -404,7 +400,6 @@ class _ProductSingleState extends State<ProductSingle> {
                                     start: ColorConstants.instance.primaryColor,
                                     end: ColorConstants.instance.secondaryColor,
                                     buttonText: 'Ürünü Güncelle',
-                                    fontFamily: 'Roboto',
                                     fontSize: 15,
                                     icon: FontAwesomeIcons.save,
                                     onPressed: () {
@@ -419,7 +414,6 @@ class _ProductSingleState extends State<ProductSingle> {
                                     start: ColorConstants.instance.primaryColor,
                                     end: ColorConstants.instance.secondaryColor,
                                     buttonText: 'Ürünü Sil',
-                                    fontFamily: 'Roboto',
                                     fontSize: 15,
                                     icon: FontAwesomeIcons.trash,
                                     onPressed: () {

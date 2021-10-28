@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 
-class TitleWidget extends StatelessWidget {
-  const TitleWidget({Key key}) : super(key: key);
+class AppTitleWidget extends StatelessWidget {
+  const AppTitleWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +14,12 @@ class TitleWidget extends StatelessWidget {
           TextSpan(
               text: 'My',
               style: GoogleFonts.amaticSc(
-                color: ColorConstants.instance.whiteContainer,
+                color: ColorConstants.instance.primaryColor,
               )),
           TextSpan(
               text: 'Rest',
               style: GoogleFonts.amaticSc(
-                color: ColorConstants.instance.whiteContainer,
+                color: ColorConstants.instance.primaryColor,
               )),
           TextSpan(
               text: 'App',

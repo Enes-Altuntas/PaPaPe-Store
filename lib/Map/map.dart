@@ -153,7 +153,6 @@ class _MapsState extends State<Maps> {
                           'Konumu Kaydet',
                           style: TextStyle(
                               color: ColorConstants.instance.textOnColor,
-                              fontFamily: 'Bebas',
                               fontSize: 18.0),
                         ),
                       )

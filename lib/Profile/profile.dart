@@ -346,7 +346,7 @@ class _ProfileState extends State<Profile> {
         ? Scaffold(
             floatingActionButton: FloatingActionButton.extended(
                 foregroundColor: ColorConstants.instance.textOnColor,
-                backgroundColor: ColorConstants.instance.primaryColor,
+                backgroundColor: ColorConstants.instance.textGold,
                 onPressed: () {
                   saveStore();
                 },
@@ -430,7 +430,6 @@ class _ProfileState extends State<Profile> {
                         buttonText: 'Konum Al',
                         icon: Icons.add_location_alt_outlined,
                         widthMultiplier: 0.9,
-                        fontFamily: 'Roboto',
                         fontSize: 15,
                         onPressed: () {
                           _storeProvider.changeChanged(true);
@@ -442,7 +441,6 @@ class _ProfileState extends State<Profile> {
                           start: ColorConstants.instance.primaryColor,
                           end: ColorConstants.instance.secondaryColor,
                           buttonText: 'Kategori Ekle',
-                          fontFamily: 'Roboto',
                           fontSize: 15,
                           icon: Icons.add,
                           onPressed: () {
@@ -468,7 +466,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.number,
@@ -490,7 +487,6 @@ class _ProfileState extends State<Profile> {
                                 },
                                 maxLength: 25,
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 decoration: const InputDecoration(
@@ -509,7 +505,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 decoration: const InputDecoration(
@@ -532,7 +527,6 @@ class _ProfileState extends State<Profile> {
                                 maxLines: 3,
                                 keyboardType: TextInputType.text,
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 decoration: const InputDecoration(
@@ -551,7 +545,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.phone,
@@ -573,7 +566,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.text,
@@ -594,7 +586,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.phone,
@@ -615,7 +606,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.text,
@@ -635,7 +625,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.phone,
@@ -656,7 +645,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.text,
@@ -677,7 +665,6 @@ class _ProfileState extends State<Profile> {
                                   _storeProvider.changeChanged(true);
                                 },
                                 style: TextStyle(
-                                  fontFamily: 'Roboto',
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 keyboardType: TextInputType.phone,

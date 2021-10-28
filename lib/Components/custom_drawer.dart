@@ -52,8 +52,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
         children: [
           UserAccountsDrawerHeader(
             accountName: (firebaseUser.displayName != null)
-                ? Text('Hoşgeldiniz ${firebaseUser.displayName},')
-                : const Text('Hoşgeldiniz,'),
+                ? Text(
+                    'Hoşgeldiniz ${firebaseUser.displayName},',
+                    style: TextStyle(
+                        color: ColorConstants.instance.textGold,
+                        fontWeight: FontWeight.bold),
+                  )
+                : Text(
+                    'Hoşgeldiniz,',
+                    style: TextStyle(
+                        color: ColorConstants.instance.textGold,
+                        fontWeight: FontWeight.bold),
+                  ),
             accountEmail: Text(firebaseUser.email),
             currentAccountPicture: (firebaseUser.photoURL == null)
                 ? Container(

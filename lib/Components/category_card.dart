@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Components/product_card.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_category_model.dart';
@@ -51,9 +52,8 @@ class _CategoryCardState extends State<CategoryCard> {
               children: [
                 Text(
                   widget.category.categoryName,
-                  style: TextStyle(
+                  style: GoogleFonts.bebasNeue(
                     fontSize: 25.0,
-                    fontFamily: 'Bebas',
                     color: ColorConstants.instance.primaryColor,
                   ),
                 ),
@@ -67,7 +67,7 @@ class _CategoryCardState extends State<CategoryCard> {
                         ),
                         onTap: widget.onPressedEdit),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                      padding: const EdgeInsets.only(left: 15.0),
                       child: GestureDetector(
                         child: Icon(
                           Icons.delete,
@@ -102,7 +102,8 @@ class _CategoryCardState extends State<CategoryCard> {
                                 scrollDirection: Axis.horizontal,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: const EdgeInsets.only(right: 10.0),
+                                    padding: const EdgeInsets.only(
+                                        top: 20.0, right: 10.0),
                                     child: ProductCard(
                                       onTapped: () {
                                         setState(() {
@@ -114,6 +115,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                         openProductDialog();
                                       },
                                       product: snapshot.data[index],
+                                      index: index,
                                     ),
                                   );
                                 },
@@ -124,7 +126,8 @@ class _CategoryCardState extends State<CategoryCard> {
                               child: Container(
                                 width: MediaQuery.of(context).size.width / 2,
                                 decoration: BoxDecoration(
-                                    color: ColorConstants.instance.primaryColor,
+                                    color:
+                                        ColorConstants.instance.secondaryColor,
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(50.0))),
                                 child: TextButton(
@@ -167,7 +170,7 @@ class _CategoryCardState extends State<CategoryCard> {
                             child: Container(
                               width: MediaQuery.of(context).size.width / 2,
                               decoration: BoxDecoration(
-                                  color: ColorConstants.instance.primaryColor,
+                                  color: ColorConstants.instance.secondaryColor,
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50.0))),
                               child: TextButton(

@@ -67,8 +67,7 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                   color: ColorConstants.instance.primaryColor,
                                   border: Border.all(
                                       width: 2.0,
-                                      color: ColorConstants
-                                          .instance.whiteContainer)),
+                                      color: ColorConstants.instance.textGold)),
                               child: Icon(
                                 Icons.photo_size_select_actual_rounded,
                                 color: ColorConstants.instance.iconOnColor,
@@ -86,8 +85,7 @@ class _CustomImageContainerState extends State<CustomImageContainer> {
                                   color: ColorConstants.instance.primaryColor,
                                   border: Border.all(
                                       width: 2.0,
-                                      color: ColorConstants
-                                          .instance.whiteContainer)),
+                                      color: ColorConstants.instance.textGold)),
                               child: Icon(
                                 Icons.camera_alt,
                                 color: ColorConstants.instance.iconOnColor,

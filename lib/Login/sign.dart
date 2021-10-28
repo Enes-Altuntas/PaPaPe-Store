@@ -116,7 +116,6 @@ class _SignState extends State<Sign> {
                                 text: TextSpan(
                                     style: const TextStyle(
                                         fontSize: 70.0,
-                                        fontFamily: 'Armatic',
                                         fontWeight: FontWeight.bold),
                                     children: [
                                   TextSpan(
@@ -232,7 +231,6 @@ class _SignState extends State<Sign> {
                                       end: ColorConstants
                                           .instance.secondaryColor,
                                       buttonText: 'Kayıt Ol',
-                                      fontFamily: 'Roboto',
                                       fontSize: 15,
                                       onPressed: signUp,
                                       icon: FontAwesomeIcons.save,
@@ -246,7 +244,6 @@ class _SignState extends State<Sign> {
                                       end: ColorConstants
                                           .instance.signBackButtonPrimary,
                                       buttonText: 'Geri',
-                                      fontFamily: 'Roboto',
                                       fontSize: 15,
                                       onPressed: () {
                                         Navigator.of(context).pop();

@@ -34,6 +34,7 @@ dependencies:
   geoflutterfire: ^3.0.1
   flutter_speed_dial: ^4.4.0+2
   curved_navigation_bar: ^1.0.1
+  google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -58,17 +59,3 @@ flutter:
     - assets/
     - assets/images/splash_logo.png
     - assets/images/logo.png
-
-  fonts:
-    - family: Bebas
-      fonts:
-        - asset: assets/fonts/BebasNeue-Regular.ttf
-          weight: 400
-    - family: Roboto
-      fonts:
-        - asset: assets/fonts/RobotoCondensed-Regular.ttf
-          weight: 400
-    - family: Armatic
-      fonts:
-        - asset: assets/fonts/AmaticSC-Regular.ttf
-          weight: 400

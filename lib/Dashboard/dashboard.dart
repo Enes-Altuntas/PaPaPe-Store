@@ -2,9 +2,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:papape_store/Campaigns/campaign.dart';
 import 'package:papape_store/Campaigns/campaigns.dart';
+import 'package:papape_store/Components/app_title.dart';
 import 'package:papape_store/Components/custom_drawer.dart';
 import 'package:papape_store/Components/progress.dart';
-import 'package:papape_store/Components/title.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/store_model.dart';
 import 'package:papape_store/Products/category.dart';
@@ -138,12 +138,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       extendBody: true,
       appBar: AppBar(
         flexibleSpace: Container(
-          color: ColorConstants.instance.primaryColor,
+          color: ColorConstants.instance.whiteContainer,
         ),
-        elevation: 5,
+        elevation: 0,
         centerTitle: true,
         toolbarHeight: 70.0,
-        title: const TitleWidget(),
+        title: const AppTitleWidget(),
+        iconTheme: IconThemeData(color: ColorConstants.instance.primaryColor),
       ),
       drawer: const CustomDrawer(),
       bottomNavigationBar: CurvedNavigationBar(
@@ -155,7 +156,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
         onTap: onTapped,
         index: _selectedIndex,
         color: ColorConstants.instance.primaryColor,
-        buttonBackgroundColor: ColorConstants.instance.primaryColor,
+        buttonBackgroundColor: ColorConstants.instance.textGold,
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,

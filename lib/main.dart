@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
 import 'package:papape_store/Login/login.dart';
@@ -49,12 +50,16 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges)
       ],
       child: MaterialApp(
-        title: 'PaPaPe İşletme',
+        title: 'iMyRestApp',
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
         supportedLocales: const [Locale('en', 'EN'), Locale('tr', 'TR')],
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(
+          scaffoldBackgroundColor: ColorConstants.instance.whiteContainer,
+          textTheme: GoogleFonts.robotoCondensedTextTheme(
+            Theme.of(context).textTheme,
+          ),
           cardTheme: CardTheme(
               clipBehavior: Clip.antiAlias,
               elevation: 10,

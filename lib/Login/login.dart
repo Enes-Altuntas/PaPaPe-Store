@@ -157,24 +157,18 @@ class _LoginState extends State<Login> {
                               text: TextSpan(
                                   style: const TextStyle(
                                       fontSize: 70.0,
-                                      fontFamily: 'Armatic',
                                       fontWeight: FontWeight.bold),
                                   children: [
                                 TextSpan(
-                                    text: 'Pa',
+                                    text: 'My',
                                     style: TextStyle(
                                         color: ColorConstants
-                                            .instance.inactiveColor)),
+                                            .instance.textOnColor)),
                                 TextSpan(
-                                    text: 'Pa',
+                                    text: 'Rest',
                                     style: TextStyle(
-                                        color: ColorConstants
-                                            .instance.waitingColor)),
-                                TextSpan(
-                                    text: 'Pe',
-                                    style: TextStyle(
-                                        color: ColorConstants
-                                            .instance.activeColor))
+                                        color:
+                                            ColorConstants.instance.textGold)),
                               ]))),
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -286,7 +280,6 @@ class _LoginState extends State<Login> {
                                       child: Text(
                                         'Parolamı Unuttum !',
                                         style: TextStyle(
-                                          fontFamily: 'Roboto',
                                           fontWeight: FontWeight.bold,
                                           color: ColorConstants
                                               .instance.primaryColor,
@@ -302,7 +295,6 @@ class _LoginState extends State<Login> {
                                   end: ColorConstants.instance.secondaryColor,
                                   icon: FontAwesomeIcons.signInAlt,
                                   onPressed: signIn,
-                                  fontFamily: 'Roboto',
                                   fontSize: 15,
                                   widthMultiplier: 0.9,
                                 ),
@@ -314,7 +306,6 @@ class _LoginState extends State<Login> {
                                   child: RichText(
                                     text: TextSpan(
                                         style: TextStyle(
-                                          fontFamily: 'Roboto',
                                           color:
                                               ColorConstants.instance.hintColor,
                                           fontWeight: FontWeight.bold,

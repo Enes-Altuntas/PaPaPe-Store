@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,8 +49,8 @@ class _CampaignCardState extends State<CampaignCard> {
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(colors: [
-                    ColorConstants.instance.primaryColor,
                     ColorConstants.instance.secondaryColor,
+                    ColorConstants.instance.primaryColor,
                   ], begin: Alignment.bottomCenter, end: Alignment.topCenter)),
                   child: (widget.campaign.campaignPicRef != null &&
                           widget.campaign.campaignPicRef.isNotEmpty)
@@ -65,9 +66,8 @@ class _CampaignCardState extends State<CampaignCard> {
                         }, fit: BoxFit.cover)
                       : Center(
                           child: Text('Kampanya Resmi Yok',
-                              style: TextStyle(
+                              style: GoogleFonts.anton(
                                   color: ColorConstants.instance.textOnColor,
-                                  fontFamily: 'Bebas',
                                   fontSize: 20.0)),
                         ),
                 ),
@@ -76,7 +76,7 @@ class _CampaignCardState extends State<CampaignCard> {
                     top: 20.0,
                     child: Container(
                       decoration: BoxDecoration(
-                          color: ColorConstants.instance.primaryColor,
+                          color: ColorConstants.instance.textGold,
                           borderRadius: BorderRadius.circular(50.0)),
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -93,7 +93,6 @@ class _CampaignCardState extends State<CampaignCard> {
                                   style: TextStyle(
                                       color:
                                           ColorConstants.instance.textOnColor,
-                                      fontFamily: 'Roboto',
                                       fontSize: 20)),
                             ),
                           ],
@@ -154,7 +153,6 @@ class _CampaignCardState extends State<CampaignCard> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18.0,
-                      fontFamily: 'Roboto',
                       color: ColorConstants.instance.primaryColor,
                       fontWeight: FontWeight.bold)),
             ),
@@ -194,7 +192,6 @@ class _CampaignCardState extends State<CampaignCard> {
                           style: TextStyle(
                               fontSize: 14.0,
                               color: ColorConstants.instance.textOnColor,
-                              fontFamily: 'Roboto',
                               fontWeight: FontWeight.bold)),
                     ),
                     Padding(
@@ -204,7 +201,6 @@ class _CampaignCardState extends State<CampaignCard> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 14.0,
-                              fontFamily: 'Roboto',
                               color: ColorConstants.instance.textOnColor,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -214,7 +210,6 @@ class _CampaignCardState extends State<CampaignCard> {
                           Text('#${widget.campaign.campaignKey.toUpperCase()}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Roboto',
                                 fontSize: 18.0,
                                 color: ColorConstants.instance.textOnColor,
                               )),

@@ -98,59 +98,56 @@ class _ReservationState extends State<Reservation> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15.0),
-      child: StreamBuilder<List<ReservationsModel>>(
-        stream: FirestoreService().getReservations(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.active:
-              switch (snapshot.hasData && snapshot.data.isNotEmpty) {
-                case true:
-                  return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ReservationCard(
-                            reservation: snapshot.data[index],
-                            onPressedApprove: () {
-                              setState(() {
-                                selectedReservation = snapshot.data[index];
-                              });
-                              approveReservationYesNo();
-                            },
-                            onPressedCall: () {
-                              makePhoneCall(
-                                  snapshot.data[index].reservationPhone);
-                            },
-                            onPressedReject: () {
-                              setState(() {
-                                selectedReservation = snapshot.data[index];
-                              });
-                              rejectReservationYesNo();
-                            },
-                          ));
-                    },
-                  );
-                  break;
-                default:
-                  return NotFound(
-                    notFoundIcon: FontAwesomeIcons.exclamationTriangle,
-                    notFoundIconColor: ColorConstants.instance.primaryColor,
-                    notFoundIconSize: 50,
-                    notFoundText:
-                        'Henüz işletmeniz adına herhangi bir rezervasyon bulunmamaktadır !',
-                    notFoundTextColor: ColorConstants.instance.hintColor,
-                    notFoundTextSize: 30.0,
-                  );
-              }
-              break;
-            default:
-              return const ProgressWidget();
-          }
-        },
-      ),
+    return StreamBuilder<List<ReservationsModel>>(
+      stream: FirestoreService().getReservations(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.active:
+            switch (snapshot.hasData && snapshot.data.isNotEmpty) {
+              case true:
+                return ListView.builder(
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ReservationCard(
+                          reservation: snapshot.data[index],
+                          onPressedApprove: () {
+                            setState(() {
+                              selectedReservation = snapshot.data[index];
+                            });
+                            approveReservationYesNo();
+                          },
+                          onPressedCall: () {
+                            makePhoneCall(
+                                snapshot.data[index].reservationPhone);
+                          },
+                          onPressedReject: () {
+                            setState(() {
+                              selectedReservation = snapshot.data[index];
+                            });
+                            rejectReservationYesNo();
+                          },
+                        ));
+                  },
+                );
+                break;
+              default:
+                return NotFound(
+                  notFoundIcon: FontAwesomeIcons.exclamationTriangle,
+                  notFoundIconColor: ColorConstants.instance.primaryColor,
+                  notFoundIconSize: 60,
+                  notFoundText:
+                      'Henüz işletmeniz adına herhangi bir rezervasyon bulunmamaktadır !',
+                  notFoundTextColor: ColorConstants.instance.hintColor,
+                  notFoundTextSize: 20.0,
+                );
+            }
+            break;
+          default:
+            return const ProgressWidget();
+        }
+      },
     );
   }
 }

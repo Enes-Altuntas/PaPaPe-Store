@@ -100,6 +100,7 @@ class _ReservationCardState extends State<ReservationCard> {
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
                     'Rezervasyon Saati: ${formatDate(widget.reservation.reservationTime)}',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: ColorConstants.instance.hintColor,
                         fontWeight: FontWeight.bold,

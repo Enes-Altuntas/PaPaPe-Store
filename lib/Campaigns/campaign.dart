@@ -604,7 +604,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     style: TextStyle(
                                         color:
                                             ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
@@ -629,7 +628,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     style: TextStyle(
                                         color:
                                             ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
@@ -656,7 +654,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     style: TextStyle(
                                         color:
                                             ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
@@ -682,7 +679,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     style: TextStyle(
                                         color:
                                             ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
@@ -720,7 +716,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     style: TextStyle(
                                         color:
                                             ColorConstants.instance.hintColor,
-                                        fontFamily: 'Roboto',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16.0),
                                   ),
@@ -763,13 +758,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       child: GradientButton(
                                         buttonText: 'Kampanya Yayınla',
                                         start: ColorConstants
-                                            .instance.primaryColor,
+                                            .instance.buttonDarkGold,
                                         end: ColorConstants
-                                            .instance.secondaryColor,
+                                            .instance.buttonLightColor,
                                         onPressed: () {
                                           saveYesNo();
                                         },
-                                        fontFamily: 'Roboto',
                                         fontSize: 15,
                                         widthMultiplier: 0.9,
                                         icon: FontAwesomeIcons.save,
@@ -782,12 +776,11 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                           top: 20.0, bottom: 20.0),
                                       child: GradientButton(
                                         start: ColorConstants
-                                            .instance.primaryColor,
+                                            .instance.buttonDarkGold,
                                         end: ColorConstants
-                                            .instance.secondaryColor,
+                                            .instance.buttonLightColor,
                                         buttonText: 'Kampanyayı Yinele',
                                         icon: FontAwesomeIcons.save,
-                                        fontFamily: 'Roboto',
                                         fontSize: 15,
                                         onPressed: () {
                                           renewYesNo();
@@ -804,7 +797,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                           .instance.secondaryColor,
                                       buttonText: 'Kampanyayı Sil',
                                       icon: FontAwesomeIcons.trash,
-                                      fontFamily: 'Roboto',
                                       fontSize: 15,
                                       onPressed: () {
                                         deleteYesNo();
@@ -817,11 +809,10 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                       padding: const EdgeInsets.only(top: 20.0),
                                       child: GradientButton(
                                         start: ColorConstants
-                                            .instance.primaryColor,
+                                            .instance.buttonDarkGold,
                                         end: ColorConstants
-                                            .instance.secondaryColor,
+                                            .instance.buttonLightColor,
                                         buttonText: 'Kampanyayı Güncelle',
-                                        fontFamily: 'Roboto',
                                         fontSize: 15,
                                         icon: FontAwesomeIcons.save,
                                         onPressed: () {
@@ -840,7 +831,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         end: ColorConstants
                                             .instance.secondaryColor,
                                         buttonText: 'Kampanyayı Sonlandır',
-                                        fontFamily: 'Roboto',
                                         fontSize: 15,
                                         icon: FontAwesomeIcons.trash,
                                         onPressed: () {

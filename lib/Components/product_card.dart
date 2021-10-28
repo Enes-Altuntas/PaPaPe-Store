@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 class ProductCard extends StatefulWidget {
   final Product product;
   final Function onTapped;
+  final int index;
 
-  const ProductCard({Key key, this.product, this.onTapped}) : super(key: key);
+  const ProductCard({Key key, this.product, this.onTapped, this.index})
+      : super(key: key);
 
   @override
   _ProductCardState createState() => _ProductCardState();
@@ -69,8 +71,9 @@ class _ProductCardState extends State<ProductCard> {
                                       ),
                                     )
                                   : Container(
-                                      color:
-                                          ColorConstants.instance.primaryColor,
+                                      color: (widget.index % 2 == 0)
+                                          ? ColorConstants.instance.primaryColor
+                                          : ColorConstants.instance.textGold,
                                       width: MediaQuery.of(context).size.width,
                                       height:
                                           MediaQuery.of(context).size.height,

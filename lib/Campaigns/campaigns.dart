@@ -91,12 +91,12 @@ class _CampaignsState extends State<Campaigns> {
                             notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                             notFoundIconColor:
                                 ColorConstants.instance.primaryColor,
-                            notFoundIconSize: 50,
+                            notFoundIconSize: 60,
                             notFoundText:
                                 'Şu an yayınlamış olduğunuz hiçbir kampanya bulunmamaktadır.',
                             notFoundTextColor:
                                 ColorConstants.instance.hintColor,
-                            notFoundTextSize: 30.0,
+                            notFoundTextSize: 20.0,
                           );
                       }
                       break;
