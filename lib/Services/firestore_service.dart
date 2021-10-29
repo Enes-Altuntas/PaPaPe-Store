@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:papape_store/Models/camapign_model.dart';
+import 'package:papape_store/Models/user_model.dart';
 import 'package:papape_store/Models/wishes_model.dart';
 import 'package:papape_store/Models/markers_model.dart';
 import 'package:papape_store/Models/position_model.dart';
@@ -312,6 +313,52 @@ class FirestoreService {
       return 'Kampanyanız başarıyla silinmiştir !';
     } catch (e) {
       throw 'Kampanyanız silinirken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
+    }
+  }
+
+  Future<String> scanCode(
+      String storeId, String campaignId, String userId) async {
+    UserModel user;
+
+    try {
+      user = await _db.collection('users').doc(userId).get().then((value) {
+        return UserModel.fromFirestore(value.data());
+      });
+    } catch (e) {
+      return 'Müşteri kodu bulunamadı !';
+    }
+
+    if (user.campaignCodes.contains(campaignId)) {
+      user.campaignCodes.remove(campaignId);
+      try {
+        await _db
+            .collection('users')
+            .doc(userId)
+            .update({'campaignCodes': user.campaignCodes});
+
+        Campaign scannedCampaign = await _db
+            .collection('stores')
+            .doc(storeId)
+            .collection('campaigns')
+            .doc(campaignId)
+            .get()
+            .then((value) {
+          return Campaign.fromFirestore(value.data());
+        });
+
+        await _db
+            .collection('stores')
+            .doc(storeId)
+            .collection('campaigns')
+            .doc(campaignId)
+            .update({'campaignCounter': scannedCampaign.campaignCounter + 1});
+
+        return 'Müşteri girişiniz başarıyla yapılmıştır !';
+      } catch (e) {
+        return 'Kampanya kodu bulunamadı !';
+      }
+    } else {
+      throw ('Müşterinin kampanyası bulunamamıştır !');
     }
   }
 

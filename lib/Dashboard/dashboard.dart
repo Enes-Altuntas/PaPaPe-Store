@@ -133,6 +133,18 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
         .whenComplete(() {});
   }
 
+  openQrScanner() {
+    _storeProvider = Provider.of<StoreProvider>(context, listen: false);
+    if (_storeProvider.storeId == null) {
+      ToastService().showInfo(
+          'Müşteriden gelen QR kodu okutmadan önce, işletme bilgilerinizi kayıt etmelisiniz !',
+          context);
+      return;
+    }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const QrScanner()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,8 +206,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 color: ColorConstants.instance.primaryColor,
               ),
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const QrScanner()));
+                openQrScanner();
               },
               backgroundColor: ColorConstants.instance.iconOnColor,
               label: 'QR Kod Okut'),
