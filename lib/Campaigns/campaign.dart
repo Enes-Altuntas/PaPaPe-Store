@@ -186,7 +186,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           automatedStop: false,
           campaignStatus: 'wait',
           campaignId: const Uuid().v4(),
-          campaignCounter: 0,
+          campaignUsers: [],
           campaignTitle: _title.text,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
@@ -248,7 +248,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignStart: _startDate,
           campaignLocalImage: campaignPic,
           campaignPicRef: widget.campaignData.campaignPicRef,
-          campaignCounter: widget.campaignData.campaignCounter,
+          campaignUsers: [],
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
           .renewCampaign(_campaign)
@@ -294,7 +294,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignLocalImage: campaignPic,
           campaignPicRef: widget.campaignData.campaignPicRef,
           campaignKey: _key.text.toUpperCase(),
-          campaignCounter: widget.campaignData.campaignCounter,
+          campaignUsers: [],
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()

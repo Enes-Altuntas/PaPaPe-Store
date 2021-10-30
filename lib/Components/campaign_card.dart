@@ -89,7 +89,8 @@ class _CampaignCardState extends State<CampaignCard> {
                             Padding(
                               padding: const EdgeInsets.only(left: 10.0),
                               child: Text(
-                                  widget.campaign.campaignCounter.toString(),
+                                  widget.campaign.campaignUsers.length
+                                      .toString(),
                                   style: TextStyle(
                                       color:
                                           ColorConstants.instance.textOnColor,

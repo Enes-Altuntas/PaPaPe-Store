@@ -11,6 +11,7 @@ import 'package:papape_store/Products/category.dart';
 import 'package:papape_store/Products/products.dart';
 import 'package:papape_store/Providers/store_provider.dart';
 import 'package:papape_store/Qr/qr_scan.dart';
+import 'package:papape_store/Reports/report.dart';
 import 'package:papape_store/Reservations/reservations.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
@@ -52,6 +53,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       FontAwesomeIcons.bell,
       color: ColorConstants.instance.iconOnColor,
     ),
+    FaIcon(
+      FontAwesomeIcons.chartBar,
+      color: ColorConstants.instance.iconOnColor,
+    ),
   ];
 
   @override
@@ -70,7 +75,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setState(() {
-      _tabController = TabController(length: 4, vsync: this);
+      _tabController = TabController(length: 5, vsync: this);
       _selectedIndex = widget.defPage;
     });
     _tabController.animateTo(_selectedIndex);
@@ -223,8 +228,9 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                         children: const [
                           Campaigns(),
                           Menu(),
-                          Reports(),
-                          Reservation()
+                          WishView(),
+                          Reservation(),
+                          ReportView()
                         ],
                       )
                     : const ProgressWidget()

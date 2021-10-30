@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Reports extends StatefulWidget {
-  const Reports({Key key}) : super(key: key);
+class WishView extends StatefulWidget {
+  const WishView({Key key}) : super(key: key);
 
   @override
-  _ReportsState createState() => _ReportsState();
+  _WishViewState createState() => _WishViewState();
 }
 
-class _ReportsState extends State<Reports> {
+class _WishViewState extends State<WishView> {
   makePhoneCall(userPhone) async {
     await launch("tel:+90$userPhone");
   }

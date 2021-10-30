@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:papape_store/Models/camapign_model.dart';
+import 'package:papape_store/Models/campaign_user.dart';
 import 'package:papape_store/Models/user_model.dart';
 import 'package:papape_store/Models/wishes_model.dart';
 import 'package:papape_store/Models/markers_model.dart';
@@ -346,12 +347,15 @@ class FirestoreService {
           return Campaign.fromFirestore(value.data());
         });
 
+        scannedCampaign.campaignUsers.add(CampaignUserModel(
+            scannedAt: Timestamp.fromDate(DateTime.now()), user: userId));
+
         await _db
             .collection('stores')
             .doc(storeId)
             .collection('campaigns')
             .doc(campaignId)
-            .update({'campaignCounter': scannedCampaign.campaignCounter + 1});
+            .update({'campaignUsers': scannedCampaign.campaignUsers});
 
         return 'Müşteri girişiniz başarıyla yapılmıştır !';
       } catch (e) {
