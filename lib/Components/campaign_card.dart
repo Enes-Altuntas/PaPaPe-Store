@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -66,7 +65,8 @@ class _CampaignCardState extends State<CampaignCard> {
                         }, fit: BoxFit.cover)
                       : Center(
                           child: Text('Kampanya Resmi Yok',
-                              style: GoogleFonts.anton(
+                              style: TextStyle(
+                                  fontFamily: 'Bebas',
                                   color: ColorConstants.instance.textOnColor,
                                   fontSize: 20.0)),
                         ),
@@ -196,7 +196,7 @@ class _CampaignCardState extends State<CampaignCard> {
                               fontWeight: FontWeight.bold)),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5.0),
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 15.0),
                       child: Text(
                           'Kampanya Bitiş : ${formatDate(widget.campaign.campaignFinish)}',
                           textAlign: TextAlign.center,
@@ -204,16 +204,6 @@ class _CampaignCardState extends State<CampaignCard> {
                               fontSize: 14.0,
                               color: ColorConstants.instance.textOnColor,
                               fontWeight: FontWeight.bold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child:
-                          Text('#${widget.campaign.campaignKey.toUpperCase()}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
-                                color: ColorConstants.instance.textOnColor,
-                              )),
                     ),
                   ],
                 ),

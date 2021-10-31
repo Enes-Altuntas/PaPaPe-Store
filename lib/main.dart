@@ -1,4 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
 import 'package:papape_store/Login/login.dart';
@@ -57,9 +56,6 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         theme: ThemeData(
           scaffoldBackgroundColor: ColorConstants.instance.whiteContainer,
-          textTheme: GoogleFonts.robotoCondensedTextTheme(
-            Theme.of(context).textTheme,
-          ),
           cardTheme: CardTheme(
               clipBehavior: Clip.antiAlias,
               elevation: 10,

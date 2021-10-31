@@ -12,7 +12,6 @@ class Campaign {
   final String campaignDesc;
   final String campaignId;
   final String campaignTitle;
-  final String campaignKey;
   final List<CampaignUserModel> campaignUsers;
   final Timestamp campaignStart;
   final Timestamp campaignFinish;
@@ -27,7 +26,6 @@ class Campaign {
       this.delInd,
       this.campaignDesc,
       this.campaignId,
-      this.campaignKey,
       this.campaignTitle,
       this.campaignUsers,
       this.campaignStart,
@@ -42,7 +40,6 @@ class Campaign {
         delInd = data['delInd'],
         automatedStop = data['automatedStop'],
         campaignDesc = data['campaignDesc'],
-        campaignKey = data['campaignKey'],
         campaignTitle = data['campaignTitle'],
         campaignUsers = data['campaignUsers'].map<CampaignUserModel>((value) {
           return CampaignUserModel.fromFirestore(value);
@@ -61,7 +58,6 @@ class Campaign {
       'automatedStop': automatedStop,
       'campaignDesc': campaignDesc,
       'campaignTitle': campaignTitle,
-      'campaignKey': campaignKey,
       'campaignStart': campaignStart,
       'campaignUsers': campaignUsers,
       'campaignFinish': campaignFinish,

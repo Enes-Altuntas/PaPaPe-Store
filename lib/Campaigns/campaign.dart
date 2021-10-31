@@ -29,7 +29,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss");
   final TextEditingController _desc = TextEditingController();
   final TextEditingController _title = TextEditingController();
-  final TextEditingController _key = TextEditingController();
   final TextEditingController _start = TextEditingController();
   final TextEditingController _finish = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -191,7 +190,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
           delInd: false,
-          campaignKey: _key.text.toUpperCase(),
           campaignLocalImage: campaignPic,
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
@@ -208,7 +206,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                 _finish.text = '';
                 _startDate = null;
                 _start.text = '';
-                _key.text = '';
                 campaignPic = null;
               }));
     }
@@ -243,7 +240,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignId: widget.campaignData.campaignId,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
-          campaignKey: _key.text.toUpperCase(),
           delInd: false,
           campaignStart: _startDate,
           campaignLocalImage: campaignPic,
@@ -293,7 +289,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
           delInd: false,
           campaignLocalImage: campaignPic,
           campaignPicRef: widget.campaignData.campaignPicRef,
-          campaignKey: _key.text.toUpperCase(),
           campaignUsers: [],
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
@@ -492,7 +487,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
         setState(() {
           _title.text = widget.campaignData.campaignTitle;
           _desc.text = widget.campaignData.campaignDesc;
-          _key.text = widget.campaignData.campaignKey;
           _start.text = formatDate(widget.campaignData.campaignStart);
           _finish.text = formatDate(widget.campaignData.campaignFinish);
           _startDate = widget.campaignData.campaignStart;
@@ -643,31 +637,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                     controller: _desc,
                                     decoration: const InputDecoration(
                                         labelText: 'Kampanya Açıklaması',
-                                        border: OutlineInputBorder()),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20.0),
-                                  child: Text(
-                                    " * Kampanya anahtar sözcüğü, müşterilerinizin ödeme yaparken kampanyanızdan yararlanmak için kullanacakları sözcüktür!",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color:
-                                            ColorConstants.instance.hintColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: TextFormField(
-                                    validator: validateCampaignKey,
-                                    enabled: isEnabled,
-                                    controller: _key,
-                                    maxLength: 15,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Kampanya Anahtar Sözcüğü',
-                                        prefix: Text('#'),
                                         border: OutlineInputBorder()),
                                   ),
                                 ),

@@ -1,4 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Components/product_card.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_category_model.dart';
@@ -52,7 +51,8 @@ class _CategoryCardState extends State<CategoryCard> {
               children: [
                 Text(
                   widget.category.categoryName,
-                  style: GoogleFonts.bebasNeue(
+                  style: TextStyle(
+                    fontFamily: 'Amatic',
                     fontSize: 25.0,
                     color: ColorConstants.instance.primaryColor,
                   ),

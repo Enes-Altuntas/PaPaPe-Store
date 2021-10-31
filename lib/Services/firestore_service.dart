@@ -320,6 +320,7 @@ class FirestoreService {
   Future<String> scanCode(
       String storeId, String campaignId, String userId) async {
     UserModel user;
+    String campaignCodeString = storeId + '*' + campaignId + '*' + userId;
 
     try {
       user = await _db.collection('users').doc(userId).get().then((value) {
@@ -329,8 +330,8 @@ class FirestoreService {
       return 'Müşteri kodu bulunamadı !';
     }
 
-    if (user.campaignCodes.contains(campaignId)) {
-      user.campaignCodes.remove(campaignId);
+    if (user.campaignCodes.contains(campaignCodeString)) {
+      user.campaignCodes.remove(campaignCodeString);
 
       try {
         await _db

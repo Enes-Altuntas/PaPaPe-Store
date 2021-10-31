@@ -1,7 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Components/not_found.dart';
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
@@ -174,8 +173,9 @@ class _ReportViewState extends State<ReportView> {
                                   child: Text(
                                     'Kampanyaların en çok rağbet gördüğü günler',
                                     textAlign: TextAlign.center,
-                                    style: GoogleFonts.bebasNeue(
+                                    style: TextStyle(
                                         fontSize: 20.0,
+                                        fontFamily: 'Amatic',
                                         color: ColorConstants
                                             .instance.primaryColor),
                                   ),
@@ -193,8 +193,9 @@ class _ReportViewState extends State<ReportView> {
                                   child: Text(
                                     'Kampanyaların en çok rağbet gördüğü saatler',
                                     textAlign: TextAlign.center,
-                                    style: GoogleFonts.bebasNeue(
+                                    style: TextStyle(
                                         fontSize: 20.0,
+                                        fontFamily: 'Amatic',
                                         color: ColorConstants
                                             .instance.primaryColor),
                                   ),

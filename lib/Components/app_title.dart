@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 
 class AppTitleWidget extends StatelessWidget {
@@ -13,17 +12,20 @@ class AppTitleWidget extends StatelessWidget {
             children: [
           TextSpan(
               text: 'My',
-              style: GoogleFonts.amaticSc(
+              style: TextStyle(
+                fontFamily: 'Amatic',
                 color: ColorConstants.instance.primaryColor,
               )),
           TextSpan(
               text: 'Rest',
-              style: GoogleFonts.amaticSc(
+              style: TextStyle(
+                fontFamily: 'Amatic',
                 color: ColorConstants.instance.primaryColor,
               )),
           TextSpan(
               text: 'App',
-              style: GoogleFonts.amaticSc(
+              style: TextStyle(
+                fontFamily: 'Amatic',
                 color: ColorConstants.instance.textGold,
               )),
         ]));
