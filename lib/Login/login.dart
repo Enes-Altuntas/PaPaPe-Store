@@ -160,12 +160,17 @@ class _LoginState extends State<Login> {
                                       fontWeight: FontWeight.bold),
                                   children: [
                                 TextSpan(
-                                    text: 'My',
+                                    text: 'iMy',
                                     style: TextStyle(
                                         color: ColorConstants
                                             .instance.textOnColor)),
                                 TextSpan(
                                     text: 'Rest',
+                                    style: TextStyle(
+                                        color: ColorConstants
+                                            .instance.textOnColor)),
+                                TextSpan(
+                                    text: 'App',
                                     style: TextStyle(
                                         color:
                                             ColorConstants.instance.textGold)),
