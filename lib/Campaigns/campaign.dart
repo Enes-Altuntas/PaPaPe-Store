@@ -251,7 +251,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignUsers: [],
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
-          .renewCampaign(_campaign)
+          .saveCampaign(_campaign)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))

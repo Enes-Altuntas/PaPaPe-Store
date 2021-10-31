@@ -44,9 +44,9 @@ class Campaign {
         campaignDesc = data['campaignDesc'],
         campaignKey = data['campaignKey'],
         campaignTitle = data['campaignTitle'],
-        campaignUsers = data['campaignUsers'].map((value) {
+        campaignUsers = data['campaignUsers'].map<CampaignUserModel>((value) {
           return CampaignUserModel.fromFirestore(value);
-        }),
+        }).toList(),
         campaignId = data['campaignId'],
         campaignStart = data['campaignStart'],
         campaignFinish = data['campaignFinish'],

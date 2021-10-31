@@ -232,44 +232,44 @@ class FirestoreService {
     }
   }
 
-  Future<String> renewCampaign(Campaign campaign) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+  // Future<String> renewCampaign(Campaign campaign) async {
+  //   String _userId = AuthService(FirebaseAuth.instance).getUserId();
 
-    if (campaign.campaignLocalImage != null) {
-      await savePicture(campaign.campaignLocalImage, campaign.campaignId)
-          .onError((error, stackTrace) => throw error)
-          .whenComplete(() {
-        campaign.campaignPicRef = downloadUrl;
-      });
-    }
+  //   if (campaign.campaignLocalImage != null) {
+  //     await savePicture(campaign.campaignLocalImage, campaign.campaignId)
+  //         .onError((error, stackTrace) => throw error)
+  //         .whenComplete(() {
+  //       campaign.campaignPicRef = downloadUrl;
+  //     });
+  //   }
 
-    try {
-      await _db
-          .collection('stores')
-          .doc(_userId)
-          .collection('campaigns')
-          .get()
-          .then((value) => value.docs.map((element) {
-                element.reference.update({'campaignStatus': 'inactive'});
-              }));
+  //   try {
+  //     await _db
+  //         .collection('stores')
+  //         .doc(_userId)
+  //         .collection('campaigns')
+  //         .get()
+  //         .then((value) => value.docs.map((element) {
+  //               element.reference.update({'campaignStatus': 'inactive'});
+  //             }));
 
-      await _db
-          .collection('stores')
-          .doc(_userId)
-          .collection('campaigns')
-          .doc(campaign.campaignId)
-          .set(campaign.toMap());
+  //     await _db
+  //         .collection('stores')
+  //         .doc(_userId)
+  //         .collection('campaigns')
+  //         .doc(campaign.campaignId)
+  //         .set(campaign.toMap());
 
-      await _db
-          .collection('markers')
-          .doc(_userId)
-          .update({'campaignStatus': 'wait'});
+  //     await _db
+  //         .collection('markers')
+  //         .doc(_userId)
+  //         .update({'campaignStatus': 'wait'});
 
-      return 'Kampanyanız başarıyla tekrar yayınlandı !';
-    } catch (e) {
-      throw 'Kampanyanız yayınlanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
-    }
-  }
+  //     return 'Kampanyanız başarıyla tekrar yayınlandı !';
+  //   } catch (e) {
+  //     throw 'Kampanyanız yayınlanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
+  //   }
+  // }
 
   Future<String> removeCampaign(String campaignId) async {
     String _userId = AuthService(FirebaseAuth.instance).getUserId();
@@ -331,6 +331,7 @@ class FirestoreService {
 
     if (user.campaignCodes.contains(campaignId)) {
       user.campaignCodes.remove(campaignId);
+
       try {
         await _db
             .collection('users')
@@ -357,7 +358,7 @@ class FirestoreService {
             .doc(campaignId)
             .update({'campaignUsers': scannedCampaign.campaignUsers});
 
-        return 'Müşteri girişiniz başarıyla yapılmıştır !';
+        return 'Kampanya başarıyla uygulanmıştır !';
       } catch (e) {
         return 'Kampanya kodu bulunamadı !';
       }
