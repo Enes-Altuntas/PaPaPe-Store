@@ -156,6 +156,7 @@ class _LoginState extends State<Login> {
                           child: RichText(
                               text: TextSpan(
                                   style: const TextStyle(
+                                      fontFamily: "Amatic",
                                       fontSize: 70.0,
                                       fontWeight: FontWeight.bold),
                                   children: [
@@ -293,7 +294,7 @@ class _LoginState extends State<Login> {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 50.0),
+                                padding: const EdgeInsets.only(top: 20.0),
                                 child: GradientButton(
                                   buttonText: 'Giriş Yap',
                                   start: ColorConstants.instance.primaryColor,
