@@ -116,6 +116,7 @@ class _SignState extends State<Sign> {
                                 text: TextSpan(
                                     style: const TextStyle(
                                         fontSize: 70.0,
+                                        fontFamily: "Amatic",
                                         fontWeight: FontWeight.bold),
                                     children: [
                                   TextSpan(
@@ -223,7 +224,7 @@ class _SignState extends State<Sign> {
                                   ),
                                 ),
                                 Padding(
-                                    padding: const EdgeInsets.only(top: 40.0),
+                                    padding: const EdgeInsets.only(top: 30.0),
                                     child: GradientButton(
                                       start:
                                           ColorConstants.instance.primaryColor,
