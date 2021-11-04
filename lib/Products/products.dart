@@ -118,11 +118,9 @@ class _MenuState extends State<Menu> {
                       return NotFound(
                         notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                         notFoundIconColor: ColorConstants.instance.primaryColor,
-                        notFoundIconSize: 60,
                         notFoundText:
                             'Şu an yayınlamış olduğunuz hiçbir menü başlığı bulunmamaktadır.',
                         notFoundTextColor: ColorConstants.instance.hintColor,
-                        notFoundTextSize: 20.0,
                       );
                   }
                   break;

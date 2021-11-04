@@ -136,11 +136,9 @@ class _ReservationState extends State<Reservation> {
                 return NotFound(
                   notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                   notFoundIconColor: ColorConstants.instance.primaryColor,
-                  notFoundIconSize: 60,
                   notFoundText:
                       'Henüz işletmeniz adına herhangi bir rezervasyon bulunmamaktadır !',
                   notFoundTextColor: ColorConstants.instance.hintColor,
-                  notFoundTextSize: 20.0,
                 );
             }
             break;

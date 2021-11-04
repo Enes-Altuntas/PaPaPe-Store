@@ -237,7 +237,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           automatedStop: false,
           campaignStatus: 'wait',
           campaignTitle: _title.text,
-          campaignId: widget.campaignData.campaignId,
+          campaignId: const Uuid().v4(),
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
           delInd: false,
@@ -558,6 +558,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
               elevation: 0,
               centerTitle: true,
               title: const TitleWidget(),
+              toolbarHeight: 70.0,
               flexibleSpace: Container(
                 color: ColorConstants.instance.primaryColor,
               ),

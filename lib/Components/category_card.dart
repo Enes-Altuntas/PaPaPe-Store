@@ -52,7 +52,7 @@ class _CategoryCardState extends State<CategoryCard> {
                 Text(
                   widget.category.categoryName,
                   style: TextStyle(
-                    fontFamily: 'Amatic',
+                    fontFamily: 'Bebas',
                     fontSize: 25.0,
                     color: ColorConstants.instance.primaryColor,
                   ),

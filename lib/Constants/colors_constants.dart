@@ -14,6 +14,7 @@ class ColorConstants {
 
   final primaryColor = fromHex('#2E4D2E');
   final secondaryColor = fromHex('#5C995D');
+  final thirdColor = fromHex('#375c37');
   final facebookColor = fromHex('#1877F2');
   final twitterColor = fromHex('#1D9BF0');
   final textOnColor = fromHex('#ffffff');

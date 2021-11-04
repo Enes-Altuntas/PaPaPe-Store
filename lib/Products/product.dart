@@ -273,6 +273,7 @@ class _ProductSingleState extends State<ProductSingle> {
         ? Scaffold(
             appBar: AppBar(
               elevation: 0,
+              toolbarHeight: 70.0,
               centerTitle: true,
               title: const TitleWidget(),
               flexibleSpace: Container(

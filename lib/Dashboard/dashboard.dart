@@ -181,7 +181,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
         animatedIconTheme: IconThemeData(
           color: ColorConstants.instance.iconOnColor,
         ),
-        backgroundColor: ColorConstants.instance.primaryColor,
+        backgroundColor: ColorConstants.instance.textGold,
         overlayColor: ColorConstants.instance.hintColor,
         overlayOpacity: 0.8,
         children: [

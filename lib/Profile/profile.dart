@@ -362,6 +362,7 @@ class _ProfileState extends State<Profile> {
             appBar: AppBar(
               elevation: 0,
               centerTitle: true,
+              toolbarHeight: 70.0,
               flexibleSpace: Container(
                 color: ColorConstants.instance.primaryColor,
               ),

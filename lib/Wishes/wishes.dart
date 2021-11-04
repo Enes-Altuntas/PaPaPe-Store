@@ -49,11 +49,9 @@ class _WishViewState extends State<WishView> {
                   return NotFound(
                     notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                     notFoundIconColor: ColorConstants.instance.primaryColor,
-                    notFoundIconSize: 60,
                     notFoundText:
                         'Henüz işletmeniz adına hazırlanmış dilek veya şikayet bulunmamaktadır !',
                     notFoundTextColor: ColorConstants.instance.hintColor,
-                    notFoundTextSize: 20.0,
                   );
               }
               break;

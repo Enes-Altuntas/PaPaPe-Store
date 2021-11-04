@@ -49,7 +49,7 @@ class _ProductCardState extends State<ProductCard> {
                   clipBehavior: Clip.antiAlias,
                   width: 300,
                   decoration: BoxDecoration(
-                      color: ColorConstants.instance.primaryColor,
+                      color: ColorConstants.instance.thirdColor,
                       borderRadius: BorderRadius.circular(20.0)),
                   child: (isBack == false)
                       ? SizedBox(
@@ -72,7 +72,7 @@ class _ProductCardState extends State<ProductCard> {
                                     )
                                   : Container(
                                       color: (widget.index % 2 == 0)
-                                          ? ColorConstants.instance.primaryColor
+                                          ? ColorConstants.instance.thirdColor
                                           : ColorConstants.instance.textGold,
                                       width: MediaQuery.of(context).size.width,
                                       height:

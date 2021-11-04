@@ -113,6 +113,7 @@ class _CategorySingleState extends State<CategorySingle> {
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
               elevation: 0,
+              toolbarHeight: 70.0,
               centerTitle: true,
               title: const AppTitleWidget(),
               iconTheme:

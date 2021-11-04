@@ -175,7 +175,7 @@ class _ReportViewState extends State<ReportView> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 20.0,
-                                        fontFamily: 'Amatic',
+                                        fontFamily: 'Bebas',
                                         color: ColorConstants
                                             .instance.primaryColor),
                                   ),
@@ -195,7 +195,7 @@ class _ReportViewState extends State<ReportView> {
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 20.0,
-                                        fontFamily: 'Amatic',
+                                        fontFamily: 'Bebas',
                                         color: ColorConstants
                                             .instance.primaryColor),
                                   ),
@@ -230,12 +230,10 @@ class _ReportViewState extends State<ReportView> {
                             notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                             notFoundIconColor:
                                 ColorConstants.instance.primaryColor,
-                            notFoundIconSize: 60,
                             notFoundText:
                                 'Şu an yayınlamış olduğunuz hiçbir kampanya bulunmamaktadır.',
                             notFoundTextColor:
                                 ColorConstants.instance.hintColor,
-                            notFoundTextSize: 20.0,
                           );
                       }
                       break;
