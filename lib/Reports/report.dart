@@ -32,7 +32,7 @@ class _ReportViewState extends State<ReportView> {
       for (var element in campaigns) {
         for (var campaignUser in element.campaignUsers) {
           if (campaignUser.scannedAt.toDate().weekday == i) {
-            dayCounter = dayCounter + element.campaignUsers.length;
+            dayCounter = dayCounter + 1;
           }
         }
       }

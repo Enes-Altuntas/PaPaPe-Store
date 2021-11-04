@@ -3,7 +3,7 @@ description: PaPaPe İşletme Uygulaması.
 
 publish_to: 'none'
 
-version: 0.1.0+44
+version: 0.1.0+45
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

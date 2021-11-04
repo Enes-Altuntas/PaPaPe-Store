@@ -339,29 +339,20 @@ class FirestoreService {
             .doc(userId)
             .update({'campaignCodes': user.campaignCodes});
 
-        Campaign scannedCampaign = await _db
-            .collection('stores')
+        await FirebaseFirestore.instance
+            .collection("stores")
             .doc(storeId)
             .collection('campaigns')
             .doc(campaignId)
-            .get()
-            .then((value) {
-          return Campaign.fromFirestore(value.data());
+            .update({
+          "campaignUsers": FieldValue.arrayUnion([
+            {"user": userId, "scannedAt": Timestamp.fromDate(DateTime.now())}
+          ])
         });
-
-        scannedCampaign.campaignUsers.add(CampaignUserModel(
-            scannedAt: Timestamp.fromDate(DateTime.now()), user: userId));
-
-        await _db
-            .collection('stores')
-            .doc(storeId)
-            .collection('campaigns')
-            .doc(campaignId)
-            .update({'campaignUsers': scannedCampaign.campaignUsers});
 
         return 'Kampanya başarıyla uygulanmıştır !';
       } catch (e) {
-        return 'Kampanya kodu bulunamadı !';
+        throw 'Kampanya kodu bulunamadı !';
       }
     } else {
       throw ('Müşterinin kampanyası bulunamamıştır !');
