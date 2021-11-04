@@ -124,7 +124,8 @@ class AuthService {
       UserModel newUser = UserModel(
           iToken: await FirebaseMessaging.instance.getToken(),
           userId: _firebaseAuth.currentUser.uid,
-          favorites: []);
+          favorites: [],
+          campaignCodes: []);
 
       await _db
           .collection('users')
