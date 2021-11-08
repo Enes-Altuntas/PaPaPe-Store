@@ -6,6 +6,7 @@ import 'package:papape_store/Models/product_category_model.dart';
 import 'package:papape_store/Models/product_model.dart';
 import 'package:papape_store/Products/category.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -26,6 +27,13 @@ class _MenuState extends State<Menu> {
   List<Product> products;
   bool _isLoading = false;
   ProductCategory _selectedCategory;
+  UserProvider _userProvider;
+
+  @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
+  }
 
   openCategoryDialog() async {
     _storeProvider = Provider.of<StoreProvider>(context, listen: false);
@@ -72,7 +80,7 @@ class _MenuState extends State<Menu> {
       _isLoading = true;
     });
     FirestoreService()
-        .removeCategory(category.categoryId)
+        .removeCategory(_userProvider.storeId, category.categoryId)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -85,7 +93,8 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return (_isLoading == false)
         ? StreamBuilder<List<ProductCategory>>(
-            stream: FirestoreService().getProductCategories(),
+            stream:
+                FirestoreService().getProductCategories(_userProvider.storeId),
             builder: (context, snapshot) {
               category = snapshot.data;
               switch (snapshot.connectionState) {
@@ -119,7 +128,7 @@ class _MenuState extends State<Menu> {
                         notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                         notFoundIconColor: ColorConstants.instance.primaryColor,
                         notFoundText:
-                            'Şu an yayınlamış olduğunuz hiçbir menü başlığı bulunmamaktadır.',
+                            'Şu an menünüzde yayınlanmış hiç bir ürün bulunmamaktadır.',
                         notFoundTextColor: ColorConstants.instance.hintColor,
                       );
                   }

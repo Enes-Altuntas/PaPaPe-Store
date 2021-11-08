@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:papape_store/Components/not_found.dart';
 import 'package:papape_store/Components/progress.dart';
+import 'package:papape_store/Components/title.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
 import 'package:papape_store/Models/chart_day_model.dart';
 import 'package:papape_store/Models/chart_hour_model.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
+import 'package:provider/provider.dart';
 
 class ReportView extends StatefulWidget {
   const ReportView({Key key}) : super(key: key);
@@ -22,6 +25,7 @@ class _ReportViewState extends State<ReportView> {
   List<HourChart> _hourData = [];
   List<charts.Series<DayChart, String>> _chartDayData = [];
   List<charts.Series<HourChart, String>> _chartHourData = [];
+  UserProvider _userProvider;
 
   void prepareDayData(List<Campaign> campaigns) {
     _dayData = [];
@@ -151,12 +155,27 @@ class _ReportViewState extends State<ReportView> {
   }
 
   @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return (isLoading == false)
-        ? Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: StreamBuilder<List<Campaign>>(
-                stream: FirestoreService().getStoreCampaigns(),
+        ? Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              centerTitle: true,
+              toolbarHeight: 70.0,
+              flexibleSpace: Container(
+                color: ColorConstants.instance.primaryColor,
+              ),
+              title: const TitleWidget(),
+            ),
+            body: StreamBuilder<List<Campaign>>(
+                stream:
+                    FirestoreService().getStoreCampaigns(_userProvider.storeId),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.active:

@@ -3,12 +3,14 @@ import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/reservation_card.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/reservations_model.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 class Reservation extends StatefulWidget {
   const Reservation({Key key}) : super(key: key);
@@ -21,6 +23,7 @@ class _ReservationState extends State<Reservation> {
   bool isLoading = false;
   bool btnVis = true;
   ReservationsModel selectedReservation;
+  UserProvider _userProvider;
 
   makePhoneCall(storePhone) async {
     await launch("tel:+90$storePhone");
@@ -97,9 +100,15 @@ class _ReservationState extends State<Reservation> {
   }
 
   @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<ReservationsModel>>(
-      stream: FirestoreService().getReservations(),
+      stream: FirestoreService().getReservations(_userProvider.storeId),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.active:
@@ -137,7 +146,7 @@ class _ReservationState extends State<Reservation> {
                   notFoundIcon: FontAwesomeIcons.exclamationTriangle,
                   notFoundIconColor: ColorConstants.instance.primaryColor,
                   notFoundText:
-                      'Henüz işletmeniz adına herhangi bir rezervasyon bulunmamaktadır !',
+                      'Şu an işletmeniz adına yayınlanmış hiç bir rezervasyon bulunmamaktadır.',
                   notFoundTextColor: ColorConstants.instance.hintColor,
                 );
             }

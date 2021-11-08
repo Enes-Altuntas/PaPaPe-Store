@@ -20,12 +20,6 @@ class AppTitleWidget extends StatelessWidget {
               text: 'Rest',
               style: TextStyle(
                 fontFamily: 'Amatic',
-                color: ColorConstants.instance.primaryColor,
-              )),
-          TextSpan(
-              text: 'App',
-              style: TextStyle(
-                fontFamily: 'Amatic',
                 color: ColorConstants.instance.textGold,
               )),
         ]));

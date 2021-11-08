@@ -1,3 +1,5 @@
+import 'package:papape_store/Models/employee_model.dart';
+import 'package:papape_store/Models/store_model.dart';
 import 'package:papape_store/Models/user_model.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,8 +17,18 @@ class AuthService {
 
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
 
-  getUserId() {
-    return _firebaseAuth.currentUser.uid;
+  Future<UserModel> get userInformation async {
+    return await _db
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .get()
+        .then((value) {
+      return UserModel.fromFirestore(value.data());
+    }).onError((error, stackTrace) => null);
+  }
+
+  getInstance() {
+    return _firebaseAuth;
   }
 
   // Giriş
@@ -40,34 +52,35 @@ class AuthService {
   }
 
   Future googleLogin() async {
-    try {
-      GoogleSignInAccount user = await _googleSignIn.signIn();
-      if (user == null) {
-        return;
-      } else {
-        final googleAuth = await user.authentication;
+    GoogleSignInAccount user = await _googleSignIn.signIn();
+    if (user == null) {
+      return;
+    } else {
+      final googleAuth = await user.authentication;
 
-        final credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
-        await _firebaseAuth.signInWithCredential(credential);
+      await _firebaseAuth.signInWithCredential(credential);
 
-        await saveUser();
-      }
-    } catch (e) {
-      throw 'Sistemde bir hata meydana geldi !';
+      String role = "owner";
+      await saveUser(_firebaseAuth.currentUser.displayName, role)
+          .onError((error, stackTrace) {
+        throw error;
+      });
     }
   }
 
   // Kayıt
-  Future<String> signUp({String email, String password}) async {
+  Future<String> signUp({String name, String email, String password}) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
       await _firebaseAuth.currentUser.sendEmailVerification();
 
-      await saveUser();
+      String role = "owner";
+      await saveUser(name, role);
 
       await _firebaseAuth.signOut();
 
@@ -94,6 +107,62 @@ class AuthService {
     }
   }
 
+  Future verifyCodeAndUser({String code, String verification}) async {
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verification, smsCode: code);
+
+    await _firebaseAuth
+        .signInWithCredential(phoneAuthCredential)
+        .onError((error, stackTrace) {
+      throw "Kullanıcı giriş işlemi sırasında bir hata meydana geldi!";
+    });
+
+    await _db
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .get()
+        .then((value) {
+      return UserModel.fromFirestore(value.data());
+    }).onError((error, stackTrace) async {
+      await _firebaseAuth.signOut();
+      throw "Henüz bu telefon ile yapılmış olan bir kayıt bulunamamaktadır. Eğer kayıt olmadıysanız ilk önce kayıt olmanız gerekmektedir!";
+    });
+  }
+
+  Future verifyCodeAndSaveUser(
+      {String name, String code, String verification}) async {
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verification, smsCode: code);
+
+    await _firebaseAuth
+        .signInWithCredential(phoneAuthCredential)
+        .onError((error, stackTrace) {
+      throw "Telefon ile giriş işlemi sırasında bir hata meydana geldi!";
+    });
+
+    String role = "owner";
+    await saveUser(name, role);
+  }
+
+  Future saveEmployee(
+      {String storeCode,
+      String name,
+      String code,
+      String verification,
+      String phone}) async {
+    PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+        verificationId: verification, smsCode: code);
+
+    await _firebaseAuth
+        .signInWithCredential(phoneAuthCredential)
+        .onError((error, stackTrace) {
+      throw "Telefon ile kayıt işlemi sırasında bir hata meydana geldi!";
+    });
+
+    String role = "employee";
+    await saveUserEmployee(name, storeCode, role, phone);
+  }
+
   // Çıkış
   Future<void> signOut() async {
     try {
@@ -106,31 +175,85 @@ class AuthService {
     }
   }
 
-  Future<void> saveUser() async {
-    try {
-      UserModel user = await _db
-          .collection('users')
-          .doc(_firebaseAuth.currentUser.uid)
-          .get()
-          .then((value) {
-        return UserModel.fromFirestore(value.data());
-      });
+  Future<void> saveUser(String name, String role) async {
+    UserModel user = await _db
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .get()
+        .then((value) {
+      return UserModel.fromFirestore(value.data());
+    }).onError((error, stackTrace) => null);
 
-      await _db
-          .collection('users')
-          .doc(user.userId)
-          .update({"iToken": await FirebaseMessaging.instance.getToken()});
-    } catch (e) {
+    if (user == null) {
       UserModel newUser = UserModel(
+          name: name,
           iToken: await FirebaseMessaging.instance.getToken(),
           userId: _firebaseAuth.currentUser.uid,
           favorites: [],
-          campaignCodes: []);
+          storeId: _firebaseAuth.currentUser.uid,
+          campaignCodes: [],
+          roles: role);
 
       await _db
           .collection('users')
           .doc(_firebaseAuth.currentUser.uid)
           .set(newUser.toMap());
     }
+  }
+
+  Future<void> saveUserEmployee(
+      String name, String storeCode, String role, String phone) async {
+    UserModel user = await _db
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .get()
+        .then((value) {
+      return UserModel.fromFirestore(value.data());
+    }).onError((error, stackTrace) => null);
+
+    if (user != null && user.roles == 'owner') {
+      throw 'İşletme sahibi olarak kaydınız bulunmaktadır. Personel olarak kayıt yaptıramazsınız.';
+    } else if (user != null && user.roles == 'employee') {
+      throw 'Kullanıcı kaydınız bulunmaktadır. Tekrar kayıt olamazsınız.';
+    }
+
+    UserModel newUser = UserModel(
+        name: name,
+        iToken: await FirebaseMessaging.instance.getToken(),
+        userId: _firebaseAuth.currentUser.uid,
+        favorites: [],
+        storeId: storeCode,
+        campaignCodes: [],
+        roles: role);
+
+    await _db
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .set(newUser.toMap())
+        .onError((error, stackTrace) {
+      throw 'Kullanıcı kaydınız oluşturulurken bir hata ile karşılaşıldı.';
+    });
+
+    await _db.collection('stores').doc(storeCode).get().then((value) {
+      return Store.fromFirestore(value.data());
+    }).onError((error, stackTrace) {
+      throw 'Girmiş olduğunuz işletme kodunda bir işletme bulunamamıştır.';
+    });
+
+    EmployeeModel newEmployee = EmployeeModel(
+        employeeId: _firebaseAuth.currentUser.uid,
+        name: name,
+        phone: phone,
+        storeId: storeCode);
+
+    await _db
+        .collection('stores')
+        .doc(storeCode)
+        .collection('employees')
+        .doc(_firebaseAuth.currentUser.uid)
+        .set(newEmployee.toMap())
+        .onError((error, stackTrace) {
+      throw 'Kaydınızı işletmeye eklerken bir hata ile karşılaşıldı.';
+    });
   }
 }

@@ -1,7 +1,8 @@
+import 'package:papape_store/Components/wrapper.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Dashboard/dashboard.dart';
-import 'package:papape_store/Login/login.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/authentication_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -42,14 +43,15 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => StoreProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
         Provider<AuthService>(
             create: (context) => AuthService(FirebaseAuth.instance)),
         StreamProvider(
             initialData: null,
-            create: (context) => context.read<AuthService>().authStateChanges)
+            create: (context) => context.read<AuthService>().authStateChanges),
       ],
       child: MaterialApp(
-        title: 'iMyRestApp',
+        title: 'MyRest',
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
         supportedLocales: const [Locale('en', 'EN'), Locale('tr', 'TR')],
         debugShowCheckedModeBanner: false,
@@ -80,23 +82,5 @@ class MyApp extends StatelessWidget {
         },
       ),
     );
-  }
-}
-
-class AuthWrapper extends StatelessWidget {
-  const AuthWrapper({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final User firebaseUser = context.watch<User>();
-    switch (firebaseUser != null && firebaseUser.emailVerified) {
-      case true:
-        return const Dashboard(
-          defPage: 0,
-        );
-        break;
-      default:
-        return const Login();
-    }
   }
 }

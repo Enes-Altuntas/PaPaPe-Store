@@ -3,9 +3,11 @@ import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_category_model.dart';
 import 'package:papape_store/Models/product_model.dart';
 import 'package:papape_store/Products/product.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class CategoryCard extends StatefulWidget {
   final ProductCategory category;
@@ -23,6 +25,7 @@ class CategoryCard extends StatefulWidget {
 class _CategoryCardState extends State<CategoryCard> {
   Product _selectedProduct;
   String _selectedCatId;
+  UserProvider _userProvider;
 
   openProductDialog() {
     Navigator.of(context).push(MaterialPageRoute(
@@ -35,6 +38,12 @@ class _CategoryCardState extends State<CategoryCard> {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => ProductSingle(
             productData: null, selectedCategoryId: _selectedCatId)));
+  }
+
+  @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -57,34 +66,37 @@ class _CategoryCardState extends State<CategoryCard> {
                     color: ColorConstants.instance.primaryColor,
                   ),
                 ),
-                Row(
-                  children: [
-                    GestureDetector(
-                        child: Icon(
-                          Icons.edit,
-                          color: ColorConstants.instance.primaryColor,
-                          size: 25.0,
+                Visibility(
+                  visible: _userProvider.roles == "owner",
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                          child: Icon(
+                            Icons.edit,
+                            color: ColorConstants.instance.primaryColor,
+                            size: 25.0,
+                          ),
+                          onTap: widget.onPressedEdit),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: GestureDetector(
+                          child: Icon(
+                            Icons.delete,
+                            color: ColorConstants.instance.inactiveColor,
+                            size: 25.0,
+                          ),
+                          onTap: widget.onPressedDelete,
                         ),
-                        onTap: widget.onPressedEdit),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: GestureDetector(
-                        child: Icon(
-                          Icons.delete,
-                          color: ColorConstants.instance.inactiveColor,
-                          size: 25.0,
-                        ),
-                        onTap: widget.onPressedDelete,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),
           ),
           StreamBuilder<List<Product>>(
-              stream:
-                  FirestoreService().getProducts(widget.category.categoryId),
+              stream: FirestoreService().getProducts(
+                  _userProvider.storeId, widget.category.categoryId),
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.active:
@@ -121,43 +133,46 @@ class _CategoryCardState extends State<CategoryCard> {
                                 },
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                decoration: BoxDecoration(
-                                    color:
-                                        ColorConstants.instance.secondaryColor,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(50.0))),
-                                child: TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _selectedCatId =
-                                            widget.category.categoryId;
-                                      });
-                                      openProductDialogNew();
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        FaIcon(FontAwesomeIcons.plus,
-                                            size: 25.0,
-                                            color: ColorConstants
-                                                .instance.iconOnColor),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 15.0),
-                                          child: Text(
-                                            'Yeni Ürün Ekle',
-                                            style: TextStyle(
-                                                color: ColorConstants
-                                                    .instance.textOnColor),
-                                          ),
-                                        )
-                                      ],
-                                    )),
+                            Visibility(
+                              visible: _userProvider.roles == "owner",
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 15.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  decoration: BoxDecoration(
+                                      color: ColorConstants
+                                          .instance.secondaryColor,
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(50.0))),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _selectedCatId =
+                                              widget.category.categoryId;
+                                        });
+                                        openProductDialogNew();
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          FaIcon(FontAwesomeIcons.plus,
+                                              size: 25.0,
+                                              color: ColorConstants
+                                                  .instance.iconOnColor),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15.0),
+                                            child: Text(
+                                              'Yeni Ürün Ekle',
+                                              style: TextStyle(
+                                                  color: ColorConstants
+                                                      .instance.textOnColor),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                ),
                               ),
                             ),
                           ],

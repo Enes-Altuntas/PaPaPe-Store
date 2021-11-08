@@ -10,8 +10,8 @@ import 'package:papape_store/Models/store_model.dart';
 import 'package:papape_store/Products/category.dart';
 import 'package:papape_store/Products/products.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Qr/qr_scan.dart';
-import 'package:papape_store/Reports/report.dart';
 import 'package:papape_store/Reservations/reservations.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
@@ -30,9 +30,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
+  UserProvider _userProvider;
   TabController _tabController;
   StoreProvider _storeProvider;
   int _selectedIndex = 0;
+  int lengthTab = 4;
   Future getUserInfo;
   bool isInit = true;
   bool isLoading = false;
@@ -53,16 +55,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
       FontAwesomeIcons.bell,
       color: ColorConstants.instance.iconOnColor,
     ),
-    FaIcon(
-      FontAwesomeIcons.chartBar,
-      color: ColorConstants.instance.iconOnColor,
-    ),
   ];
 
   @override
   Future<void> didChangeDependencies() async {
     if (isInit) {
       _storeProvider = Provider.of<StoreProvider>(context);
+      _userProvider = Provider.of<UserProvider>(context);
       getUserInfo = _getStoreInfo();
       setState(() {
         isInit = false;
@@ -75,7 +74,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     setState(() {
-      _tabController = TabController(length: 5, vsync: this);
+      _tabController = TabController(length: lengthTab, vsync: this);
       _selectedIndex = widget.defPage;
     });
     _tabController.animateTo(_selectedIndex);
@@ -86,9 +85,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
     setState(() {
       isLoading = true;
     });
-
     await FirestoreService()
-        .getStore()
+        .getStore(_userProvider.storeId)
         .then((value) => {
               if (value != null && value.data() != null)
                 {_store = Store.fromFirestore(value.data())}
@@ -191,7 +189,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 color: ColorConstants.instance.primaryColor,
               ),
               onTap: () {
-                openCategoryDialog();
+                if (_userProvider.roles == 'owner') {
+                  openCategoryDialog();
+                } else {
+                  ToastService().showWarning(
+                      'Bu işlemi gerçekleştirmek için yetkiniz yoktur!',
+                      context);
+                }
               },
               backgroundColor: ColorConstants.instance.whiteContainer,
               label: 'Menü Başlığı Ekle'),
@@ -201,7 +205,13 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 color: ColorConstants.instance.iconOnColor,
               ),
               onTap: () {
-                openDialog();
+                if (_userProvider.roles == 'owner') {
+                  openDialog();
+                } else {
+                  ToastService().showWarning(
+                      'Bu işlemi gerçekleştirmek için yetkiniz yoktur!',
+                      context);
+                }
               },
               backgroundColor: ColorConstants.instance.primaryColor,
               label: 'Kampanya Yayınla'),
@@ -230,7 +240,6 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                           Menu(),
                           WishView(),
                           Reservation(),
-                          ReportView()
                         ],
                       )
                     : const ProgressWidget()

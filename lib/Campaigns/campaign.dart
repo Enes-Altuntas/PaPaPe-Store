@@ -5,6 +5,7 @@ import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,6 +16,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 class CampaignSingle extends StatefulWidget {
   final Campaign campaignData;
@@ -32,6 +34,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
   final TextEditingController _start = TextEditingController();
   final TextEditingController _finish = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  UserProvider _userProvider;
   Timestamp _startDate;
   Timestamp _finishDate;
   File campaignPic;
@@ -194,7 +197,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
-          .saveCampaign(_campaign)
+          .saveCampaign(_userProvider.storeId, _campaign)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -247,7 +250,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignUsers: [],
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
-          .saveCampaign(_campaign)
+          .saveCampaign(_userProvider.storeId, _campaign)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -293,7 +296,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
-          .updateCampaign(_campaign)
+          .updateCampaign(_userProvider.storeId, _campaign)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -308,7 +311,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
       isLoading = true;
     });
     FirestoreService()
-        .removeCampaign(widget.campaignData.campaignId)
+        .removeCampaign(_userProvider.storeId, widget.campaignData.campaignId)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -322,7 +325,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
       isLoading = true;
     });
     FirestoreService()
-        .deleteCampaign(widget.campaignData.campaignId)
+        .deleteCampaign(_userProvider.storeId, widget.campaignData.campaignId)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -481,7 +484,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    _userProvider = Provider.of<UserProvider>(context);
     if (isInit) {
       if (widget.campaignData != null) {
         setState(() {
@@ -495,6 +498,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
         });
       }
     }
+    super.didChangeDependencies();
   }
 
   Future<DateTime> pickDate() async {

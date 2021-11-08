@@ -1,8 +1,9 @@
 import 'dart:math';
-
+import 'package:provider/provider.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 
 class ProductCard extends StatefulWidget {
   final Product product;
@@ -19,11 +20,18 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   bool isBack = false;
   double angle = 0;
+  UserProvider _userProvider;
 
   void _flip() {
     setState(() {
       angle = (angle + pi) % (2 * pi);
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
   }
 
   @override
@@ -106,27 +114,32 @@ class _ProductCardState extends State<ProductCard> {
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
                               child: Stack(
+                                alignment: Alignment.center,
                                 children: [
-                                  Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: GestureDetector(
-                                        onTap: widget.onTapped,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: ColorConstants
-                                                  .instance.waitingColor),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Icon(
-                                              Icons.edit,
-                                              color: ColorConstants
-                                                  .instance.primaryColor,
+                                  Visibility(
+                                    visible: _userProvider.roles == "owner",
+                                    child: Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        child: GestureDetector(
+                                          onTap: widget.onTapped,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: ColorConstants
+                                                    .instance.waitingColor),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: ColorConstants
+                                                    .instance.primaryColor,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )),
+                                        )),
+                                  ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [

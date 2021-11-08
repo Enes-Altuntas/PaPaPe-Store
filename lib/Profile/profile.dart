@@ -9,6 +9,7 @@ import 'package:papape_store/Map/map.dart';
 import 'package:papape_store/Models/store_category.dart';
 import 'package:papape_store/Models/store_model.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -35,6 +36,7 @@ class _ProfileState extends State<Profile> {
   bool isLoading = false;
   bool checkBox = false;
   final TextEditingController taxNo = TextEditingController();
+  final TextEditingController storeCode = TextEditingController();
   final TextEditingController taxLoc = TextEditingController();
   final TextEditingController name = TextEditingController();
   final TextEditingController address = TextEditingController();
@@ -46,10 +48,11 @@ class _ProfileState extends State<Profile> {
   final TextEditingController pers2Phone = TextEditingController();
   final TextEditingController pers3Phone = TextEditingController();
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  UserProvider _userProvider;
 
   @override
   Future<void> didChangeDependencies() async {
-    super.didChangeDependencies();
+    _userProvider = Provider.of<UserProvider>(context);
     if (isInit) {
       _storeProvider = Provider.of<StoreProvider>(context);
       getUserInfo = _getStoreInfo();
@@ -57,18 +60,20 @@ class _ProfileState extends State<Profile> {
         isInit = false;
       });
     }
+    super.didChangeDependencies();
   }
 
   Future _getStoreInfo() async {
     setState(() {
       isLoading = true;
     });
-
     QuerySnapshot snapshots = await FirestoreService().getStoreCat();
     for (var element in snapshots.docs) {
       StoreCategory catElement = StoreCategory.fromFirestore(element.data());
       storeCats.add(catElement);
     }
+
+    storeCode.text = _userProvider.storeId;
 
     if (_storeProvider != null) {
       taxNo.text = _storeProvider.storeTaxNo;
@@ -105,10 +110,11 @@ class _ProfileState extends State<Profile> {
       });
 
       FirestoreService()
-          .saveStore(_storeProvider.getStoreFromProvider())
+          .saveStore(
+              _userProvider.storeId, _storeProvider.getStoreFromProvider())
           .then((value) {
             ToastService().showSuccess(value, context);
-            FirestoreService().getStore().then((value) {
+            FirestoreService().getStore(_userProvider.storeId).then((value) {
               if (value != null && value.data() != null) {
                 _storeProvider.loadStoreInfo(Store.fromFirestore(value.data()));
               }
@@ -457,7 +463,23 @@ class _ProfileState extends State<Profile> {
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: TextFormField(
+                                controller: storeCode,
+                                readOnly: true,
+                                style: TextStyle(
+                                  color: ColorConstants.instance.hintColor,
+                                ),
+                                keyboardType: TextInputType.number,
+                                maxLength: 28,
+                                decoration: const InputDecoration(
+                                  icon: Icon(Icons.password),
+                                  labelText: 'İşletme Kodu',
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
                               child: TextFormField(
                                 controller: taxNo,
                                 validator: validateTaxNo,
@@ -472,9 +494,9 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.number,
                                 maxLength: 10,
                                 decoration: const InputDecoration(
-                                    icon: Icon(Icons.attach_money),
-                                    labelText: 'İşletme Vergi Numarası',
-                                    border: OutlineInputBorder()),
+                                  icon: Icon(Icons.attach_money),
+                                  labelText: 'İşletme Vergi Numarası',
+                                ),
                               ),
                             ),
                             Padding(
@@ -492,7 +514,6 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 decoration: const InputDecoration(
                                     icon: Icon(Icons.account_balance),
-                                    border: OutlineInputBorder(),
                                     labelText: 'İşletme Vergi Dairesi'),
                               ),
                             ),
@@ -509,9 +530,9 @@ class _ProfileState extends State<Profile> {
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 decoration: const InputDecoration(
-                                    labelText: 'İşletme İsmi',
-                                    icon: Icon(Icons.announcement_sharp),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İşletme İsmi',
+                                  icon: Icon(Icons.announcement_sharp),
+                                ),
                                 maxLength: 50,
                               ),
                             ),
@@ -531,9 +552,9 @@ class _ProfileState extends State<Profile> {
                                   color: ColorConstants.instance.hintColor,
                                 ),
                                 decoration: const InputDecoration(
-                                    labelText: 'İşletme Adresi',
-                                    icon: Icon(Icons.add_location_rounded),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İşletme Adresi',
+                                  icon: Icon(Icons.add_location_rounded),
+                                ),
                               ),
                             ),
                             Padding(
@@ -551,10 +572,10 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.phone,
                                 maxLength: 10,
                                 decoration: const InputDecoration(
-                                    labelText: 'İşletme Telefon Numarası',
-                                    prefix: Text('+90'),
-                                    icon: Icon(Icons.phone),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İşletme Telefon Numarası',
+                                  prefix: Text('+90'),
+                                  icon: Icon(Icons.phone),
+                                ),
                               ),
                             ),
                             Padding(
@@ -572,9 +593,9 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 maxLength: 50,
                                 decoration: const InputDecoration(
-                                    labelText: 'İlgili kişi isim-soyisim (1)',
-                                    icon: Icon(Icons.account_circle_outlined),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İlgili kişi isim-soyisim (1)',
+                                  icon: Icon(Icons.account_circle_outlined),
+                                ),
                               ),
                             ),
                             Padding(
@@ -592,10 +613,10 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.phone,
                                 maxLength: 10,
                                 decoration: const InputDecoration(
-                                    labelText: 'İlgili kişi telefon (1)',
-                                    prefix: Text('+90'),
-                                    icon: Icon(Icons.phone),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İlgili kişi telefon (1)',
+                                  prefix: Text('+90'),
+                                  icon: Icon(Icons.phone),
+                                ),
                               ),
                             ),
                             Padding(
@@ -612,9 +633,9 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 maxLength: 50,
                                 decoration: const InputDecoration(
-                                    labelText: 'İlgili kişi isim-soyisim (2)',
-                                    icon: Icon(Icons.account_circle_outlined),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İlgili kişi isim-soyisim (2)',
+                                  icon: Icon(Icons.account_circle_outlined),
+                                ),
                               ),
                             ),
                             Padding(
@@ -631,10 +652,10 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.phone,
                                 maxLength: 10,
                                 decoration: const InputDecoration(
-                                    labelText: 'İlgili kişi telefon (2)',
-                                    prefix: Text('+90'),
-                                    icon: Icon(Icons.phone),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İlgili kişi telefon (2)',
+                                  prefix: Text('+90'),
+                                  icon: Icon(Icons.phone),
+                                ),
                               ),
                             ),
                             Padding(
@@ -651,9 +672,9 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.text,
                                 maxLength: 50,
                                 decoration: const InputDecoration(
-                                    labelText: 'İlgili kişi isim-soyisim (3)',
-                                    icon: Icon(Icons.account_circle_outlined),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İlgili kişi isim-soyisim (3)',
+                                  icon: Icon(Icons.account_circle_outlined),
+                                ),
                               ),
                             ),
                             Padding(
@@ -671,10 +692,10 @@ class _ProfileState extends State<Profile> {
                                 keyboardType: TextInputType.phone,
                                 maxLength: 10,
                                 decoration: const InputDecoration(
-                                    labelText: 'İlgili kişi telefon (3)',
-                                    prefix: Text('+90'),
-                                    icon: Icon(Icons.phone),
-                                    border: OutlineInputBorder()),
+                                  labelText: 'İlgili kişi telefon (3)',
+                                  prefix: Text('+90'),
+                                  icon: Icon(Icons.phone),
+                                ),
                               ),
                             ),
                           ],

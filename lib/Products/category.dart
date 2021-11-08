@@ -2,10 +2,12 @@ import 'package:papape_store/Components/app_title.dart';
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_category_model.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 class CategorySingle extends StatefulWidget {
   final ProductCategory categoryData;
@@ -20,6 +22,7 @@ class _CategorySingleState extends State<CategorySingle> {
   final TextEditingController _categoryRow = TextEditingController();
   final TextEditingController _categoryName = TextEditingController();
   GlobalKey<FormState> formKeyCat = GlobalKey<FormState>();
+  UserProvider _userProvider;
   bool _isLoading = false;
   bool _isInit = true;
 
@@ -58,7 +61,7 @@ class _CategorySingleState extends State<CategorySingle> {
       );
 
       FirestoreService()
-          .saveCategory(category)
+          .saveCategory(_userProvider.storeId, category)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -83,7 +86,7 @@ class _CategorySingleState extends State<CategorySingle> {
     );
 
     FirestoreService()
-        .updateCategory(updCategory)
+        .updateCategory(_userProvider.storeId, updCategory)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -94,7 +97,7 @@ class _CategorySingleState extends State<CategorySingle> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    _userProvider = Provider.of<UserProvider>(context);
     if (_isInit) {
       if (widget.categoryData != null) {
         setState(() {
@@ -104,6 +107,7 @@ class _CategorySingleState extends State<CategorySingle> {
         });
       }
     }
+    super.didChangeDependencies();
   }
 
   @override

@@ -57,8 +57,8 @@ class _MapsState extends State<Maps> {
         title: '',
         text:
             'Hiçbir konum seçmezseniz mevcut konumunuz, seçilen konum olarak alınacaktır. Onaylıyor musunuz ?',
-        backgroundColor: Theme.of(context).primaryColor,
-        confirmBtnColor: Theme.of(context).primaryColor,
+        backgroundColor: ColorConstants.instance.primaryColor,
+        confirmBtnColor: ColorConstants.instance.primaryColor,
         showCancelBtn: true,
         cancelBtnText: 'Hayır',
         barrierDismissible: false,

@@ -5,6 +5,7 @@ import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +23,7 @@ class Campaigns extends StatefulWidget {
 
 class _CampaignsState extends State<Campaigns> {
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss");
+  UserProvider _userProvider;
   Campaign _selectedCampaign;
   StoreProvider _storeProvider;
   bool isLoading = false;
@@ -52,12 +54,19 @@ class _CampaignsState extends State<Campaigns> {
   }
 
   @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return (isLoading == false)
         ? Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: StreamBuilder<List<Campaign>>(
-                stream: FirestoreService().getStoreCampaigns(),
+                stream:
+                    FirestoreService().getStoreCampaigns(_userProvider.storeId),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.active:
@@ -75,11 +84,17 @@ class _CampaignsState extends State<Campaigns> {
                                     child: CampaignCard(
                                       campaign: snapshot.data[index],
                                       onPressed: () {
-                                        setState(() {
-                                          _selectedCampaign =
-                                              snapshot.data[index];
-                                        });
-                                        openDialog();
+                                        if (_userProvider.roles == "owner") {
+                                          setState(() {
+                                            _selectedCampaign =
+                                                snapshot.data[index];
+                                          });
+                                          openDialog();
+                                        } else {
+                                          ToastService().showWarning(
+                                              'Bu işlemi gerçekleştirmeye yetkiniz bulunmamaktadır.',
+                                              context);
+                                        }
                                       },
                                     ),
                                   );
@@ -92,7 +107,7 @@ class _CampaignsState extends State<Campaigns> {
                             notFoundIconColor:
                                 ColorConstants.instance.primaryColor,
                             notFoundText:
-                                'Şu an yayınlamış olduğunuz hiçbir kampanya bulunmamaktadır.',
+                                'Şu an yayınlanmış kampanya bulunmamaktadır.',
                             notFoundTextColor:
                                 ColorConstants.instance.hintColor,
                           );

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:papape_store/Models/camapign_model.dart';
-import 'package:papape_store/Models/campaign_user.dart';
+
 import 'package:papape_store/Models/user_model.dart';
 import 'package:papape_store/Models/wishes_model.dart';
 import 'package:papape_store/Models/markers_model.dart';
@@ -10,9 +10,7 @@ import 'package:papape_store/Models/product_category_model.dart';
 import 'package:papape_store/Models/product_model.dart';
 import 'package:papape_store/Models/reservations_model.dart';
 import 'package:papape_store/Models/store_model.dart';
-import 'package:papape_store/Services/authentication_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
@@ -46,17 +44,15 @@ class FirestoreService {
     }
   }
 
-  Future<String> saveStore(Store store) async {
-    String _uuid = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> saveStore(String storeId, Store store) async {
     if (store.storeLocalImagePath != null) {
-      await savePicture(store.storeLocalImagePath, _uuid)
+      await savePicture(store.storeLocalImagePath, storeId)
           .onError((error, stackTrace) => throw error);
     }
 
     if (store.storeId == null) {
       Store newStore = Store(
-          storeId: _uuid,
+          storeId: storeId,
           storeName: store.storeName,
           storeTaxNo: store.storeTaxNo,
           storeTaxLoc: store.storeTaxLoc,
@@ -87,8 +83,8 @@ class FirestoreService {
       );
 
       try {
-        await _db.collection('stores').doc(_uuid).set(newStore.toMap());
-        await _db.collection('markers').doc(_uuid).set(newMarker.toMap());
+        await _db.collection('stores').doc(storeId).set(newStore.toMap());
+        await _db.collection('markers').doc(storeId).set(newMarker.toMap());
 
         return 'Bilgileriniz kaydedilmiştir !';
       } catch (e) {
@@ -117,8 +113,8 @@ class FirestoreService {
           geo.point(latitude: store.storeLocLat, longitude: store.storeLocLong);
 
       try {
-        await _db.collection('stores').doc(_uuid).set(updStore.toMap());
-        await _db.collection('markers').doc(_uuid).update({
+        await _db.collection('stores').doc(storeId).set(updStore.toMap());
+        await _db.collection('markers').doc(storeId).update({
           'storeCategory': store.storeCategory,
           'storeName': store.storeName,
           'position': PositionModel(
@@ -134,10 +130,9 @@ class FirestoreService {
     }
   }
 
-  Future getStore() async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-    if (_userId != null) {
-      return await _db.collection('stores').doc(_userId).get();
+  Future getStore(String storeId) async {
+    if (storeId != null) {
+      return await _db.collection('stores').doc(storeId).get();
     }
   }
 
@@ -154,11 +149,10 @@ class FirestoreService {
 // Kampanyalar ile ilgili backend işlemleri
 // *******************************************************************************
 
-  Stream<List<Campaign>> getStoreCampaigns() {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+  Stream<List<Campaign>> getStoreCampaigns(String storeId) {
     return _db
         .collection('stores')
-        .doc(_userId)
+        .doc(storeId)
         .collection('campaigns')
         .orderBy('createdAt', descending: true)
         .where('delInd', isEqualTo: false)
@@ -168,9 +162,7 @@ class FirestoreService {
             .toList());
   }
 
-  Future<String> saveCampaign(Campaign campaign) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> saveCampaign(String storeId, Campaign campaign) async {
     if (campaign.campaignLocalImage != null) {
       await savePicture(campaign.campaignLocalImage, campaign.campaignId)
           .onError((error, stackTrace) => throw error)
@@ -182,7 +174,7 @@ class FirestoreService {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('campaigns')
           .get()
           .then((value) => value.docs.map((element) {
@@ -191,14 +183,14 @@ class FirestoreService {
 
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('campaigns')
           .doc(campaign.campaignId)
           .set(campaign.toMap());
 
       await _db
           .collection('markers')
-          .doc(_userId)
+          .doc(storeId)
           .update({'campaignStatus': 'wait'});
 
       return 'Kampanyanız başarıyla kaydedilmiştir !';
@@ -207,9 +199,7 @@ class FirestoreService {
     }
   }
 
-  Future<String> updateCampaign(Campaign campaign) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> updateCampaign(String storeId, Campaign campaign) async {
     if (campaign.campaignLocalImage != null) {
       await savePicture(campaign.campaignLocalImage, campaign.campaignId)
           .onError((error, stackTrace) => throw error)
@@ -221,7 +211,7 @@ class FirestoreService {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('campaigns')
           .doc(campaign.campaignId)
           .set(campaign.toMap());
@@ -232,59 +222,18 @@ class FirestoreService {
     }
   }
 
-  // Future<String> renewCampaign(Campaign campaign) async {
-  //   String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
-  //   if (campaign.campaignLocalImage != null) {
-  //     await savePicture(campaign.campaignLocalImage, campaign.campaignId)
-  //         .onError((error, stackTrace) => throw error)
-  //         .whenComplete(() {
-  //       campaign.campaignPicRef = downloadUrl;
-  //     });
-  //   }
-
-  //   try {
-  //     await _db
-  //         .collection('stores')
-  //         .doc(_userId)
-  //         .collection('campaigns')
-  //         .get()
-  //         .then((value) => value.docs.map((element) {
-  //               element.reference.update({'campaignStatus': 'inactive'});
-  //             }));
-
-  //     await _db
-  //         .collection('stores')
-  //         .doc(_userId)
-  //         .collection('campaigns')
-  //         .doc(campaign.campaignId)
-  //         .set(campaign.toMap());
-
-  //     await _db
-  //         .collection('markers')
-  //         .doc(_userId)
-  //         .update({'campaignStatus': 'wait'});
-
-  //     return 'Kampanyanız başarıyla tekrar yayınlandı !';
-  //   } catch (e) {
-  //     throw 'Kampanyanız yayınlanırken bir hata ile karşılaşıldı ! Lütfen daha sonra tekrar deneyiniz.';
-  //   }
-  // }
-
-  Future<String> removeCampaign(String campaignId) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> removeCampaign(String storeId, String campaignId) async {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('campaigns')
           .doc(campaignId)
           .update({'campaignStatus': 'inactive'});
 
       await _db
           .collection('markers')
-          .doc(_userId)
+          .doc(storeId)
           .update({'campaignStatus': 'inactive'});
 
       return 'Kampanyanız başarıyla sonlandırılmıştır !';
@@ -293,20 +242,18 @@ class FirestoreService {
     }
   }
 
-  Future<String> deleteCampaign(String campaignId) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> deleteCampaign(String storeId, String campaignId) async {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('campaigns')
           .doc(campaignId)
           .update({'campaignActive': 'inactive', 'delInd': true});
 
       await _db
           .collection('markers')
-          .doc(_userId)
+          .doc(storeId)
           .update({'campaignStatus': 'inactive'});
 
       await deletePicture(campaignId);
@@ -365,11 +312,10 @@ class FirestoreService {
 // Ürünler ile ilgili backend işlemleri
 // *******************************************************************************
 
-  Stream<List<ProductCategory>> getProductCategories() {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
+  Stream<List<ProductCategory>> getProductCategories(String storeId) {
     return _db
         .collection('stores')
-        .doc(_userId)
+        .doc(storeId)
         .collection('products')
         .orderBy('categoryRow', descending: false)
         .snapshots()
@@ -378,13 +324,11 @@ class FirestoreService {
             .toList());
   }
 
-  Future<String> saveCategory(ProductCategory category) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> saveCategory(String storeId, ProductCategory category) async {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('products')
           .doc(category.categoryId)
           .set(category.toMap());
@@ -394,13 +338,12 @@ class FirestoreService {
     }
   }
 
-  Future<String> updateCategory(ProductCategory category) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> updateCategory(
+      String storeId, ProductCategory category) async {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('products')
           .doc(category.categoryId)
           .set(category.toMap());
@@ -410,13 +353,11 @@ class FirestoreService {
     }
   }
 
-  Future<String> removeCategory(String categoryId) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> removeCategory(String storeId, String categoryId) async {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('products')
           .doc(categoryId)
           .delete();
@@ -427,12 +368,10 @@ class FirestoreService {
     }
   }
 
-  Stream<List<Product>> getProducts(String categoryId) {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-    Stream<List<Product>> _dishes;
-    _dishes = _db
+  Stream<List<Product>> getProducts(String storeId, String categoryId) {
+    return _db
         .collection('stores')
-        .doc(_userId)
+        .doc(storeId)
         .collection('products')
         .doc(categoryId)
         .collection('alt_products')
@@ -440,13 +379,9 @@ class FirestoreService {
         .map((snapshot) => snapshot.docs
             .map((doc) => Product.fromFirestore(doc.data()))
             .toList());
-
-    return _dishes;
   }
 
-  Future<String> saveProduct(Product product) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> saveProduct(String storeId, Product product) async {
     if (product.productLocalImage != null) {
       await savePicture(product.productLocalImage, product.productId)
           .onError((error, stackTrace) => throw error)
@@ -458,7 +393,7 @@ class FirestoreService {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('products')
           .doc(product.productCatId)
           .collection('alt_products')
@@ -471,9 +406,7 @@ class FirestoreService {
     }
   }
 
-  Future<String> updateProduct(Product product) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> updateProduct(String storeId, Product product) async {
     if (product.productLocalImage != null) {
       await savePicture(product.productLocalImage, product.productId)
           .onError((error, stackTrace) => throw error)
@@ -485,7 +418,7 @@ class FirestoreService {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('products')
           .doc(product.productCatId)
           .collection('alt_products')
@@ -498,13 +431,12 @@ class FirestoreService {
     }
   }
 
-  Future<String> removeProduct(String productId, String prodctCatId) async {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Future<String> removeProduct(
+      String storeId, String productId, String prodctCatId) async {
     try {
       await _db
           .collection('stores')
-          .doc(_userId)
+          .doc(storeId)
           .collection('products')
           .doc(prodctCatId)
           .collection('alt_products')
@@ -525,12 +457,10 @@ class FirestoreService {
 // Şikayetler ile ilgili backend işlemleri
 // *******************************************************************************
 
-  Stream<List<WishesModel>> getReports() {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Stream<List<WishesModel>> getReports(String storeId) {
     return _db
         .collection('wishes')
-        .where('wishStore', isEqualTo: _userId)
+        .where('wishStore', isEqualTo: storeId)
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
@@ -544,12 +474,10 @@ class FirestoreService {
 // Rezervasyon ile ilgili backend işlemleri
 // *******************************************************************************
 
-  Stream<List<ReservationsModel>> getReservations() {
-    String _userId = AuthService(FirebaseAuth.instance).getUserId();
-
+  Stream<List<ReservationsModel>> getReservations(String storeId) {
     return _db
         .collection('reservations')
-        .where('reservationStore', isEqualTo: _userId)
+        .where('reservationStore', isEqualTo: storeId)
         .orderBy('reservationTime', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs

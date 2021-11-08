@@ -5,6 +5,7 @@ import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Components/title.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/product_model.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:cool_alert/cool_alert.dart';
@@ -14,6 +15,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 class ProductSingle extends StatefulWidget {
   final Product productData;
@@ -31,6 +33,7 @@ class _ProductSingleState extends State<ProductSingle> {
   final TextEditingController _productName = TextEditingController();
   final TextEditingController _productDesc = TextEditingController();
   final TextEditingController _productPrice = TextEditingController();
+  UserProvider _userProvider;
   bool isLoading = false;
   bool isInit = true;
   bool editBtn = false;
@@ -50,7 +53,7 @@ class _ProductSingleState extends State<ProductSingle> {
           productLocalImage: productPic,
           productPrice: int.parse(_productPrice.text));
       FirestoreService()
-          .saveProduct(product)
+          .saveProduct(_userProvider.storeId, product)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -78,7 +81,7 @@ class _ProductSingleState extends State<ProductSingle> {
           productName: _productName.text,
           productPrice: int.parse(_productPrice.text));
       FirestoreService()
-          .updateProduct(product)
+          .updateProduct(_userProvider.storeId, product)
           .then((value) => ToastService().showSuccess(value, context))
           .onError(
               (error, stackTrace) => ToastService().showError(error, context))
@@ -93,8 +96,8 @@ class _ProductSingleState extends State<ProductSingle> {
       isLoading = true;
     });
     FirestoreService()
-        .removeProduct(
-            widget.productData.productId, widget.productData.productCatId)
+        .removeProduct(_userProvider.storeId, widget.productData.productId,
+            widget.productData.productCatId)
         .then((value) => ToastService().showSuccess(value, context))
         .onError(
             (error, stackTrace) => ToastService().showError(error, context))
@@ -252,7 +255,7 @@ class _ProductSingleState extends State<ProductSingle> {
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    _userProvider = Provider.of<UserProvider>(context);
     if (isInit) {
       if (widget.productData != null) {
         setState(() {
@@ -265,6 +268,7 @@ class _ProductSingleState extends State<ProductSingle> {
         });
       }
     }
+    super.didChangeDependencies();
   }
 
   @override
