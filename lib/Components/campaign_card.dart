@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:papape_store/Campaigns/campaign_users.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Models/camapign_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -66,7 +67,6 @@ class _CampaignCardState extends State<CampaignCard> {
                       : Center(
                           child: Text('Kampanya Resmi Yok',
                               style: TextStyle(
-                                  fontFamily: 'Bebas',
                                   color: ColorConstants.instance.textOnColor,
                                   fontSize: 20.0)),
                         ),
@@ -74,29 +74,29 @@ class _CampaignCardState extends State<CampaignCard> {
                 Positioned(
                     right: 20.0,
                     top: 20.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: ColorConstants.instance.textGold,
-                          borderRadius: BorderRadius.circular(50.0)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.visibility,
-                              color: ColorConstants.instance.iconOnColor,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Text(
-                                  widget.campaign.campaignUsers.length
-                                      .toString(),
-                                  style: TextStyle(
-                                      color:
-                                          ColorConstants.instance.textOnColor,
-                                      fontSize: 20)),
-                            ),
-                          ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CampaignUsers(
+                                campaignId: widget.campaign.campaignId)));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 3.0,
+                                color: ColorConstants.instance.textGold),
+                            color: ColorConstants.instance.primaryColor,
+                            borderRadius: BorderRadius.circular(50.0)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.qr_code_2,
+                                color: ColorConstants.instance.iconOnColor,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )),
@@ -154,13 +154,13 @@ class _CampaignCardState extends State<CampaignCard> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 18.0,
+                      fontFamily: "Montserrat",
                       color: ColorConstants.instance.primaryColor,
                       fontWeight: FontWeight.bold)),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(widget.campaign.campaignDesc,
-                  style: const TextStyle(fontFamily: 'Roboto'),
                   textAlign: TextAlign.center),
             ),
             Padding(
@@ -191,7 +191,7 @@ class _CampaignCardState extends State<CampaignCard> {
                           'Kampanya Başlangıç : ${formatDate(widget.campaign.campaignStart)}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 12.0,
                               color: ColorConstants.instance.textOnColor,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -201,7 +201,7 @@ class _CampaignCardState extends State<CampaignCard> {
                           'Kampanya Bitiş : ${formatDate(widget.campaign.campaignFinish)}',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 12.0,
                               color: ColorConstants.instance.textOnColor,
                               fontWeight: FontWeight.bold)),
                     ),

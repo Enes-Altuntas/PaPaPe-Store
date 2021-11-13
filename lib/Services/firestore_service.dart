@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:papape_store/Models/camapign_model.dart';
+import 'package:papape_store/Models/campaign_user.dart';
+import 'package:papape_store/Models/employee_model.dart';
 
 import 'package:papape_store/Models/user_model.dart';
 import 'package:papape_store/Models/wishes_model.dart';
@@ -162,6 +164,32 @@ class FirestoreService {
             .toList());
   }
 
+  Stream<List<EmployeeModel>> getStoreEmployees(String storeId) {
+    return _db
+        .collection('stores')
+        .doc(storeId)
+        .collection('employees')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => EmployeeModel.fromFirestore(doc.data()))
+            .toList());
+  }
+
+  Stream<List<CampaignUserModel>> getCampaignUsers(
+      String storeId, String campaignId) {
+    return _db
+        .collection('stores')
+        .doc(storeId)
+        .collection('campaigns')
+        .doc(campaignId)
+        .collection('users')
+        .orderBy('userName', descending: false)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => CampaignUserModel.fromFirestore(doc.data()))
+            .toList());
+  }
+
   Future<String> saveCampaign(String storeId, Campaign campaign) async {
     if (campaign.campaignLocalImage != null) {
       await savePicture(campaign.campaignLocalImage, campaign.campaignId)
@@ -264,8 +292,8 @@ class FirestoreService {
     }
   }
 
-  Future<String> scanCode(
-      String storeId, String campaignId, String userId) async {
+  Future<String> scanCode(String storeId, String campaignId, String userId,
+      String scannedByName, String scannedById) async {
     UserModel user;
     String campaignCodeString = storeId + '*' + campaignId + '*' + userId;
 
@@ -285,21 +313,28 @@ class FirestoreService {
             .collection('users')
             .doc(userId)
             .update({'campaignCodes': user.campaignCodes});
+      } catch (e) {
+        throw 'Kampanya kodu bulunamadı !';
+      }
 
+      try {
         await FirebaseFirestore.instance
             .collection("stores")
             .doc(storeId)
             .collection('campaigns')
             .doc(campaignId)
+            .collection('users')
+            .doc(userId)
             .update({
-          "campaignUsers": FieldValue.arrayUnion([
-            {"user": userId, "scannedAt": Timestamp.fromDate(DateTime.now())}
-          ])
+          "scanned": true,
+          "scannedAt": Timestamp.fromDate(DateTime.now()),
+          "scannedByName": scannedByName,
+          "scannedById": scannedById
         });
 
         return 'Kampanya başarıyla uygulanmıştır !';
-      } catch (e) {
-        throw 'Kampanya kodu bulunamadı !';
+      } on Exception catch (e) {
+        throw 'Kampanya uygulanırken bir hata ile karşılaşıldı!';
       }
     } else {
       throw ('Müşterinin kampanyası bulunamamıştır !');

@@ -57,7 +57,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(
+          fontFamily: 'Poppins',
           scaffoldBackgroundColor: ColorConstants.instance.whiteContainer,
+          colorScheme: ThemeData()
+              .colorScheme
+              .copyWith(primary: ColorConstants.instance.primaryColor),
           cardTheme: CardTheme(
               clipBehavior: Clip.antiAlias,
               elevation: 10,

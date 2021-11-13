@@ -432,8 +432,8 @@ class _ProfileState extends State<Profile> {
                       ),
                     ),
                     GradientButton(
-                        start: ColorConstants.instance.primaryColor,
-                        end: ColorConstants.instance.secondaryColor,
+                        start: ColorConstants.instance.buttonDarkGold,
+                        end: ColorConstants.instance.buttonLightColor,
                         buttonText: 'Konum Al',
                         icon: Icons.add_location_alt_outlined,
                         widthMultiplier: 0.9,

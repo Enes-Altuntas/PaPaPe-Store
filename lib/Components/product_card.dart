@@ -93,6 +93,7 @@ class _ProductCardState extends State<ProductCard> {
                                 style: TextStyle(
                                     color: ColorConstants.instance.textOnColor,
                                     fontWeight: FontWeight.bold,
+                                    fontFamily: "Montserrat",
                                     shadows: const <Shadow>[
                                       Shadow(
                                         offset: Offset(2.0, 2.0),
@@ -100,7 +101,7 @@ class _ProductCardState extends State<ProductCard> {
                                         color: Color.fromARGB(255, 0, 0, 0),
                                       ),
                                     ],
-                                    fontSize: 25.0),
+                                    fontSize: 22.0),
                               ))
                             ],
                           ),
@@ -150,6 +151,7 @@ class _ProductCardState extends State<ProductCard> {
                                             color: ColorConstants
                                                 .instance.waitingColor,
                                             fontWeight: FontWeight.bold,
+                                            fontFamily: "Montserrat",
                                             fontSize: 20.0),
                                       ),
                                       Padding(
@@ -171,6 +173,7 @@ class _ProductCardState extends State<ProductCard> {
                                           'TRY ${widget.product.productPrice.toDouble().toString()}',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
+                                              fontFamily: "Montserrat",
                                               fontWeight: FontWeight.bold,
                                               color: ColorConstants
                                                   .instance.waitingColor,

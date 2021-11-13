@@ -30,9 +30,10 @@ class NotFound extends StatelessWidget {
                 notFoundText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontFamily: 'Bebas',
-                    fontSize: 25.0,
-                    color: notFoundTextColor),
+                    fontSize: 18.0,
+                    color: notFoundTextColor,
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ],

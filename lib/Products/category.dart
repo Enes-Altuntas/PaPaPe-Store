@@ -158,11 +158,11 @@ class _CategorySingleState extends State<CategorySingle> {
                                         color: ColorConstants
                                             .instance.primaryColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                        fontSize: 13.0),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                                  padding: const EdgeInsets.only(top: 20.0),
                                   child: TextFormField(
                                     controller: _categoryRow,
                                     maxLength: 3,
@@ -182,11 +182,11 @@ class _CategorySingleState extends State<CategorySingle> {
                                         color: ColorConstants
                                             .instance.primaryColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                        fontSize: 13.0),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                                  padding: const EdgeInsets.only(top: 20.0),
                                   child: TextFormField(
                                     validator: _validateCatName,
                                     controller: _categoryName,
@@ -208,9 +208,9 @@ class _CategorySingleState extends State<CategorySingle> {
                                         gradient: LinearGradient(
                                             colors: [
                                               ColorConstants
-                                                  .instance.primaryColor,
+                                                  .instance.buttonDarkGold,
                                               ColorConstants
-                                                  .instance.secondaryColor,
+                                                  .instance.buttonLightColor,
                                             ],
                                             begin: Alignment.bottomCenter,
                                             end: Alignment.topCenter)),
@@ -235,10 +235,10 @@ class _CategorySingleState extends State<CategorySingle> {
                                                     ? "Başlık Oluştur"
                                                     : "Başlığı Düzenle",
                                                 style: TextStyle(
-                                                    fontSize: 15,
-                                                    color: ColorConstants
-                                                        .instance.textOnColor,
-                                                    fontFamily: 'Roboto')),
+                                                  fontSize: 15,
+                                                  color: ColorConstants
+                                                      .instance.textOnColor,
+                                                )),
                                           ],
                                         ),
                                         onPressed: () {

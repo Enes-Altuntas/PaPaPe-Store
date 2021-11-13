@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
+import 'package:papape_store/Employees/employees.dart';
 import 'package:papape_store/Login/login.dart';
 import 'package:papape_store/Profile/profile.dart';
 import 'package:papape_store/Providers/store_provider.dart';
@@ -144,7 +145,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
               title: const Text('Personel Listesi'),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const Profile()));
+                    MaterialPageRoute(builder: (context) => const Employees()));
               },
             ),
           ),

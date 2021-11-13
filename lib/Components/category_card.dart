@@ -61,8 +61,9 @@ class _CategoryCardState extends State<CategoryCard> {
                 Text(
                   widget.category.categoryName,
                   style: TextStyle(
-                    fontFamily: 'Bebas',
-                    fontSize: 25.0,
+                    fontSize: 22.0,
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold,
                     color: ColorConstants.instance.primaryColor,
                   ),
                 ),

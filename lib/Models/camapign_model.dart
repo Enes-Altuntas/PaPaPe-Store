@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:papape_store/Models/campaign_user.dart';
 
 class Campaign {
   // inactive , wait , active
@@ -12,7 +11,6 @@ class Campaign {
   final String campaignDesc;
   final String campaignId;
   final String campaignTitle;
-  final List<CampaignUserModel> campaignUsers;
   final Timestamp campaignStart;
   final Timestamp campaignFinish;
   final Timestamp createdAt;
@@ -27,7 +25,6 @@ class Campaign {
       this.campaignDesc,
       this.campaignId,
       this.campaignTitle,
-      this.campaignUsers,
       this.campaignStart,
       this.campaignFinish,
       this.createdAt,
@@ -41,9 +38,6 @@ class Campaign {
         automatedStop = data['automatedStop'],
         campaignDesc = data['campaignDesc'],
         campaignTitle = data['campaignTitle'],
-        campaignUsers = data['campaignUsers'].map<CampaignUserModel>((value) {
-          return CampaignUserModel.fromFirestore(value);
-        }).toList(),
         campaignId = data['campaignId'],
         campaignStart = data['campaignStart'],
         campaignFinish = data['campaignFinish'],
@@ -59,7 +53,6 @@ class Campaign {
       'campaignDesc': campaignDesc,
       'campaignTitle': campaignTitle,
       'campaignStart': campaignStart,
-      'campaignUsers': campaignUsers,
       'campaignFinish': campaignFinish,
       'createdAt': createdAt,
       'campaignId': campaignId,

@@ -188,7 +188,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
           automatedStop: false,
           campaignStatus: 'wait',
           campaignId: const Uuid().v4(),
-          campaignUsers: [],
           campaignTitle: _title.text,
           campaignDesc: _desc.text,
           campaignFinish: _finishDate,
@@ -247,7 +246,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
           campaignStart: _startDate,
           campaignLocalImage: campaignPic,
           campaignPicRef: widget.campaignData.campaignPicRef,
-          campaignUsers: [],
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
           .saveCampaign(_userProvider.storeId, _campaign)
@@ -292,7 +290,6 @@ class _CampaignSingleState extends State<CampaignSingle> {
           delInd: false,
           campaignLocalImage: campaignPic,
           campaignPicRef: widget.campaignData.campaignPicRef,
-          campaignUsers: [],
           campaignStart: _startDate,
           createdAt: Timestamp.fromDate(DateTime.now()));
       FirestoreService()
@@ -604,11 +601,11 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         color:
                                             ColorConstants.instance.hintColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                        fontSize: 13.0),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
+                                  padding: const EdgeInsets.only(top: 20.0),
                                   child: TextFormField(
                                     maxLength: 50,
                                     validator: validateCampaignTitle,
@@ -628,11 +625,11 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         color:
                                             ColorConstants.instance.hintColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                        fontSize: 13.0),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
+                                  padding: const EdgeInsets.only(top: 20.0),
                                   child: TextFormField(
                                     maxLength: 255,
                                     validator: validateCampaignDesc,
@@ -654,12 +651,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         color:
                                             ColorConstants.instance.hintColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                        fontSize: 13.0),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 8.0),
+                                      top: 20.0, bottom: 8.0),
                                   child: TextFormField(
                                     controller: _start,
                                     validator: validateCampaignStart,
@@ -691,12 +688,12 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         color:
                                             ColorConstants.instance.hintColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16.0),
+                                        fontSize: 13.0),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      top: 8.0, bottom: 10.0),
+                                      top: 20.0, bottom: 10.0),
                                   child: TextFormField(
                                     validator: validateCampaignFinish,
                                     controller: _finish,
@@ -738,7 +735,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         onPressed: () {
                                           saveYesNo();
                                         },
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         widthMultiplier: 0.9,
                                         icon: FontAwesomeIcons.save,
                                       ),
@@ -755,7 +752,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                             .instance.buttonLightColor,
                                         buttonText: 'Kampanyayı Yinele',
                                         icon: FontAwesomeIcons.save,
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         onPressed: () {
                                           renewYesNo();
                                         },
@@ -771,7 +768,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                           .instance.secondaryColor,
                                       buttonText: 'Kampanyayı Sil',
                                       icon: FontAwesomeIcons.trash,
-                                      fontSize: 15,
+                                      fontSize: 14,
                                       onPressed: () {
                                         deleteYesNo();
                                       },
@@ -787,7 +784,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         end: ColorConstants
                                             .instance.buttonLightColor,
                                         buttonText: 'Kampanyayı Güncelle',
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         icon: FontAwesomeIcons.save,
                                         onPressed: () {
                                           updateYesNo();
@@ -805,7 +802,7 @@ class _CampaignSingleState extends State<CampaignSingle> {
                                         end: ColorConstants
                                             .instance.secondaryColor,
                                         buttonText: 'Kampanyayı Sonlandır',
-                                        fontSize: 15,
+                                        fontSize: 14,
                                         icon: FontAwesomeIcons.trash,
                                         onPressed: () {
                                           removeYesNo();

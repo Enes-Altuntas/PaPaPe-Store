@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:papape_store/Components/progress.dart';
 import 'package:papape_store/Constants/colors_constants.dart';
 import 'package:papape_store/Providers/store_provider.dart';
+import 'package:papape_store/Providers/user_provider.dart';
 import 'package:papape_store/Services/firestore_service.dart';
 import 'package:papape_store/Services/toast_service.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ class _QrScannerState extends State<QrScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController controller;
   bool _isLoading = false;
+  UserProvider _userProvider;
 
   @override
   void reassemble() {
@@ -44,7 +46,8 @@ class _QrScannerState extends State<QrScanner> {
       String userId = data[2];
       if (_storeProvider.storeId == storeId) {
         FirestoreService()
-            .scanCode(storeId, campaignId, userId)
+            .scanCode(storeId, campaignId, userId, _userProvider.name,
+                _userProvider.userId)
             .then((value) => ToastService().showSuccess(value, context))
             .onError(
                 (error, stackTrace) => ToastService().showError(error, context))
@@ -60,6 +63,12 @@ class _QrScannerState extends State<QrScanner> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _userProvider = Provider.of<UserProvider>(context);
+    super.didChangeDependencies();
   }
 
   @override

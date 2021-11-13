@@ -209,247 +209,193 @@ class _SignState extends State<Sign> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: ColorConstants.instance.primaryColor,
+          backgroundColor: ColorConstants.instance.whiteContainer,
+          iconTheme: IconThemeData(color: ColorConstants.instance.primaryColor),
           elevation: 0,
         ),
         body: (isLoading == false)
-            ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  color: ColorConstants.instance.primaryColor,
-                ),
-                child: Form(
-                  key: formkey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      RichText(
-                          text: TextSpan(
-                              style: const TextStyle(
-                                  fontSize: 70.0,
-                                  fontFamily: "Amatic",
-                                  fontWeight: FontWeight.bold),
-                              children: [
-                            TextSpan(
-                                text: 'My',
-                                style: TextStyle(
-                                  color: ColorConstants.instance.textOnColor,
-                                )),
-                            TextSpan(
-                                text: 'Rest',
-                                style: TextStyle(
-                                  color: ColorConstants.instance.textGold,
-                                )),
-                          ])),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(50.0),
-                                topRight: Radius.circular(50.0)),
-                            color: ColorConstants.instance.whiteContainer,
-                          ),
+            ? SingleChildScrollView(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                    color: ColorConstants.instance.whiteContainer,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        right: 30.0, left: 30.0, bottom: 20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Image.asset('assets/images/login_logo.png',
+                            height: MediaQuery.of(context).size.height / 5),
+                        Visibility(
+                          visible: !codeSent,
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                right: 30.0,
-                                left: 30.0,
-                                bottom: 20.0,
-                                top: 50.0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  Visibility(
-                                    visible: !codeSent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                          controller: nameController,
-                                          keyboardType:
-                                              TextInputType.emailAddress,
-                                          decoration: const InputDecoration(
-                                              icon: Icon(Icons
-                                                  .account_circle_outlined),
-                                              labelText: 'İsim-Soyisim'),
-                                          validator: validateName),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: loginWithPhone && !codeSent,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                          controller: phoneController,
-                                          keyboardType: TextInputType.phone,
-                                          maxLength: 10,
-                                          decoration: const InputDecoration(
-                                              prefix: Text('+90'),
-                                              icon: Icon(Icons.phone),
-                                              labelText: 'Telefon Numarası'),
-                                          validator: validatePhone),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: codeSent,
-                                    child: PinPut(
-                                      fieldsCount: 6,
-                                      controller: codeController,
-                                      submittedFieldDecoration:
-                                          _pinPutDecoration.copyWith(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
-                                      selectedFieldDecoration:
-                                          _pinPutDecoration,
-                                      followingFieldDecoration:
-                                          _pinPutDecoration.copyWith(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
-                                        border: Border.all(
-                                          color:
-                                              ColorConstants.instance.textGold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: !loginWithPhone,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                          controller: emailController,
-                                          keyboardType:
-                                              TextInputType.emailAddress,
-                                          decoration: const InputDecoration(
-                                              icon: Icon(Icons.mail),
-                                              labelText: 'E-Posta'),
-                                          validator: validateMail),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: !loginWithPhone,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                        obscureText:
-                                            (isVisible == false) ? true : false,
-                                        controller: passwordController,
-                                        decoration: InputDecoration(
-                                            icon: const Icon(
-                                                Icons.vpn_key_outlined),
-                                            labelText: 'Yeni Parola',
-                                            suffixIcon: IconButton(
-                                              icon: (isVisible == false)
-                                                  ? const Icon(
-                                                      Icons.visibility_off)
-                                                  : const Icon(
-                                                      Icons.visibility),
-                                              onPressed: () {
-                                                if (isVisible == true) {
-                                                  setState(() {
-                                                    isVisible = false;
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    isVisible = true;
-                                                  });
-                                                }
-                                              },
-                                            )),
-                                        validator: validatePass,
-                                      ),
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: !loginWithPhone,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: TextFormField(
-                                        obscureText:
-                                            (isVisible == false) ? true : false,
-                                        controller: passwordVerifyController,
-                                        decoration: InputDecoration(
-                                            icon: const Icon(
-                                                Icons.vpn_key_outlined),
-                                            labelText: 'Yeni Parola (Tekrar)',
-                                            suffixIcon: IconButton(
-                                              icon: (isVisible == false)
-                                                  ? const Icon(
-                                                      Icons.visibility_off)
-                                                  : const Icon(
-                                                      Icons.visibility),
-                                              onPressed: () {
-                                                if (isVisible == true) {
-                                                  setState(() {
-                                                    isVisible = false;
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    isVisible = true;
-                                                  });
-                                                }
-                                              },
-                                            )),
-                                        validator: validatePassAgain,
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 25.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              loginWithPhone = !loginWithPhone;
-                                              codeSent = false;
-                                              verificationCode = "";
-                                            });
-                                          },
-                                          child: Text(
-                                            (!loginWithPhone)
-                                                ? 'Telefon ile Kayıt Ol'
-                                                : 'E-Mail ile Kayıt Ol',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: ColorConstants
-                                                  .instance.primaryColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                      padding: const EdgeInsets.only(top: 30.0),
-                                      child: GradientButton(
-                                        start: ColorConstants
-                                            .instance.primaryColor,
-                                        end: ColorConstants
-                                            .instance.secondaryColor,
-                                        buttonText: (loginWithPhone)
-                                            ? (codeSent)
-                                                ? 'Kodu Doğrula'
-                                                : 'Doğrulama Kodu Al'
-                                            : 'Kayıt Ol',
-                                        fontSize: 15,
-                                        onPressed: (loginWithPhone)
-                                            ? (codeSent)
-                                                ? verifyCode
-                                                : verifyPhone
-                                            : signUp,
-                                        icon: FontAwesomeIcons.signInAlt,
-                                        widthMultiplier: 0.9,
-                                      )),
-                                ],
+                            padding: const EdgeInsets.only(top: 40.0),
+                            child: TextFormField(
+                                controller: nameController,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                    icon: Icon(Icons.account_circle_outlined),
+                                    labelText: 'İsim-Soyisim'),
+                                validator: validateName),
+                          ),
+                        ),
+                        Visibility(
+                          visible: loginWithPhone && !codeSent,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: TextFormField(
+                                controller: phoneController,
+                                keyboardType: TextInputType.phone,
+                                maxLength: 10,
+                                decoration: const InputDecoration(
+                                    prefix: Text('+90'),
+                                    icon: Icon(Icons.phone),
+                                    labelText: 'Telefon Numarası'),
+                                validator: validatePhone),
+                          ),
+                        ),
+                        Visibility(
+                          visible: codeSent,
+                          child: PinPut(
+                            fieldsCount: 6,
+                            controller: codeController,
+                            submittedFieldDecoration:
+                                _pinPutDecoration.copyWith(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            selectedFieldDecoration: _pinPutDecoration,
+                            followingFieldDecoration:
+                                _pinPutDecoration.copyWith(
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(
+                                color: ColorConstants.instance.textGold,
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                        Visibility(
+                          visible: !loginWithPhone,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: TextFormField(
+                                controller: emailController,
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: const InputDecoration(
+                                    icon: Icon(Icons.mail),
+                                    labelText: 'E-Posta'),
+                                validator: validateMail),
+                          ),
+                        ),
+                        Visibility(
+                          visible: !loginWithPhone,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: TextFormField(
+                              obscureText: (isVisible == false) ? true : false,
+                              controller: passwordController,
+                              decoration: InputDecoration(
+                                  icon: const Icon(Icons.vpn_key_outlined),
+                                  labelText: 'Yeni Parola',
+                                  suffixIcon: IconButton(
+                                    icon: (isVisible == false)
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(Icons.visibility),
+                                    onPressed: () {
+                                      if (isVisible == true) {
+                                        setState(() {
+                                          isVisible = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isVisible = true;
+                                        });
+                                      }
+                                    },
+                                  )),
+                              validator: validatePass,
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: !loginWithPhone,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: TextFormField(
+                              obscureText: (isVisible == false) ? true : false,
+                              controller: passwordVerifyController,
+                              decoration: InputDecoration(
+                                  icon: const Icon(Icons.vpn_key_outlined),
+                                  labelText: 'Yeni Parola (Tekrar)',
+                                  suffixIcon: IconButton(
+                                    icon: (isVisible == false)
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(Icons.visibility),
+                                    onPressed: () {
+                                      if (isVisible == true) {
+                                        setState(() {
+                                          isVisible = false;
+                                        });
+                                      } else {
+                                        setState(() {
+                                          isVisible = true;
+                                        });
+                                      }
+                                    },
+                                  )),
+                              validator: validatePassAgain,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 25.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    loginWithPhone = !loginWithPhone;
+                                    codeSent = false;
+                                    verificationCode = "";
+                                  });
+                                },
+                                child: Text(
+                                  (!loginWithPhone)
+                                      ? 'Telefon ile Kayıt Ol'
+                                      : 'E-Mail ile Kayıt Ol',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorConstants.instance.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 30.0),
+                            child: GradientButton(
+                              start: ColorConstants.instance.primaryColor,
+                              end: ColorConstants.instance.secondaryColor,
+                              buttonText: (loginWithPhone)
+                                  ? (codeSent)
+                                      ? 'Kodu Doğrula'
+                                      : 'Doğrulama Kodu Al'
+                                  : 'Kayıt Ol',
+                              fontSize: 15,
+                              onPressed: (loginWithPhone)
+                                  ? (codeSent)
+                                      ? verifyCode
+                                      : verifyPhone
+                                  : signUp,
+                              icon: FontAwesomeIcons.signInAlt,
+                              widthMultiplier: 0.9,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               )

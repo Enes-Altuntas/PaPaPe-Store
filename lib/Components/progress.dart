@@ -20,6 +20,8 @@ class ProgressWidget extends StatelessWidget {
                 'Lütfen Bekleyiniz...',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                    fontFamily: "Montserrat",
+                    fontWeight: FontWeight.bold,
                     color: ColorConstants.instance.primaryColor,
                     fontSize: 17.0),
               ),

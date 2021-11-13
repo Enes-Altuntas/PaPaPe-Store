@@ -48,8 +48,8 @@ class GradientButton extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(buttonText,
                     style: TextStyle(
-                      fontFamily: fontFamily,
                       fontSize: fontSize,
+                      fontWeight: FontWeight.bold,
                       color: ColorConstants.instance.textOnColor,
                     )),
               ),

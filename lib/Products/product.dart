@@ -317,11 +317,11 @@ class _ProductSingleState extends State<ProductSingle> {
                             style: TextStyle(
                                 color: ColorConstants.instance.hintColor,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16.0),
+                                fontSize: 13.0),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 20.0),
                           child: TextFormField(
                             controller: _productName,
                             maxLength: 50,
@@ -339,11 +339,11 @@ class _ProductSingleState extends State<ProductSingle> {
                             style: TextStyle(
                                 color: ColorConstants.instance.hintColor,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16.0),
+                                fontSize: 13.0),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 20.0),
                           child: TextFormField(
                             controller: _productDesc,
                             keyboardType: TextInputType.text,
@@ -363,11 +363,11 @@ class _ProductSingleState extends State<ProductSingle> {
                             style: TextStyle(
                                 color: ColorConstants.instance.hintColor,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16.0),
+                                fontSize: 13.0),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(top: 20.0),
                           child: TextFormField(
                             controller: _productPrice,
                             validator: _validateProdPrice,
