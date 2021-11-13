@@ -145,6 +145,17 @@ class FirestoreService {
         .get();
   }
 
+  Stream<List<EmployeeModel>> getStoreEmployees(String storeId) {
+    return _db
+        .collection('stores')
+        .doc(storeId)
+        .collection('employees')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => EmployeeModel.fromFirestore(doc.data()))
+            .toList());
+  }
+
 // *******************************************************************************
 // Profil ile ilgili backend işlemleri
 
@@ -164,17 +175,6 @@ class FirestoreService {
             .toList());
   }
 
-  Stream<List<EmployeeModel>> getStoreEmployees(String storeId) {
-    return _db
-        .collection('stores')
-        .doc(storeId)
-        .collection('employees')
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => EmployeeModel.fromFirestore(doc.data()))
-            .toList());
-  }
-
   Stream<List<CampaignUserModel>> getCampaignUsers(
       String storeId, String campaignId) {
     return _db
@@ -182,11 +182,25 @@ class FirestoreService {
         .doc(storeId)
         .collection('campaigns')
         .doc(campaignId)
-        .collection('users')
+        .collection('campaignUsers')
         .orderBy('userName', descending: false)
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) => CampaignUserModel.fromFirestore(doc.data()))
+            .toList());
+  }
+
+  Future<List<CampaignUserModel>> getCampaignUsersF(
+      String storeId, String campaignId) async {
+    return await _db
+        .collection('stores')
+        .doc(storeId)
+        .collection('campaigns')
+        .doc(campaignId)
+        .collection("campaignUsers")
+        .get()
+        .then((value) => value.docs
+            .map((e) => CampaignUserModel.fromFirestore(e.data()))
             .toList());
   }
 
@@ -333,7 +347,7 @@ class FirestoreService {
         });
 
         return 'Kampanya başarıyla uygulanmıştır !';
-      } on Exception catch (e) {
+      } catch (e) {
         throw 'Kampanya uygulanırken bir hata ile karşılaşıldı!';
       }
     } else {
