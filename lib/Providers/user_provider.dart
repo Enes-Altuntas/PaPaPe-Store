@@ -8,7 +8,7 @@ class UserProvider with ChangeNotifier {
   String _storeId;
   List _favorites = [];
   List _campaignCodes = [];
-  String _roles;
+  List _roles = [];
 
   String get name => _name;
   String get userId => _userId;
@@ -16,7 +16,7 @@ class UserProvider with ChangeNotifier {
   String get storeId => _storeId;
   List get favorites => _favorites;
   List get campaignCodes => _campaignCodes;
-  String get roles => _roles;
+  List get roles => _roles;
 
   free() {
     _name = null;
@@ -25,7 +25,7 @@ class UserProvider with ChangeNotifier {
     _storeId = null;
     _favorites = [];
     _campaignCodes = [];
-    _roles = null;
+    _roles = [];
   }
 
   UserModel getUserFromProvider() {

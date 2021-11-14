@@ -102,7 +102,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ], begin: Alignment.centerLeft, end: Alignment.centerRight)),
           ),
           Visibility(
-            visible: _userProvider != null && _userProvider.roles == 'owner',
+            visible:
+                _userProvider != null && _userProvider.roles.contains("owner"),
             child: ListTile(
               leading: Icon(
                 Icons.store,
@@ -116,13 +117,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           Visibility(
-            visible: _userProvider != null && _userProvider.roles == 'owner',
+            visible:
+                _userProvider != null && _userProvider.roles.contains("owner"),
             child: const Divider(
               thickness: 2,
             ),
           ),
           Visibility(
-            visible: _userProvider != null && _userProvider.roles == 'owner',
+            visible:
+                _userProvider != null && _userProvider.roles.contains("owner"),
             child: ListTile(
               leading: FaIcon(
                 FontAwesomeIcons.chartBar,
@@ -136,7 +139,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           Visibility(
-            visible: _userProvider != null && _userProvider.roles == 'owner',
+            visible:
+                _userProvider != null && _userProvider.roles.contains("owner"),
             child: ListTile(
               leading: Icon(
                 Icons.list,
@@ -150,7 +154,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           Visibility(
-            visible: _userProvider != null && _userProvider.roles == 'owner',
+            visible:
+                _userProvider != null && _userProvider.roles.contains("owner"),
             child: const Divider(
               thickness: 2,
             ),

@@ -189,7 +189,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 color: ColorConstants.instance.primaryColor,
               ),
               onTap: () {
-                if (_userProvider.roles == 'owner') {
+                if (_userProvider.roles.contains("owner")) {
                   openCategoryDialog();
                 } else {
                   ToastService().showWarning(
@@ -205,7 +205,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 color: ColorConstants.instance.iconOnColor,
               ),
               onTap: () {
-                if (_userProvider.roles == 'owner') {
+                if (_userProvider.roles.contains("owner")) {
                   openDialog();
                 } else {
                   ToastService().showWarning(

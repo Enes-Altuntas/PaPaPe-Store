@@ -84,7 +84,8 @@ class _CampaignsState extends State<Campaigns> {
                                     child: CampaignCard(
                                       campaign: snapshot.data[index],
                                       onPressed: () {
-                                        if (_userProvider.roles == "owner") {
+                                        if (_userProvider.roles
+                                            .contains("owner")) {
                                           setState(() {
                                             _selectedCampaign =
                                                 snapshot.data[index];

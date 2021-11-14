@@ -118,7 +118,8 @@ class _ProductCardState extends State<ProductCard> {
                                 alignment: Alignment.center,
                                 children: [
                                   Visibility(
-                                    visible: _userProvider.roles == "owner",
+                                    visible:
+                                        _userProvider.roles.contains("owner"),
                                     child: Positioned(
                                         bottom: 0,
                                         right: 0,

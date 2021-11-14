@@ -37,48 +37,46 @@ class _WishViewState extends State<WishView> {
       child: StreamBuilder<List<WishesModel>>(
         stream: FirestoreService().getReports(_userProvider.storeId),
         builder: (context, snapshot) {
-          switch (_userProvider.roles) {
-            case "owner":
-              switch (snapshot.connectionState) {
-                case ConnectionState.active:
-                  switch (snapshot.hasData && snapshot.data.isNotEmpty) {
-                    case true:
-                      return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CommentCard(
-                                wish: snapshot.data[index],
-                                onPressedCall: () {
-                                  makePhoneCall(
-                                      snapshot.data[index].wishUserPhone);
-                                },
-                              ));
-                        },
-                      );
-                      break;
-                    default:
-                      return NotFound(
-                        notFoundIcon: FontAwesomeIcons.exclamationTriangle,
-                        notFoundIconColor: ColorConstants.instance.primaryColor,
-                        notFoundText:
-                            'Şu an işletmeniz adına yayınlanmış hiç bir dilek & şikayet bulunmamaktadır.',
-                        notFoundTextColor: ColorConstants.instance.hintColor,
-                      );
-                  }
-                  break;
-                default:
-                  return const ProgressWidget();
-              }
-              break;
-            default:
-              return NotFound(
-                notFoundIcon: FontAwesomeIcons.exclamationTriangle,
-                notFoundIconColor: ColorConstants.instance.primaryColor,
-                notFoundText: 'Dilek & Şikayetleri görmeye yetkiniz yoktur.',
-                notFoundTextColor: ColorConstants.instance.hintColor,
-              );
+          if (_userProvider.roles.contains("owner")) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.active:
+                switch (snapshot.hasData && snapshot.data.isNotEmpty) {
+                  case true:
+                    return ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CommentCard(
+                              wish: snapshot.data[index],
+                              onPressedCall: () {
+                                makePhoneCall(
+                                    snapshot.data[index].wishUserPhone);
+                              },
+                            ));
+                      },
+                    );
+                    break;
+                  default:
+                    return NotFound(
+                      notFoundIcon: FontAwesomeIcons.exclamationTriangle,
+                      notFoundIconColor: ColorConstants.instance.primaryColor,
+                      notFoundText:
+                          'Şu an işletmeniz adına yayınlanmış hiç bir dilek & şikayet bulunmamaktadır.',
+                      notFoundTextColor: ColorConstants.instance.hintColor,
+                    );
+                }
+                break;
+              default:
+                return const ProgressWidget();
+            }
+          } else {
+            return NotFound(
+              notFoundIcon: FontAwesomeIcons.exclamationTriangle,
+              notFoundIconColor: ColorConstants.instance.primaryColor,
+              notFoundText: 'Dilek & Şikayetleri görmeye yetkiniz yoktur.',
+              notFoundTextColor: ColorConstants.instance.hintColor,
+            );
           }
         },
       ),

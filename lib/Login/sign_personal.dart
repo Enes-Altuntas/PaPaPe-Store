@@ -164,92 +164,96 @@ class _SignPersonalState extends State<SignPersonal> {
                   child: Padding(
                     padding: const EdgeInsets.only(
                         right: 30.0, left: 30.0, bottom: 20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Image.asset('assets/images/login_logo.png',
-                            height: MediaQuery.of(context).size.height / 5),
-                        Visibility(
-                          visible: codeSent,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 40.0),
-                            child: PinPut(
-                              fieldsCount: 6,
-                              controller: codeController,
-                              submittedFieldDecoration:
-                                  _pinPutDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              selectedFieldDecoration: _pinPutDecoration,
-                              followingFieldDecoration:
-                                  _pinPutDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(5.0),
-                                border: Border.all(
-                                  color: ColorConstants.instance.textGold,
+                    child: Form(
+                      key: formkey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset('assets/images/login_logo.png',
+                              height: MediaQuery.of(context).size.height / 5),
+                          Visibility(
+                            visible: codeSent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 40.0),
+                              child: PinPut(
+                                fieldsCount: 6,
+                                controller: codeController,
+                                submittedFieldDecoration:
+                                    _pinPutDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                selectedFieldDecoration: _pinPutDecoration,
+                                followingFieldDecoration:
+                                    _pinPutDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    color: ColorConstants.instance.textGold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        Visibility(
-                          visible: !codeSent,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 40.0),
-                            child: TextFormField(
-                              controller: nameController,
-                              keyboardType: TextInputType.text,
-                              validator: validateName,
-                              decoration: const InputDecoration(
-                                  icon: Icon(Icons.account_circle_outlined),
-                                  labelText: 'Personel İsim-Soyisim'),
+                          Visibility(
+                            visible: !codeSent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 40.0),
+                              child: TextFormField(
+                                controller: nameController,
+                                keyboardType: TextInputType.text,
+                                validator: validateName,
+                                decoration: const InputDecoration(
+                                    icon: Icon(Icons.account_circle_outlined),
+                                    labelText: 'Personel İsim-Soyisim'),
+                              ),
                             ),
                           ),
-                        ),
-                        Visibility(
-                          visible: !codeSent,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: TextFormField(
-                              controller: phoneController,
-                              keyboardType: TextInputType.phone,
-                              validator: validatePhone,
-                              maxLength: 10,
-                              decoration: const InputDecoration(
-                                  prefixText: '+90',
-                                  icon: Icon(Icons.phone),
-                                  labelText: 'Telefon Numarası'),
+                          Visibility(
+                            visible: !codeSent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: TextFormField(
+                                controller: phoneController,
+                                keyboardType: TextInputType.phone,
+                                validator: validatePhone,
+                                maxLength: 10,
+                                decoration: const InputDecoration(
+                                    prefixText: '+90',
+                                    icon: Icon(Icons.phone),
+                                    labelText: 'Telefon Numarası'),
+                              ),
                             ),
                           ),
-                        ),
-                        Visibility(
-                          visible: !codeSent,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: TextFormField(
-                              controller: storeController,
-                              keyboardType: TextInputType.text,
-                              maxLength: 28,
-                              validator: validateStore,
-                              decoration: const InputDecoration(
-                                  icon: Icon(Icons.store),
-                                  labelText: 'İşletme Kodu'),
+                          Visibility(
+                            visible: !codeSent,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: TextFormField(
+                                controller: storeController,
+                                keyboardType: TextInputType.text,
+                                maxLength: 28,
+                                validator: validateStore,
+                                decoration: const InputDecoration(
+                                    icon: Icon(Icons.store),
+                                    labelText: 'İşletme Kodu'),
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(top: 30.0),
-                            child: GradientButton(
-                              start: ColorConstants.instance.primaryColor,
-                              end: ColorConstants.instance.secondaryColor,
-                              buttonText: (!codeSent)
-                                  ? 'Doğrulama Kodu Al'
-                                  : 'Kodu Doğrula',
-                              fontSize: 15,
-                              onPressed: (!codeSent) ? verifyPhone : verifyCode,
-                              icon: FontAwesomeIcons.signInAlt,
-                              widthMultiplier: 0.9,
-                            )),
-                      ],
+                          Padding(
+                              padding: const EdgeInsets.only(top: 30.0),
+                              child: GradientButton(
+                                start: ColorConstants.instance.primaryColor,
+                                end: ColorConstants.instance.secondaryColor,
+                                buttonText: (!codeSent)
+                                    ? 'Doğrulama Kodu Al'
+                                    : 'Kodu Doğrula',
+                                fontSize: 15,
+                                onPressed:
+                                    (!codeSent) ? verifyPhone : verifyCode,
+                                icon: FontAwesomeIcons.signInAlt,
+                                widthMultiplier: 0.9,
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                 ),

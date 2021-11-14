@@ -188,16 +188,34 @@ class AuthService {
       UserModel newUser = UserModel(
           name: name,
           iToken: await FirebaseMessaging.instance.getToken(),
+          token: null,
           userId: _firebaseAuth.currentUser.uid,
           favorites: [],
           storeId: _firebaseAuth.currentUser.uid,
           campaignCodes: [],
-          roles: role);
+          roles: []);
 
       await _db
           .collection('users')
           .doc(_firebaseAuth.currentUser.uid)
           .set(newUser.toMap());
+    } else {
+      if (!user.roles.contains("owner") && !user.roles.contains("employee")) {
+        user.roles.add("owner");
+
+        String token = await FirebaseMessaging.instance.getToken();
+
+        await _db
+            .collection('users')
+            .doc(_firebaseAuth.currentUser.uid)
+            .update({
+          'roles': user.roles,
+          'iToken': token,
+          'storeId': _firebaseAuth.currentUser.uid,
+        });
+      } else {
+        throw 'Tekrar kayıt olamazsınız!';
+      }
     }
   }
 
@@ -211,28 +229,42 @@ class AuthService {
       return UserModel.fromFirestore(value.data());
     }).onError((error, stackTrace) => null);
 
-    if (user != null && user.roles == 'owner') {
+    if (user != null && user.roles.contains("owner")) {
       throw 'İşletme sahibi olarak kaydınız bulunmaktadır. Personel olarak kayıt yaptıramazsınız.';
-    } else if (user != null && user.roles == 'employee') {
-      throw 'Kullanıcı kaydınız bulunmaktadır. Tekrar kayıt olamazsınız.';
+    } else if (user != null && user.roles.contains("employee")) {
+      throw 'Personel kaydınız bulunmaktadır. Tekrar kayıt olamazsınız.';
     }
 
-    UserModel newUser = UserModel(
-        name: name,
-        iToken: await FirebaseMessaging.instance.getToken(),
-        userId: _firebaseAuth.currentUser.uid,
-        favorites: [],
-        storeId: storeCode,
-        campaignCodes: [],
-        roles: role);
+    if (user == null) {
+      UserModel newUser = UserModel(
+          name: name,
+          iToken: await FirebaseMessaging.instance.getToken(),
+          token: null,
+          userId: _firebaseAuth.currentUser.uid,
+          favorites: [],
+          storeId: storeCode,
+          campaignCodes: [],
+          roles: []);
 
-    await _db
-        .collection('users')
-        .doc(_firebaseAuth.currentUser.uid)
-        .set(newUser.toMap())
-        .onError((error, stackTrace) {
-      throw 'Kullanıcı kaydınız oluşturulurken bir hata ile karşılaşıldı.';
-    });
+      newUser.roles.add("employee");
+
+      await _db
+          .collection('users')
+          .doc(_firebaseAuth.currentUser.uid)
+          .set(newUser.toMap())
+          .onError((error, stackTrace) {
+        throw 'Kullanıcı kaydınız oluşturulurken bir hata ile karşılaşıldı.';
+      });
+    } else {
+      user.roles.add("employee");
+      String token = await FirebaseMessaging.instance.getToken();
+
+      await _db.collection('users').doc(_firebaseAuth.currentUser.uid).update({
+        'roles': user.roles,
+        'token': token,
+        'storeId': storeCode,
+      });
+    }
 
     await _db.collection('stores').doc(storeCode).get().then((value) {
       return Store.fromFirestore(value.data());

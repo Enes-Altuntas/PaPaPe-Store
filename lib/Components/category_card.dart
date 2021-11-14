@@ -68,7 +68,7 @@ class _CategoryCardState extends State<CategoryCard> {
                   ),
                 ),
                 Visibility(
-                  visible: _userProvider.roles == "owner",
+                  visible: _userProvider.roles.contains("owner"),
                   child: Row(
                     children: [
                       GestureDetector(
@@ -135,7 +135,7 @@ class _CategoryCardState extends State<CategoryCard> {
                               ),
                             ),
                             Visibility(
-                              visible: _userProvider.roles == "owner",
+                              visible: _userProvider.roles.contains("owner"),
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 15.0),
                                 child: Container(
