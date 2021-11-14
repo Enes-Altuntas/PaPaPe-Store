@@ -198,6 +198,7 @@ class FirestoreService {
         .collection('campaigns')
         .doc(campaignId)
         .collection("campaignUsers")
+        .where("scanned", isEqualTo: true)
         .get()
         .then((value) => value.docs
             .map((e) => CampaignUserModel.fromFirestore(e.data()))
@@ -337,7 +338,7 @@ class FirestoreService {
             .doc(storeId)
             .collection('campaigns')
             .doc(campaignId)
-            .collection('users')
+            .collection('campaignUsers')
             .doc(userId)
             .update({
           "scanned": true,

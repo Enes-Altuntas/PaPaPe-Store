@@ -106,22 +106,62 @@ class _CampaignUsersState extends State<CampaignUsers> {
                                                         MainAxisAlignment
                                                             .spaceBetween,
                                                     children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 20.0),
-                                                        child: Text(
-                                                          snapshot.data[index]
-                                                              .userName,
-                                                          style: const TextStyle(
-                                                              fontFamily:
-                                                                  "Montserrat",
-                                                              fontSize: 17.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 20.0),
+                                                            child: Text(
+                                                              'Müşteri İsim-Soyisim: ${snapshot.data[index].userName}',
+                                                              style: const TextStyle(
+                                                                  fontFamily:
+                                                                      "Montserrat",
+                                                                  fontSize:
+                                                                      12.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                          Visibility(
+                                                            visible: snapshot
+                                                                        .data[
+                                                                            index]
+                                                                        .scanned !=
+                                                                    null &&
+                                                                snapshot
+                                                                    .data[index]
+                                                                    .scanned,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      left:
+                                                                          20.0,
+                                                                      top:
+                                                                          10.0),
+                                                              child: Text(
+                                                                'Personel: ${snapshot.data[index].scannedByName}',
+                                                                style: const TextStyle(
+                                                                    fontFamily:
+                                                                        "Montserrat",
+                                                                    fontSize:
+                                                                        10.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                       Padding(
                                                         padding:
@@ -153,16 +193,7 @@ class _CampaignUsersState extends State<CampaignUsers> {
                                               ),
                                             );
                                           } else {
-                                            return NotFound(
-                                              notFoundIcon: FontAwesomeIcons
-                                                  .exclamationTriangle,
-                                              notFoundIconColor: ColorConstants
-                                                  .instance.primaryColor,
-                                              notFoundText:
-                                                  'Aradığınız kriterlerde bir kişi bulunamadı!',
-                                              notFoundTextColor: ColorConstants
-                                                  .instance.hintColor,
-                                            );
+                                            return Container();
                                           }
                                         } else {
                                           return SizedBox(
@@ -183,21 +214,59 @@ class _CampaignUsersState extends State<CampaignUsers> {
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 20.0),
-                                                      child: Text(
-                                                        snapshot.data[index]
-                                                            .userName,
-                                                        style: const TextStyle(
-                                                            fontFamily:
-                                                                "Montserrat",
-                                                            fontSize: 15.0,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                      ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 20.0),
+                                                          child: Text(
+                                                            'Müşteri İsim-Soyisim: ${snapshot.data[index].userName}',
+                                                            style: const TextStyle(
+                                                                fontFamily:
+                                                                    "Montserrat",
+                                                                fontSize: 12.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                        Visibility(
+                                                          visible: snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .scanned !=
+                                                                  null &&
+                                                              snapshot
+                                                                  .data[index]
+                                                                  .scanned,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 20.0,
+                                                                    top: 10.0),
+                                                            child: Text(
+                                                              'Personel: ${snapshot.data[index].scannedByName}',
+                                                              style: const TextStyle(
+                                                                  fontFamily:
+                                                                      "Montserrat",
+                                                                  fontSize:
+                                                                      10.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                     Padding(
                                                       padding:
