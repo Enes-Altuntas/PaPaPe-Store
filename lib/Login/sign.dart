@@ -261,19 +261,22 @@ class _SignState extends State<Sign> {
                           ),
                           Visibility(
                             visible: codeSent,
-                            child: PinPut(
-                              fieldsCount: 6,
-                              controller: codeController,
-                              submittedFieldDecoration:
-                                  _pinPutDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              selectedFieldDecoration: _pinPutDecoration,
-                              followingFieldDecoration:
-                                  _pinPutDecoration.copyWith(
-                                borderRadius: BorderRadius.circular(5.0),
-                                border: Border.all(
-                                  color: ColorConstants.instance.textGold,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 40.0),
+                              child: PinPut(
+                                fieldsCount: 6,
+                                controller: codeController,
+                                submittedFieldDecoration:
+                                    _pinPutDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                selectedFieldDecoration: _pinPutDecoration,
+                                followingFieldDecoration:
+                                    _pinPutDecoration.copyWith(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(
+                                    color: ColorConstants.instance.textGold,
+                                  ),
                                 ),
                               ),
                             ),
