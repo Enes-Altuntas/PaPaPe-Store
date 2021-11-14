@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
             create: (context) => context.read<AuthService>().authStateChanges),
       ],
       child: MaterialApp(
-        title: 'MyRest',
+        title: 'MyRest İşletme',
         localizationsDelegates: const [GlobalMaterialLocalizations.delegate],
         supportedLocales: const [Locale('en', 'EN'), Locale('tr', 'TR')],
         debugShowCheckedModeBanner: false,
