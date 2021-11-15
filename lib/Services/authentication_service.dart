@@ -200,7 +200,11 @@ class AuthService {
           .doc(_firebaseAuth.currentUser.uid)
           .set(newUser.toMap());
     } else {
-      if (!user.roles.contains("owner") && !user.roles.contains("employee")) {
+      if (user.roles.contains("owner")) {
+        return;
+      } else if (user.roles.contains("employee")) {
+        throw 'Personel kaydınız bulunmaktadır. İşletme sahibi olarak kayıt olamazsınız.';
+      } else {
         user.roles.add("owner");
 
         String token = await FirebaseMessaging.instance.getToken();
@@ -213,8 +217,6 @@ class AuthService {
           'iToken': token,
           'storeId': _firebaseAuth.currentUser.uid,
         });
-      } else {
-        throw 'Tekrar kayıt olamazsınız!';
       }
     }
   }
